@@ -3,4 +3,4 @@ tmp/**/*
 .DS_Store
 doc/api
 doc/app
-db/config.yaml
+config/database.yml
