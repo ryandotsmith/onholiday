@@ -8,6 +8,16 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '4f88732ee102eb78af32ee59062d4ea1'
 
+  ####################
+  #login() should get
+  #=>
+  # and should return
+  #=>
+  def login()
+    @cas_user  = session[:cas_user]
+    @cas_extra = session[:cas_extra_attributes]
+    User.verfiy(@cas_user,@cas_extra)
+  end
   def logout
     session[:casfilteruser] = nil
     reset_session

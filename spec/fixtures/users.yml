@@ -1,7 +1,10 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  login: MyString
-
-two:
-  login: MyString
+1:
+  login: rarbuckle
+  name: Ron Arbuckle
+  email: rarbuckle@gsenterprises.com
+  is_admin: true
+  max_personal: 10
+  max_vacation: 10
+  max_health: 5

@@ -1,6 +1,7 @@
 class CreateHolidays < ActiveRecord::Migration
   def self.up
     create_table :holidays do |t|
+      t.belongs_to :user
       t.string    :approved_by
       t.datetime  :approved_on
       t.datetime  :begin

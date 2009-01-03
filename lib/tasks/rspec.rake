@@ -8,6 +8,8 @@ rspec_base = File.expand_path(File.dirname(__FILE__) + '/../../vendor/plugins/rs
 $LOAD_PATH.unshift(rspec_base) if File.exist?(rspec_base)
 require 'spec/rake/spectask'
 
+
+
 spec_prereq = File.exist?(File.join(RAILS_ROOT, 'config', 'database.yml')) ? "db:test:prepare" : :noop
 task :noop do
 end
@@ -118,7 +120,7 @@ namespace :spec do
         File.delete(daemonized_server_pid)
       end
     end
-
+    
     desc "reload spec_server."
     task :restart do
       unless File.exist?(daemonized_server_pid)

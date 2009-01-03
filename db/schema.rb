@@ -12,6 +12,7 @@
 ActiveRecord::Schema.define(:version => 20090103033547) do
 
   create_table "holidays", :force => true do |t|
+    t.integer  "user_id"
     t.string   "approved_by"
     t.datetime "approved_on"
     t.datetime "begin"
@@ -27,6 +28,12 @@ ActiveRecord::Schema.define(:version => 20090103033547) do
 
   create_table "users", :force => true do |t|
     t.string   "login"
+    t.string   "email"
+    t.string   "name"
+    t.integer  "max_personal"
+    t.integer  "max_vacation"
+    t.integer  "max_health"
+    t.boolean  "is_admin"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
