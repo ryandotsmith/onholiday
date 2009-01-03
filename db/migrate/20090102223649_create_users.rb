@@ -1,8 +1,13 @@
 class CreateUsers < ActiveRecord::Migration
   def self.up
     create_table :users do |t|
-      t.string :login
-
+      t.string   :login
+      t.string   :email
+      t.integer  :max_personal
+      t.integer  :max_vacation
+      t.integer  :max_health
+      t.boolean  :is_admin
+      t.has_many :holidays  
       t.timestamps
     end
   end

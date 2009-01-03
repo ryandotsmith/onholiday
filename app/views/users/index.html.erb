@@ -1,5 +1,9 @@
 <h1>Listing users</h1>
-
+<%= @u %>
+<% @u_data.each do |key,val|%>
+	<p><%= key %> => <%= val %></p>
+<% end %>
+<%= @u_data["cn"]%>
 <table>
   <tr>
     <th>Login</th>

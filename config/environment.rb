@@ -73,3 +73,9 @@ Rails::Initializer.run do |config|
   # Please note that observers generated using script/generate observer need to have an _observer suffix
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 end
+require 'casclient'
+require 'casclient/frameworks/rails/filter'
+CASClient::Frameworks::Rails::Filter.configure(
+  :cas_base_url => "https://10.0.1.20/",
+  :extra_attributes_session_key => :cas_extra_attributes
+  )

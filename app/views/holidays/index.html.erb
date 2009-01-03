@@ -1,0 +1,20 @@
+<h1>Listing holidays</h1>
+
+<table>
+  <tr>
+    <th>Approved by</th>
+  </tr>
+
+<% for holiday in @holidays %>
+  <tr>
+    <td><%=h holiday.approved_by %></td>
+    <td><%= link_to 'Show', holiday %></td>
+    <td><%= link_to 'Edit', edit_holiday_path(holiday) %></td>
+    <td><%= link_to 'Destroy', holiday, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New holiday', new_holiday_path %>

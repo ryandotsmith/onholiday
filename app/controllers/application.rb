@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '4f88732ee102eb78af32ee59062d4ea1'
+
+  def logout
+    session[:casfilteruser] = nil
+    reset_session
+    redirect_to "https://10.0.1.20/logout"
+    #CASClient::Frameworks::Rails::Filter.logout(self)
+  end
   
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
