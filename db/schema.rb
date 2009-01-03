@@ -9,7 +9,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090102223649) do
+ActiveRecord::Schema.define(:version => 20090103033547) do
+
+  create_table "holidays", :force => true do |t|
+    t.string   "approved_by"
+    t.datetime "approved_on"
+    t.datetime "begin"
+    t.datetime "end"
+    t.boolean  "health"
+    t.boolean  "personal"
+    t.boolean  "vacation"
+    t.boolean  "emergency"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login"
