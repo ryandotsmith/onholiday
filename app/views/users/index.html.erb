@@ -1,20 +1,18 @@
-<h1>Listing users</h1>
-<%= @u_data["cn"]%>
-<table>
+<table class="index_table">
   <tr>
     <th>Login</th>
+	<% Holiday.get_holiday_types.each do |type|%>
+		<th><%= type %></th>
+	<% end %>
+
   </tr>
 
 <% for user in @users %>
   <tr>
-    <td><%=h user.login %></td>
-    <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+    <td><%= link_to "#{user.login}",edit_user_path(user) %></td>
+	<% user.get_remaining_holiday_time.each do |key,value|%>
+		<td><%= value %> / <%= user.send("max_#{key}")%> </td>
+	<% end %>
+</tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New user', new_user_path %>

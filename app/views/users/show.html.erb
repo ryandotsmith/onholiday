@@ -1,8 +1,52 @@
-<p>
-  <b>Login:</b>
-  <%=h @user.login %>
-</p>
+<div id="left">
+	<div class="navigation">
+		<%= link_to "Request Holiday", new_user_holiday_url(@user)%>	
+	</div><!--end -->
+</div>
+<div id="right">
+</div><!--end right-->
 
+<div id="center">
+	<h1><%=h @user.name %></h1>
+	<% if current_user.is_admin %>
+	<h2>Requests Queue </h2>
+		<%= render 	:partial => 'users/admin/pending_requests', 
+					:locals => { :requests => Holiday.get_pending } %>
+	<% end %>
+	<h2>Your Pending Requests</h2>
+	<ul>
+		<% @user.holidays.each do |holiday|%>
+			<% if holiday.state.zero?%>
+				<li>
+				<%= distance_of_time_in_words(holiday.begin_time, holiday.end_time ) %>
+				Starting on <%= holiday.begin_time%>
+				</li>
+				<% end %>
+		<% end %>
+	</ul>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+	<h2>You have used </h2>
+	<% 	@user.get_remaining_holiday_time.each do |key,value|%>
+			<%= value || 0 %> / <%= @user.send("max_#{key}")%>
+			of <%= key %> <br />
+	<% end %>
+	<h2>Your History</h2>
+	<ul>
+	<% @user.holidays.each do |holiday|%>
+		<% if holiday.state == 1 # 1 => that holiday was approved%>
+		<li>
+		APPROVED
+		by <%= holiday.reviewed_by %>
+		for a <%= holiday.leave_type %> holiday
+		for <%= distance_of_time_in_words(holiday.end_time,holiday.begin_time)%>
+		</li>
+		<% elsif holiday.state == -1 %>
+		<li>
+		DENIED
+		<%= holiday.leave_type %>
+		<%= distance_of_time_in_words(holiday.end_time,holiday.begin_time)%>
+		</li>
+		<% end %>
+	<% end %>
+	</ul>	
+</div><!--end inside_center-->

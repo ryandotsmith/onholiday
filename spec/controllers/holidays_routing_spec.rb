@@ -1,3 +1,4 @@
+=begin
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe HolidaysController do
@@ -57,3 +58,4 @@ describe HolidaysController do
     end
   end
 end
+=end

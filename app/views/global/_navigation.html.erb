@@ -1,0 +1,12 @@
+<div class="info_navigation">
+<ul>
+	<% if current_user.is_admin %>
+		<li><%= link_to ' Users', users_url  %>  </li> 
+		<li><%= link_to ' Requests', holidays_url  %>  </li> 
+		<li><%= link_to ' Your Account', current_user %>  </li> 
+
+	<% else %>
+	<% end %>
+
+</ul>
+</div>

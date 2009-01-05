@@ -23,6 +23,7 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on. 
   # They can then be installed with "rake gems:install" on new installations.
   # You have to specify the :lib option for libraries, where the Gem name (sqlite3-ruby) differs from the file itself (sqlite3)
+  config.gem "calendar_date_select"
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
@@ -77,6 +78,7 @@ require 'casclient'
 require 'casclient/frameworks/rails/filter'
 
 CASClient::Frameworks::Rails::Filter.configure(
-  :cas_base_url => "https://10.0.1.20/",
-  :extra_attributes_session_key => :cas_extra_attributes
+  :cas_base_url => "https://10.0.1.20/"
   )
+ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(:default => '%m/%d/%Y')
+ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(:default => '%m/%d/%Y')

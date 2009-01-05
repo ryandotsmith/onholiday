@@ -1,5 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
+require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
+
 describe User do
   before(:each) do
     @valid_attributes = {
@@ -41,4 +44,26 @@ describe "Verify user from CAS" do
     User.verify(nil,nil).should eql( false )
   end
   
+end
+
+describe "Provide valuable statistics on holiday data" do
+  before(:each) do
+    @user = Factory( :user )
+    @h1   = Factory( :holiday )
+    @h2   = Factory( :holiday )
+  end
+  
+  it "should return the number of days taken on holiday" do
+    @user.holidays << [@h1,@h2]
+    @user.holidays.length.should eql( 2 )
+    @user.get_total_holiday_time.should eql( 4 )
+  end
+  
+  it "should retrun the number of holidays remaining for a user" do
+
+    @user.holidays << [@h1,@h2]
+    @user.holidays.length.should eql( 2 )
+    @user.get_total_holiday_time.should eql( 4 )
+    @user.get_remaining_holiday_time.should == {:health => 1, :personal => 5, :vacation => 5}
+  end
 end

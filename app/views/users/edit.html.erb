@@ -1,16 +1,20 @@
-<h1>Editing user</h1>
-
-<% form_for(@user) do |f| %>
+<h1>Edit <%= @user.name%></h1>
+<% form_for(@user, :html => {:class => "user_form"}) do |f| %>
   <%= f.error_messages %>
-
-  <p>
-    <%= f.label :login %><br />
-    <%= f.text_field :login %>
-  </p>
-  <p>
-    <%= f.submit "Update" %>
-  </p>
+<ul class="form">
+	<% Holiday.get_holiday_types.each do |holiday|%>
+		<li>
+		<%= f.label holiday %>
+		<%= f.text_field "max_#{holiday}".to_sym, 
+						:size => 2,
+						:default => @user.send("max_#{holiday}".to_sym) %>
+		</li>
+	<% end %>
+    <li>
+	
+	</li>
+    <li>
+	    <%= f.submit "Update" %>
+	</li>
+</ul>
 <% end %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>

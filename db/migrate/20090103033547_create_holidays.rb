@@ -2,14 +2,12 @@ class CreateHolidays < ActiveRecord::Migration
   def self.up
     create_table :holidays do |t|
       t.belongs_to :user
-      t.string    :approved_by
-      t.datetime  :approved_on
-      t.datetime  :begin
-      t.datetime  :end
-      t.boolean   :health
-      t.boolean   :personal
-      t.boolean   :vacation
-      t.boolean   :emergency
+      t.integer   :state, :default => 0
+      t.string    :reviewed_by
+      t.datetime  :reviewed_on
+      t.datetime  :begin_time
+      t.datetime  :end_time
+      t.string    :leave_type
       t.text      :description
       t.timestamps
     end

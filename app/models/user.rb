@@ -1,6 +1,15 @@
 class User < ActiveRecord::Base
   has_many :holidays
   validates_uniqueness_of :login
+  
+  ####################
+  #list_admins should get
+  #=>
+  # and should return
+  #=>
+  def self.list_admins
+    ["rsmith","dpanjada","csmith","gsmith"]
+  end
   ####################
   #verify should get
   #=> a string that represents a user login.
@@ -27,6 +36,43 @@ class User < ActiveRecord::Base
       return user
     end#end if 
   end#end verify()
-
-
-end
+  ####################
+  #update_attr(user, credentials) should get
+  #=>
+  # and should return
+  #=>
+  def self.update_attr(user, credentials)
+    u = User.find_by_login(user)
+    u.email = credentials['mail']
+    u.name  = credentials['cn']
+    if User.list_admins.include?(u.login.to_s)
+      u.is_admin = true
+    end
+    u.save!
+  end
+  ####################
+  #get_total_holiday_time should get
+  #=>
+  # and should return
+  #=>
+  def get_total_holiday_time
+      total_time = 0
+      holidays.each do |holiday|
+        total_time += holiday.get_length
+      end# end do
+      total_time
+  end#end method
+  ####################
+  #get_remaining_holiday_time should get
+  #=>
+  # and should return
+  #=>
+  def get_remaining_holiday_time
+    results = Hash.new
+    Holiday.get_holiday_types.each {|t| results[t.to_sym] = self.send("max_#{t}")}
+    holidays.each do |holiday|
+      results[holiday.leave_type.to_sym] -= holiday.get_length if holiday.state == 1
+    end#end do
+    results
+  end#end method
+end# end class

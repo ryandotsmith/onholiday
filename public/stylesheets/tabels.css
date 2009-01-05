@@ -1,0 +1,27 @@
+table.index_table {
+	background-color:#99CCff;
+	width:100%;
+}
+table.index_table th{
+	background-color:#333333;
+	color:#FFFFFF;
+	font-weight:normal;
+}
+table.index_table td {
+font-family: Arial;
+font-size: 12pt;
+font-color: #000;
+background-color: #99CCff;
+border: solid 1px #666666;
+width:auto;
+}
+
+table.show_table {
+	
+}
+table.show_table th {
+	
+}
+table.show_table td {
+	
+}

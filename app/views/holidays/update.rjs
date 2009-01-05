@@ -1,0 +1,2 @@
+page[:pending_requests].replace :partial => 'users/admin/pending_requests',  
+                                :locals => {:requests => Holiday.get_pending}

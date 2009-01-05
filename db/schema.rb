@@ -13,14 +13,12 @@ ActiveRecord::Schema.define(:version => 20090103033547) do
 
   create_table "holidays", :force => true do |t|
     t.integer  "user_id"
-    t.string   "approved_by"
-    t.datetime "approved_on"
-    t.datetime "begin"
-    t.datetime "end"
-    t.boolean  "health"
-    t.boolean  "personal"
-    t.boolean  "vacation"
-    t.boolean  "emergency"
+    t.integer  "state",       :default => 0
+    t.string   "reviewed_by"
+    t.datetime "reviewed_on"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.string   "leave_type"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -30,10 +28,10 @@ ActiveRecord::Schema.define(:version => 20090103033547) do
     t.string   "login"
     t.string   "email"
     t.string   "name"
-    t.integer  "max_personal"
-    t.integer  "max_vacation"
-    t.integer  "max_health"
-    t.boolean  "is_admin"
+    t.integer  "max_personal", :default => 10
+    t.integer  "max_vacation", :default => 10
+    t.integer  "max_health",   :default => 10
+    t.boolean  "is_admin",     :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

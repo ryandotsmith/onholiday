@@ -1,20 +1,22 @@
-<h1>Listing holidays</h1>
-
-<table>
+<table class="index_table">
   <tr>
-    <th>Approved by</th>
+	<th>User</th>
+	<th>Date</th>
+	<th>Status</th>
+	<th>Description</th>
+	<th>Approved By </th>
   </tr>
 
 <% for holiday in @holidays %>
-  <tr>
-    <td><%=h holiday.approved_by %></td>
-    <td><%= link_to 'Show', holiday %></td>
-    <td><%= link_to 'Edit', edit_holiday_path(holiday) %></td>
-    <td><%= link_to 'Destroy', holiday, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+	<tr>
+		<td><%= link_to "#{holiday.user.name}", holiday %></td>
+		<td><%= holiday.begin_time.to_s + " - " + holiday.end_time.to_s%></td>
+		<td><%= get_state( holiday )%></td>
+		<td><%= holiday.description %></td>
+
+		<td><%= holiday.reviewed_by %></td>
+	</tr>
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New holiday', new_holiday_path %>

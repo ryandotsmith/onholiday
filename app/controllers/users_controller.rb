@@ -5,6 +5,8 @@ class UsersController < ApplicationController
 ##################################################################
   before_filter CASClient::Frameworks::Rails::Filter
   before_filter :login
+  before_filter :current_user
+  before_filter :authorized, :except => :show
 ##################################################################
 
   def index
@@ -71,15 +73,5 @@ class UsersController < ApplicationController
       format.xml  { head :ok }
     end
   end
-protected
-####################
-#login should get
-#=>
-# and should return
-#=>
-def login
-  @u        = session[:cas_user]
-  @u_data   = session[:cas_extra_attributes]
-end
-  
+    
 end# end class 
