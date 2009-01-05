@@ -11,6 +11,7 @@ set :deploy_to, "/var/app/#{application}"
 
 default_run_options[:pty] = true
 set :use_sudo, false
+set :local_scm_command, "/usr/local/git/bin/git"
 
 #############################################################
 #	Servers

@@ -3,7 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :has_many => [:holidays]
   map.resources :holidays
   map.logout  '/logout', :controller => "application", :action => "logout"
-
+  map.root :controller => 'users', :action => 'index'
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
