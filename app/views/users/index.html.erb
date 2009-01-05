@@ -13,6 +13,7 @@
 	<% user.get_remaining_holiday_time.each do |key,value|%>
 		<td><%= value %> / <%= user.send("max_#{key}")%> </td>
 	<% end %>
+
 </tr>
 <% end %>
 </table>

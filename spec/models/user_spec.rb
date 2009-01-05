@@ -49,8 +49,8 @@ end
 describe "Provide valuable statistics on holiday data" do
   before(:each) do
     @user = Factory( :user )
-    @h1   = Factory( :holiday )
-    @h2   = Factory( :holiday )
+    @h1   = Factory( :holiday,:state => 1 )
+    @h2   = Factory( :holiday,:state => 1 )
   end
   
   it "should return the number of days taken on holiday" do
@@ -64,6 +64,6 @@ describe "Provide valuable statistics on holiday data" do
     @user.holidays << [@h1,@h2]
     @user.holidays.length.should eql( 2 )
     @user.get_total_holiday_time.should eql( 4 )
-    @user.get_remaining_holiday_time.should == {:health => 1, :personal => 5, :vacation => 5}
+    @user.get_remaining_holiday_time.should == {:etc => 1, :personal => 5, :vacation => 5}
   end
 end

@@ -7,4 +7,4 @@
   is_admin: true
   max_personal: 10
   max_vacation: 10
-  max_health: 5
+  max_etc: 5

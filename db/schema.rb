@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090103033547) do
+ActiveRecord::Schema.define(:version => 20090105205840) do
 
   create_table "holidays", :force => true do |t|
     t.integer  "user_id"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(:version => 20090103033547) do
     t.string   "name"
     t.integer  "max_personal", :default => 10
     t.integer  "max_vacation", :default => 10
-    t.integer  "max_health",   :default => 10
+    t.integer  "max_etc",      :default => 10
     t.boolean  "is_admin",     :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
