@@ -19,7 +19,10 @@
 					<%= value || 0 %>
 		  	 	 of <%= key %> remaining <br />
 			<% end %>
-			</p>	
+			</p>
+	<% if current_user.is_admin%>
+	<%= link_to 'Delete', @holiday, :confirm => 'Are you sure?', :method => :delete %></td>    
+	<% end %>	
 </div><!--end left-->
 
 
