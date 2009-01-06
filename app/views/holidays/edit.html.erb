@@ -1,16 +1,25 @@
-<h1>Editing holiday</h1>
+<div id="left">
+	
+</div><!--end left-->
+<div id="right">
+	
+</div><!--end right-->
+<div id="center">
+	<ul class ="form">
+	<% form_for([@user,@holiday], :html => {:class => 'user_form'}) do |f| %>
+	<li><%= f.label 'Leave Type'%></li>
+	<li><%= f.select(:leave_type, Holiday.get_holiday_types, 
+						:selected => @holiday.leave_type.to_s )%></li>
 
-<% form_for([@user,@holiday]) do |f| %>
-  <%= f.error_messages %>
+	<li></li>
+	<li></li>
+	<li></li>
 
-  <p>
-    <%= f.label :approved_by %><br />
-    <%= f.text_field :approved_by %>
-  </p>
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-<% end %>
+	  <%= f.error_messages %>
 
-<%= link_to 'Show', @holiday %> |
-<%= link_to 'Back', holidays_path %>
+	    <%= f.submit "Update" %>
+	<% end %>
+	</ul>
+	
+</div><!--end center-->
+

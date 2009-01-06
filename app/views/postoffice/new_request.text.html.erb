@@ -1,0 +1,12 @@
+<p><%= @request.user.name %> is requesting: </p>
+	<%= @request.get_length %> days off for <%= @request.leave_type %> .
+	<%= @request.user.name %> would be absent from <%= @request.begin_time%> 
+											  to <%= @request.end_time%>
+	<br />
+	Comments: <%= @request.description %>
+<p>
+	<%= @request.user.name %> has 
+	<% @request.user.get_remaining_holiday_time.each do |key,value|%>
+		<li><%= value %> days remaining for <%= key %></li>
+	<% end %>
+</p>

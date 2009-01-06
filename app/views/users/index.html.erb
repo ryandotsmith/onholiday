@@ -1,4 +1,5 @@
 <table class="index_table">
+<caption> used / available </caption>
   <tr>
     <th>Login</th>
 	<% Holiday.get_holiday_types.each do |type|%>
@@ -10,7 +11,7 @@
 <% for user in @users %>
   <tr>
     <td><%= link_to "#{user.login}",edit_user_path(user) %></td>
-	<% user.get_remaining_holiday_time.each do |key,value|%>
+	<% user.get_taken_holiday_time.each do |key,value|%>
 		<td><%= value %> / <%= user.send("max_#{key}")%> </td>
 	<% end %>
 

@@ -6,7 +6,8 @@ module ApplicationHelper
   # and should return
   #=>
   def current_user
-    @user = User.find_by_login(session[:cas_user])
+    #@user = User.find_by_login(session[:cas_user])
+    User.find_by_login(session[:cas_user])
   end
   ####################
   #is_admin?( user ) should get
@@ -14,9 +15,9 @@ module ApplicationHelper
   # and should return
   #=>
   def authorized
-    unless @user.is_admin
+    unless current_user.is_admin
       flash[:notice] = "This feature requires elevated credentials."
-      redirect_to user_url(@user)  
+      redirect_to user_url(current_user)  
     end
   end
 

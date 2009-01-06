@@ -11,6 +11,14 @@ RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
+  
+  config.action_mailer.smtp_settings = {
+    :address        => "smtp.gmail.com",
+    :port           => 587,
+    :domain         => "hal9000@gsenterprises.com",
+    :authentication => :plain,
+    :user_name      => "hal9000@gsenterprises.com",
+     }
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -24,6 +32,7 @@ Rails::Initializer.run do |config|
   # They can then be installed with "rake gems:install" on new installations.
   # You have to specify the :lib option for libraries, where the Gem name (sqlite3-ruby) differs from the file itself (sqlite3)
   config.gem "calendar_date_select"
+  #config.gem "ambethia-smtp-tls", :lib => "smtp-tls"
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"

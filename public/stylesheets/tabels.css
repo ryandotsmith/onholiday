@@ -1,4 +1,5 @@
 table.index_table {
+	font-family: Arial;
 	background-color:#99CCff;
 	width:100%;
 }
@@ -8,14 +9,16 @@ table.index_table th{
 	font-weight:normal;
 }
 table.index_table td {
-font-family: Arial;
 font-size: 12pt;
 font-color: #000;
 background-color: #99CCff;
 border: solid 1px #666666;
 width:auto;
 }
-
+table.index_table caption {
+	background-color: #99CCff;
+	font-weight:bold;
+}
 table.show_table {
 	
 }

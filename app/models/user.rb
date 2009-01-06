@@ -11,6 +11,14 @@ class User < ActiveRecord::Base
     ["rsmith","dpanjada","csmith","gsmith"]
   end
   ####################
+  #get_admins should get
+  #=>
+  # and should return
+  #=>
+  def self.get_admins
+    User.find_all_by_is_admin(true)
+  end
+  ####################
   #verify should get
   #=> a string that represents a user login.
   # => this comes from the session[:casuser]
@@ -62,6 +70,19 @@ class User < ActiveRecord::Base
       end# end do
       total_time
   end#end method
+  ####################
+  #get_taken_holiday_time should get called by a user
+  #=>
+  # and should return a hash with :leave_type => days taken
+  #=>
+  def get_taken_holiday_time
+    results = Hash.new
+    Holiday.get_holiday_types.each {|t| results[t.to_sym] = 0 }
+    holidays.each do |holiday|
+      results[holiday.leave_type.to_sym] += holiday.get_length if holiday.state == 1
+    end
+    results
+  end
   ####################
   #get_remaining_holiday_time should get
   #=>

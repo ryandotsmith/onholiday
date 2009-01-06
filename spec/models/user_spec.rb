@@ -51,16 +51,24 @@ describe "Provide valuable statistics on holiday data" do
     @user = Factory( :user )
     @h1   = Factory( :holiday,:state => 1 )
     @h2   = Factory( :holiday,:state => 1 )
+    @h3   = Factory( :holiday,:state => 1, :leave_type => 'vacation')
   end
   
   it "should return the number of days taken on holiday" do
+    @user.holidays << [@h1,@h2,@h3]
+    @user.holidays.length.should eql( 3 )
+    @user.get_total_holiday_time.should eql( 6 )
+    @user.get_taken_holiday_time.should == {:etc => 4, :personal => 0, :vacation => 2}
+  end
+  
+  it "should return a hash of holidays with the number of days the user has taken" do
     @user.holidays << [@h1,@h2]
     @user.holidays.length.should eql( 2 )
     @user.get_total_holiday_time.should eql( 4 )
+    @user.get_remaining_holiday_time.should == {:etc => 1, :personal => 5, :vacation => 5}    
   end
   
-  it "should retrun the number of holidays remaining for a user" do
-
+  it "should return a hash of holidays with the number of days the user has left" do
     @user.holidays << [@h1,@h2]
     @user.holidays.length.should eql( 2 )
     @user.get_total_holiday_time.should eql( 4 )

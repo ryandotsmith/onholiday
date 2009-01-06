@@ -48,14 +48,22 @@ class Holiday < ActiveRecord::Base
     self.end_time = (self.begin_time + 5.hours)
     self.save!
   end#end method
-  
+  ####################
+  #adjust_whole_day should get
+  #=>
+  # and should return
+  #=>
+  def adjust_whole_day
+    self.end_time = (self.begin_time + 24.hours)
+    self.save!
+  end
   ####################
   #get_length should get
   #=>
   # and should return
   #=>
   def get_length
-    delta = (end_time.to_datetime - begin_time.to_datetime).to_f
+    delta = (self.end_time.to_datetime - self.begin_time.to_datetime).to_f
     if  delta <= 0.5
       return 0.5
     end #end if

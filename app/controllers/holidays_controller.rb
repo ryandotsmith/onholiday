@@ -5,6 +5,7 @@ class HolidaysController < ApplicationController
 ######################################################
   before_filter CASClient::Frameworks::Rails::Filter
   before_filter :login
+  before_filter :load_user, :only => [:new,:create]
   before_filter :current_user
   before_filter :authorized, :only => [:index]
 ######################################################  
@@ -39,9 +40,14 @@ class HolidaysController < ApplicationController
 
   def create
     @holiday = @user.holidays.build(params[:holiday])
-    @holiday.adjust_half_day if params[:half_day] == "true"
+    if params[:length_opt] == "half"
+      @holiday.adjust_half_day
+    elsif params[:length_opt] == "whole"
+      @holiday.adjust_whole_day
+    end
     respond_to do |format|
       if @holiday.save
+        Postoffice.deliver_new_request( @holiday )
         flash[:notice] = 'Holiday was successfully created.'
         format.html { redirect_to user_path(@user) }
         format.xml  { render :xml => @holiday, :status => :created, :location => @holiday }
@@ -76,5 +82,14 @@ class HolidaysController < ApplicationController
       format.html { redirect_to(holidays_url) }
       format.xml  { head :ok }
     end
+  end
+protected
+  ####################
+  #load_user should get
+  #=>
+  # and should return
+  #=>
+  def load_user
+    @user = User.find(params[:user_id])
   end
 end #end class
