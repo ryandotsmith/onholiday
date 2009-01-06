@@ -2,17 +2,21 @@
 	<div class="navigation">
 		<%= link_to "Request Holiday", new_user_holiday_url(@user)%>	
 	</div><!--end -->
+
 </div>
 <div id="right">
 </div><!--end right-->
 
 <div id="center">
 	<h1><%=h @user.name %></h1>
+<!--#####################################-->
 	<% if current_user.is_admin %>
 	<h2>Requests Queue </h2>
 		<%= render 	:partial => 'users/admin/pending_requests', 
 					:locals => { :requests => Holiday.get_pending } %>
 	<% end %>
+<!--#####################################-->
+
 	<h2>Your Pending Requests</h2>
 	<ul>
 		<% @user.holidays.each do |holiday|%>
@@ -24,11 +28,9 @@
 				<% end %>
 		<% end %>
 	</ul>
-
-	<h2>You have used </h2>
-	<% 	@user.get_remaining_holiday_time.each do |key,value|%>
-			<%= value || 0 %> / <%= @user.send("max_#{key}")%>
-			of <%= key %> <br />
+	<h2> You have used </h2>
+	<% @user.get_taken_holiday_time.each do |key,value|%>
+		<li><%= value %> of <%= @user.send("max_#{key}")%> days for <%= key %></li>
 	<% end %>
 	<h2>Your History</h2>
 	<ul>
