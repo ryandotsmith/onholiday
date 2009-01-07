@@ -47,7 +47,7 @@ class HolidaysController < ApplicationController
     end
     respond_to do |format|
       if @holiday.save
-        Postoffice.deliver_new_request( @holiday )
+        #Postoffice.deliver_new_request( @holiday )
         flash[:notice] = 'Holiday was successfully created.'
         format.html { redirect_to user_path(@user) }
         format.xml  { render :xml => @holiday, :status => :created, :location => @holiday }
