@@ -6,13 +6,12 @@
 </div><!--end left-->
 <div id="center">
 	<h1><%= get_state( @holiday ) %></h1>
-	<h1>Holiday request for <%= @holiday.user.name %></h1>
 	
 	<h1><%=@holiday.user.name%> has requested 
 		<%= @holiday.get_length%> days of 
 		<%= @holiday.leave_type%>
 	</h1>
-
+	<p>{ <%= @holiday.description %> }</p>
 			<h2><%= @holiday.user.name%> has</h2> 
 			<p>
 			<% 	@holiday.user.get_remaining_holiday_time.each do |key,value|%>

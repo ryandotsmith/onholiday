@@ -1,10 +1,11 @@
-<table id ="pending_requests"class="index_table">
+<table id ="pending_requests"class="show_table">
 	<caption> The following users would like some time off </caption>
 	<tr>
 		<th>User</th>
 		<th>Type</th>
 		<th>Days Requested</th>
 		<th>Days Remaining</th>
+		<th>Description of Leave</th>
 		<th>Approve</th>
 		<th>Deny</th>
 
@@ -15,6 +16,7 @@
 		<td><%= request.leave_type %></td>
 		<td><%= request.get_length%></td>
 		<td><%= request.user.get_remaining_holiday_time[request.leave_type.to_sym]%></td>
+		<td><%= request.description %></td>
 		<td><%= check_box_tag "approve_#{request.id}", true %></td>
 			<%= observe_field "approve_#{request.id}", 
 				:url  		 => { :controller   => 'holidays',
