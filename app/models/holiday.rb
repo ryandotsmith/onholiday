@@ -6,7 +6,7 @@ class Holiday < ActiveRecord::Base
   # and should return
   #=>
   def self.get_holiday_types
-    ["etc","vacation","personal"]  
+    ["personal","etc","vacation"]  
   end
   ####################
   #get_pending should get
