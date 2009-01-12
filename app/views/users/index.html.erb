@@ -2,10 +2,9 @@
 <caption> used / available </caption>
   <tr>
     <th>Login</th>
-	<% Holiday.get_holiday_types.each do |type|%>
-		<th><%= type %></th>
+	<% @users.first.get_taken_holiday_time.each do |key,value|%>
+		<th><%= key %> </th>
 	<% end %>
-
   </tr>
 <% for user in @users %>
   <tr>
