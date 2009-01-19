@@ -4,8 +4,13 @@ table.index_table {
 	width:100%;
 }
 table.index_table tr {
+	background-color: #99CCff;
 	width:5em;
 }
+table.index_table tr:hover {
+	background-color:grey;
+}
+
 table.index_table th{
 	background-color:#333333;
 	color:#FFFFFF;
@@ -14,8 +19,6 @@ table.index_table th{
 table.index_table td {
 font-size: 12pt;
 font-color: #000;
-background-color: #99CCff;
-border: solid 1px #666666;
 width:auto;
 }
 table.index_table caption {

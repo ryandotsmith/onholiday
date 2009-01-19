@@ -114,7 +114,7 @@ a.ast {
 	margin: 10px auto;
 	margin-top:0;
 	
-	background-color: #fff;
+	background-color: #DEDEDE;
 	color: #333;
 	border: 1px solid gray;
 	line-height: 130%;
@@ -198,6 +198,7 @@ ul.tally_list li:hover {
 
 .navigation {
 	padding-top:3em;
+	margin-bottom:2em;
 	
 }
 .navigation a {

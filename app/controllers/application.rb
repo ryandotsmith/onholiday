@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery  #:secret => '4f88732ee102eb78af32ee59062d4ea1'
+  require 'gchart'
   ####################
   #login() should get
   #=>

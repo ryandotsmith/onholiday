@@ -2,8 +2,8 @@
 	<div class="navigation">
 		<%= link_to "Request Holiday", new_user_holiday_url(@user)%>	
 	</div><!--end -->
-
 </div>
+
 <div id="right">
 </div><!--end right-->
 
@@ -18,37 +18,25 @@
 <!--#####################################-->
 
 	<h2>Your Pending Requests</h2>
-	<ul>
+	<ul class="show">
 		<% @user.holidays.each do |holiday|%>
 			<% if holiday.state.zero?%>
-				<li>
-				<%= distance_of_time_in_words(holiday.begin_time, holiday.end_time ) %>
-				Starting on <%= holiday.begin_time%>
-				</li>
-				<% end %>
+			<li>
+			<%= distance_of_time_in_words(holiday.begin_time, holiday.end_time ) %>
+			Starting on <%= holiday.begin_time%>
+			</li>
+			<% end %>
 		<% end %>
 	</ul>
+
 	<h2> You have used </h2>
+	<ul class="show">
 	<% @user.get_taken_holiday_time.each do |key,value|%>
 		<li><%= value %> of <%= @user.send("max_#{key}")%> days for <%= key %></li>
 	<% end %>
+	</ul>
+
 	<h2>Your History</h2>
-	<ul>
-	<% @user.holidays.each do |holiday|%>
-		<% if holiday.state == 1 # 1 => that holiday was approved%>
-		<li>
-		APPROVED
-		by <%= holiday.reviewed_by %>
-		for a <%= holiday.leave_type %> holiday
-		for <%= distance_of_time_in_words(holiday.end_time,holiday.begin_time)%>
-		</li>
-		<% elsif holiday.state == -1 %>
-		<li>
-		DENIED
-		<%= holiday.leave_type %>
-		<%= distance_of_time_in_words(holiday.end_time,holiday.begin_time)%>
-		</li>
-		<% end %>
-	<% end %>
-	</ul>	
+		<%= render :partial => 'holiday_history', :locals => {:user => @user}%>
+
 </div><!--end inside_center-->
