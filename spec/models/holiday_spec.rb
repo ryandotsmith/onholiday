@@ -2,14 +2,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
 ### Factory :holiday => defaults[ end_time - begin_time == 2.days]
 
-describe "aduits a holiday" do
-  
-  it "should adjust for half days" do
-    
-  end
-  
-  it "should warn if the request puts user days over max" do
-    
+describe "returns an array of holiday types in a specific order" do
+# For now, i will specify an array in the model that will hold strings of holidays 
+# types. This array will get returned whenever we dealing with a holiday. It should
+# be noted that there should be a database column that corresponds to the holiday name
+# **ie => if there is a holiday named = whatever. then there should be a database column
+# named = whatever_max.
+
+  it "should maintain an ordered array of leave types" do
+    Holiday.get_holiday_types.should eql(["etc","personal","vacation"])
+    Holiday.get_holiday_types.should_not eql(["etc","vacation","personal"])
   end
   
 end
@@ -28,10 +30,16 @@ describe "get length of holiday" do
   
 end# end describe
 
-describe "adjust for half days" do
+describe "adjust for half or whole days" do
 # there is a check box in the new holiday form that will designate 
 # the hald day request. The create action of the holidays controller
 # will call this method if a hald day is requested.
+# likewise for whole days. 
+
+# we can expect that the view form will give us a nil
+# value for the end time since the user will not even 
+# be presented with a date selector for the end_time.
+
   before(:each) do
   end
 
@@ -39,12 +47,21 @@ describe "adjust for half days" do
     @holiday = Factory( 
                         :holiday, 
                         :begin_time => DateTime.now,
-                        :end_time   => DateTime.now )
+                        :end_time   => nil )
     @holiday.adjust_half_day
     @holiday.get_length.should eql( 0.5 )
     
   end
 
+  it "should add 24 hours to the current DateTime submitted" do
+    @holiday = Factory( 
+                        :holiday, 
+                        :begin_time => DateTime.now,
+                        :end_time   => nil )
+    @holiday.adjust_whole_day
+    @holiday.get_length.should eql( 1 )
+    
+  end
 end #end describe
 
 describe "should return specific data sets" do

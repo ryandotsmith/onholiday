@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
   # and should return a hash with :leave_type => days taken
   #=>
   def get_taken_holiday_time
-    results = Hash.new
+    results = Dictionary.new
     Holiday.get_holiday_types.each {|t| results[t.to_sym] = 0 }
     holidays.each do |holiday|
       results[holiday.leave_type.to_sym] += holiday.get_length if holiday.state == 1
@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
   # and should return
   #=>
   def get_remaining_holiday_time
-    results = Hash.new
+    results = Dictionary.new
     Holiday.get_holiday_types.each {|t| results[t.to_sym] = self.send("max_#{t}")}
     holidays.each do |holiday|
       results[holiday.leave_type.to_sym] -= holiday.get_length if holiday.state == 1

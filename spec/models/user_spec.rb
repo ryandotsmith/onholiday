@@ -55,23 +55,35 @@ describe "Provide valuable statistics on holiday data" do
   end
   
   it "should return the number of days taken on holiday" do
+    ordered_dictionary = Dictionary.new
+    ordered_dictionary[:etc] = 4
+    ordered_dictionary[:personal] = 0
+    ordered_dictionary[:vacation] = 2
     @user.holidays << [@h1,@h2,@h3]
     @user.holidays.length.should eql( 3 )
     @user.get_total_holiday_time.should eql( 6 )
-    @user.get_taken_holiday_time.should == {:etc => 4, :personal => 0, :vacation => 2}
+    @user.get_taken_holiday_time.should == ordered_dictionary
   end
   
   it "should return a hash of holidays with the number of days the user has taken" do
+    ordered_dictionary = Dictionary.new
+    ordered_dictionary[:etc] = 1
+    ordered_dictionary[:personal] = 5
+    ordered_dictionary[:vacation] = 5
     @user.holidays << [@h1,@h2]
     @user.holidays.length.should eql( 2 )
     @user.get_total_holiday_time.should eql( 4 )
-    @user.get_remaining_holiday_time.should == {:etc => 1, :personal => 5, :vacation => 5}    
+    @user.get_remaining_holiday_time.should == ordered_dictionary    
   end
   
   it "should return a hash of holidays with the number of days the user has left" do
+    ordered_dictionary = Dictionary.new
+    ordered_dictionary[:etc] = 1
+    ordered_dictionary[:personal] = 5
+    ordered_dictionary[:vacation] = 5
     @user.holidays << [@h1,@h2]
     @user.holidays.length.should eql( 2 )
     @user.get_total_holiday_time.should eql( 4 )
-    @user.get_remaining_holiday_time.should == {:etc => 1, :personal => 5, :vacation => 5}
+    @user.get_remaining_holiday_time.should == ordered_dictionary
   end
 end

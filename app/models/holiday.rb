@@ -2,16 +2,17 @@ class Holiday < ActiveRecord::Base
   belongs_to :user
   ####################
   #self.get_holiday_types should get
-  #=>
+  #=> called from a Holiday class
   # and should return
-  #=>
+  #=> the following array IN ORDER! 
   def self.get_holiday_types
-    ["personal","etc","vacation"]  
+    ["etc","personal","vacation"]  
   end
   ####################
-  #get_pending should get
+  #get_pending should get called from a holiday
   #=>
-  # and should return
+  # and should return all holidays that have state == 0
+  # by default new holidays are set to state == 0
   #=>
   def self.get_pending
     Holiday.find_all_by_state(0).to_a
