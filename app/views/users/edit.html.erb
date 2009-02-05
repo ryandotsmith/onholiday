@@ -10,11 +10,14 @@
 						:default => @user.send("max_#{holiday}".to_sym) %>
 		</li>
 	<% end %>
-    <li>
-	
-	</li>
+    <% if current_user.is_admin%>
+	<% end %> 
     <li>
 	    <%= f.submit "Update" %>
 	</li>
+	<li class="cancel">
+		<%= link_to 'Delete', @user, :confirm => 'Are you sure?', :method => :delete %>
+	</li>
+
 </ul>
 <% end %>

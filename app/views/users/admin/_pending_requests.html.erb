@@ -1,3 +1,9 @@
+<%= link_to_function "x",:class => "close" do |page|
+	page[:admin_pending_requests].visual_effect :fade, 
+					   							:duration => 0.2
+	
+end %>										
+
 <table id ="pending_requests"class="show_table">
 	<caption> The following users would like some time off </caption>
 	<tr>
@@ -36,5 +42,4 @@
 					
 	</tr>
 <% end %>
-
 </table>

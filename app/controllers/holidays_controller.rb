@@ -40,11 +40,7 @@ class HolidaysController < ApplicationController
 
   def create
     @holiday = @user.holidays.build(params[:holiday])
-    if params[:length_opt] == "half"
-      @holiday.adjust_half_day
-    elsif params[:length_opt] == "whole"
-      @holiday.adjust_whole_day
-    end
+    @holiday.adjust(params[:length_opt]) if @holiday.valid?
     respond_to do |format|
       if @holiday.save
         #Postoffice.deliver_new_request( @holiday )
@@ -52,7 +48,7 @@ class HolidaysController < ApplicationController
         format.html { redirect_to user_path(@user) }
         format.xml  { render :xml => @holiday, :status => :created, :location => @holiday }
       else
-        format.html { render :action => "new" }
+        format.html { render( :action => "new" ) {|page| page.alert('booha')} }
         format.xml  { render :xml => @holiday.errors, :status => :unprocessable_entity }
       end
     end

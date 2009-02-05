@@ -16,6 +16,21 @@ describe "returns an array of holiday types in a specific order" do
   
 end
 
+describe "prohibiting time travel " do
+  before(:each) do
+   dt = DateTime.now
+   db = DateTime.now - 1.days
+    @holiday = Factory( 
+                        :holiday, 
+                        :begin_time => dt,
+                        :end_time   => dt - 1.days )
+  end
+
+  it "should ensure that end date is later than earlier date" do
+    @holiday.get_length.should eql( -1 )
+  end
+end
+
 
 describe "get length of holiday" do
   
@@ -27,6 +42,18 @@ describe "get length of holiday" do
                         :end_time   => dt + 2.days )
     @holiday.get_length.should eql( 2 )
   end# end it 
+  
+  it "should correctly calculate 2 days of leave " do
+    bt  = DateTime.now
+    @holiday = Factory( 
+                        :holiday,
+                        :begin_time =>  bt,
+                        :end_time   =>  (bt + 1.days)  )
+
+    
+    @holiday.adjust( :not_a_variable )
+    @holiday.get_length.should eql( 2 )
+  end# it
   
 end# end describe
 
@@ -48,7 +75,7 @@ describe "adjust for half or whole days" do
                         :holiday, 
                         :begin_time => DateTime.now,
                         :end_time   => nil )
-    @holiday.adjust_half_day
+    @holiday.adjust("half")
     @holiday.get_length.should eql( 0.5 )
     
   end
@@ -58,7 +85,7 @@ describe "adjust for half or whole days" do
                         :holiday, 
                         :begin_time => DateTime.now,
                         :end_time   => nil )
-    @holiday.adjust_whole_day
+    @holiday.adjust("whole")
     @holiday.get_length.should eql( 1 )
     
   end
@@ -76,3 +103,4 @@ describe "should return specific data sets" do
     Holiday.get_pending.include?(@holiday3).should eql( true )
   end
 end
+

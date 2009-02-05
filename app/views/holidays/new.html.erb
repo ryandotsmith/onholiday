@@ -4,10 +4,12 @@
 <div id="right">
 	
 </div><!--end right-->
+
 <div id="center">
+	<%= error_messages_for :holiday, :message => nil, :header_message => nil %>
+
 	<ul class="form">
 	<% form_for([@user,@holiday], :html => {:class => "user_form"}) do |f| %>
-	  <%= f.error_messages %>
 		<li>
 			<%= f.label :leave_type%>
 			<%= f.select(:leave_type, Holiday.get_holiday_types )%>
@@ -21,7 +23,11 @@
 		<li> Whole Day     <%= radio_button_tag :length_opt , 'whole' %></li>
 		<li> Multiple Days <%= radio_button_tag :length_opt , 'many'  %></li>
 		<%= observe_field("length_opt_many",:frequency => 0.2,
-											:function => "$('end_time').toggle();")%>
+											:function => "
+												$('holiday_end_time').value = ''; 
+												$('end_time').toggle();
+											              
+											             " )%>
 
 		<li id="end_time" style='display:none'>
 	    <%= f.label 'End' %><br />

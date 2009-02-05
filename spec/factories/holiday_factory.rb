@@ -1,5 +1,6 @@
 Factory.define :holiday do |h|
   h.leave_type 'etc'
+  h.description "who ha"
   h.state 0
   h.reviewed_by 'rsmith'
   h.reviewed_on "#{DateTime.now}"
