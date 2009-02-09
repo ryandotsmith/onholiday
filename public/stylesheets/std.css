@@ -28,8 +28,10 @@ a.ast {
 	top:20%;
 	margin-left:200px;
 	text-align:center;	
-	width:35em;
-	height:300px;
+	min-width:35em;
+	max-width:45em;
+	min-height:300px;
+	max-height:600px;
 	background-color:#2E306B;
 	border:2px outset black;
 }
