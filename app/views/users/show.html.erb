@@ -19,12 +19,14 @@
 
 <div id="center">
 	<h1><%=h @user.name %></h1>
+	<% if current_user.is_admin %>
 	<h2>
 	<%= link_to_function "Requests Queue ( #{Holiday.get_pending.length} )" do|page|
 	    	page[:admin_pending_requests].visual_effect :appear, 
 							   							:duration => 0.2
 	    end %>										
 	</h2>
+	<% end %>
 	<h2>Your Pending Requests</h2>
 	<ul class="show">
 		<% @user.holidays.each do |holiday|%>

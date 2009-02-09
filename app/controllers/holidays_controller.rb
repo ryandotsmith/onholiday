@@ -44,7 +44,6 @@ class HolidaysController < ApplicationController
     respond_to do |format|
       if @holiday.save
         #Postoffice.deliver_new_request( @holiday )
-        flash[:notice] = 'Holiday was successfully created.'
         format.html { redirect_to user_path(@user) }
         format.xml  { render :xml => @holiday, :status => :created, :location => @holiday }
       else
@@ -60,7 +59,6 @@ class HolidaysController < ApplicationController
     @holiday.deny( current_user ) if params[:deny] == "true"
     respond_to do |format|
       if @holiday.update_attributes(params[:holiday])
-        flash[:notice] = 'Holiday was successfully updated.'
         format.html { redirect_to(@holiday) }
         format.xml  { head :ok }
         format.js

@@ -1,6 +1,7 @@
 <%= link_to_function "x",:class => "close" do |page|
 	page[:admin_pending_requests].visual_effect :fade, 
 					   							:duration => 0.2
+	page.reload
 	
 end %>										
 
