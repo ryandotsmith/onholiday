@@ -23,9 +23,9 @@ end %>
 		<td><%= request.leave_type %></td>
 		<td><%= request.get_length%></td>
 		<td><%= request.user.get_remaining_holiday_time[request.leave_type.to_sym]%></td>
-		<td><%= request.description if request.description.length < 25 %></td>
 		<td>
-	<%= request.description[0..24] + " ..." if request.description.length >= 25 %>
+		<%= request.description if request.description.length < 25 %>
+		<%= request.description[0..24] + " ..." if request.description.length >= 25 %>
 		</td>
 
 		<td><%= check_box_tag "approve_#{request.id}", true %></td>
