@@ -59,6 +59,20 @@ class User < ActiveRecord::Base
     u.save!
   end
   ####################
+  #self.get_total_holiday_time should get
+  #=>
+  # and should return
+  #=>
+  def self.get_total_holiday_time
+    sum = 0
+    User.find(:all).each do |user|
+      Holiday.get_holiday_types.each do |h|
+        sum += user.send("max_#{h}")
+      end#do
+    end#do
+    sum
+  end#def
+  ####################
   #get_total_holiday_time should get
   #=>
   # and should return

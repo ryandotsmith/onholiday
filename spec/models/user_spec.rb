@@ -16,7 +16,6 @@ describe User do
 end
 
 describe "Verify user from CAS" do
-  fixtures :users
   before(:each) do
     @cas_extra = {
       "cn"        => "Ryan Smith", 
@@ -27,6 +26,7 @@ describe "Verify user from CAS" do
   end
   
   it "should return true if the user is in the table" do
+    @user = Factory( :user, :login => "rarbuckle")
     User.verify("rarbuckle",{}).should eql( true )
   end
   
@@ -47,14 +47,19 @@ describe "Verify user from CAS" do
 end
 
 describe "Provide valuable statistics on holiday data" do
+ 
   before(:each) do
     @user = Factory( :user )
     @h1   = Factory( :holiday,:state => 1 )
     @h2   = Factory( :holiday,:state => 1 )
     @h3   = Factory( :holiday,:state => 1, :leave_type => 'vacation')
+    #not sure why, but hollidays needs to be reset on each
+    # it-block, otherwise the holidays array will stagnate 
+    @user.holidays = Array.new
   end
   
   it "should return the number of days taken on holiday" do
+
     ordered_dictionary = Dictionary.new
     ordered_dictionary[:etc] = 4
     ordered_dictionary[:personal] = 0
@@ -63,6 +68,7 @@ describe "Provide valuable statistics on holiday data" do
     @user.holidays.length.should eql( 3 )
     @user.get_total_holiday_time.should eql( 6 )
     @user.get_taken_holiday_time.should == ordered_dictionary
+
   end
   
   it "should return a hash of holidays with the number of days the user has taken" do
@@ -86,4 +92,15 @@ describe "Provide valuable statistics on holiday data" do
     @user.get_total_holiday_time.should eql( 4 )
     @user.get_remaining_holiday_time.should == ordered_dictionary
   end
+  
+  it "should return a hash of max holiday time for ALL users" do
+    ordered_dictionary = Dictionary.new
+    ordered_dictionary[:etc] = 1
+    ordered_dictionary[:personal] = 5
+    ordered_dictionary[:vacation] = 5
+    @user.holidays << [@h1,@h2]
+    User.find(:all).length.should eql( 1 )
+    User.get_total_holiday_time.should eql( 15 )
+  end
+
 end

@@ -1,8 +1,39 @@
+require 'facets/dictionary'
 class Holiday < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :begin_time, :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
 #  validate :prohibit_time_travel
+
+
+  ####################
+  #self.get_remaining_leave should get
+  #=>
+  # and should return
+  #=>
+  def self.get_taken_leave
+    sum = 0
+    users = User.find(:all)
+    users.each do |user|
+      user.holidays.each do |holiday|
+        sum += holiday.get_length
+      end#do
+    end#do
+  sum
+  end#def
+  ####################
+  #self.get_remaining_leave should get
+  #=>
+  # and should return
+  #=>
+  def self.get_remaining_leave
+    results = Dictionary.new
+    User.find(:all).each do |user|
+      user.holidays.each do |holiday|
+        sum 
+      end#do
+    end#do
+  end#def
 
   # ~\  hackety hack
   # until i can find a good solution for cleaning up 

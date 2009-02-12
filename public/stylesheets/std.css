@@ -33,7 +33,7 @@ a.ast {
 	min-height:300px;
 	max-height:600px;
 	background-color:#2E306B;
-	border:2px outset black;
+	border:1em solid grey;
 }
 #admin_pending_requests .close {
 	color:red;

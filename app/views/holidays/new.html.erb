@@ -16,22 +16,15 @@
 		</li>
 		<li>
 	    <%= f.label 'Begin' %><br />
-	    <%= f.calendar_date_select :begin_time, :time => false %>
+		<%= f.text_field :begin_time %>
 		</li>
 		
 		<li> Half Day      <%= radio_button_tag :length_opt , 'half', 'checked'  %></li>
 		<li> Whole Day     <%= radio_button_tag :length_opt , 'whole' %></li>
-		<li> Multiple Days <%= radio_button_tag :length_opt , 'many'  %></li>
-		<%= observe_field("length_opt_many",:frequency => 0.2,
-											:function => "
-												$('holiday_end_time').value = ''; 
-												$('end_time').toggle();
-											              
-											             " )%>
-
+		<li> Multiple Days <%= radio_button_tag 	:length_opt , 'many' %> </li>
 		<li id="end_time" style='display:none'>
 	    <%= f.label 'End' %><br />
-	    <%= f.calendar_date_select :end_time, :time => false, :default => nil %>
+		<%= f.text_field :end_time %>
 		</li>
 		<li>
 		<%= f.label 'Description' %><br />

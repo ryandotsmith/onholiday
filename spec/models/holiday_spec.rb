@@ -1,5 +1,9 @@
+require 'facets/dictionary'
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
+require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
+
 ### Factory :holiday => defaults[ end_time - begin_time == 2.days]
 
 describe "returns an array of holiday types in a specific order" do
@@ -30,7 +34,6 @@ describe "prohibiting time travel " do
     @holiday.get_length.should eql( -1 )
   end
 end
-
 
 describe "get length of holiday" do
   
@@ -103,4 +106,30 @@ describe "should return specific data sets" do
     Holiday.get_pending.include?(@holiday3).should eql( true )
   end
 end
+
+describe "get holidays statistics for entire universe" do
+  
+  before(:each) do
+    @user_one       = Factory( :user , :login =>  "jbillings")
+    @user_two       = Factory( :user , :login =>  "rsmith")
+
+    @holiday_one    = Factory( :holiday, :state => 1, :leave_type => 'etc' ) 
+    @holiday_two    = Factory( :holiday, :state => 1, :leave_type => 'etc' ) 
+    @holiday_three  = Factory( :holiday, :state => 1, :leave_type => 'etc' ) 
+
+    @user_one.holidays << [ @holiday_one, @holiday_two ]
+    @user_two.holidays << [ @holiday_three ]
+    
+  end
+    
+    it "should calculate remaining days for all users" do
+      Holiday.get_remaining_leave.should eql( 24 )
+    end#it
+    
+    it "calculated used leave days for all users" do
+      Holiday.get_taken_leave.should eql( 6 )
+    end#it
+
+
+end#desc
 

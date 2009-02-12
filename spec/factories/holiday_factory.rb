@@ -4,7 +4,7 @@ Factory.define :holiday do |h|
   h.state 0
   h.reviewed_by 'rsmith'
   h.reviewed_on "#{DateTime.now}"
-  h.begin_time "#{DateTime.now}"
-  h.end_time "#{DateTime.now + 2.days}"
+  h.begin_time "#{ DateTime.now.beginning_of_day }"
+  h.end_time "#{  DateTime.now.end_of_day + 2.days }"
   h.user_id 1
 end
