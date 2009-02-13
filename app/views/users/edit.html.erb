@@ -1,23 +1,33 @@
-<h1>Edit <%= @user.name%></h1>
-<% form_for(@user, :html => {:class => "user_form"}) do |f| %>
-  <%= f.error_messages %>
-<ul class="form">
-	<% Holiday.get_holiday_types.each do |holiday|%>
-		<li>
-		<%= f.label holiday %>
-		<%= f.text_field "max_#{holiday}".to_sym, 
-						:size => 2,
-						:default => @user.send("max_#{holiday}".to_sym) %>
-		</li>
-	<% end %>
-    <% if current_user.is_admin%>
-	<% end %> 
-    <li>
-	    <%= f.submit "Update" %>
-	</li>
-	<li class="cancel">
-		<%= link_to 'Delete', @user, :confirm => 'Are you sure?', :method => :delete %>
-	</li>
+<div id="left">
 
-</ul>
-<% end %>
+</div><!--end left-->
+<div id="right">
+	
+</div><!--end right-->
+<div id="center">
+	<h1>Edit <%= @user.name%></h1>
+	<h2><%= @user.email %></h2>
+	<% form_for(@user, :html => {:class => "user_form"}) do |f| %>
+	  <%= f.error_messages %>
+	<ul class="form">
+		<% Holiday.get_holiday_types.each do |holiday|%>
+			<li>
+			<%= f.label holiday %>
+			<%= f.text_field "max_#{holiday}".to_sym, 
+							:size => 2,
+							:default => @user.send("max_#{holiday}".to_sym) %>
+			</li>
+		<% end %>
+	    <% if current_user.is_admin%>
+		<% end %> 
+	    <li>
+		    <%= f.submit "Update" %>
+		</li>
+		<li class="cancel">
+		<%= link_to 'Delete', @user, :confirm => 'Are you sure?', :method => :delete %>
+		</li>
+
+	</ul>
+	<% end %>
+	
+</div><!--end center-->
