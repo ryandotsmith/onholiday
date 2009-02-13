@@ -73,6 +73,20 @@ class User < ActiveRecord::Base
     sum
   end#def
   ####################
+  #self.get_taken_holiday_time should get
+  #=>
+  # and should return
+  #=>
+  def self.get_taken_holiday_time
+    sum = 0
+    Holiday.find(:all).each do |holiday|
+      if holiday.state
+        sum += holiday.get_length
+      end
+    end
+    sum
+  end#def
+  ####################
   #get_total_holiday_time should get
   #=>
   # and should return

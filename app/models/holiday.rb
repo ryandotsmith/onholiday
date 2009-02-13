@@ -7,32 +7,29 @@ class Holiday < ActiveRecord::Base
 
 
   ####################
+  #self.get_leave_ratio should get
+  #=>
+  # and should return
+  #=>
+  def self.get_leave_ratio
+    max   = User.get_total_holiday_time
+    taken = Holiday.get_taken_leave
+    max / taken
+  end
+
+  ####################
   #self.get_remaining_leave should get
   #=>
   # and should return
   #=>
   def self.get_taken_leave
     sum = 0
-    users = User.find(:all)
-    users.each do |user|
-      user.holidays.each do |holiday|
+    Holiday.find(:all).each do |holiday|
+      if holiday.state == 1
         sum += holiday.get_length
-      end#do
-    end#do
-  sum
-  end#def
-  ####################
-  #self.get_remaining_leave should get
-  #=>
-  # and should return
-  #=>
-  def self.get_remaining_leave
-    results = Dictionary.new
-    User.find(:all).each do |user|
-      user.holidays.each do |holiday|
-        sum 
-      end#do
-    end#do
+      end
+    end
+    sum
   end#def
 
   # ~\  hackety hack

@@ -93,13 +93,8 @@ describe "Provide valuable statistics on holiday data" do
     @user.get_remaining_holiday_time.should == ordered_dictionary
   end
   
-  it "should return a hash of max holiday time for ALL users" do
-    ordered_dictionary = Dictionary.new
-    ordered_dictionary[:etc] = 1
-    ordered_dictionary[:personal] = 5
-    ordered_dictionary[:vacation] = 5
+  it "should return max holiday time for ALL users" do
     @user.holidays << [@h1,@h2]
-    User.find(:all).length.should eql( 1 )
     User.get_total_holiday_time.should eql( 15 )
   end
 

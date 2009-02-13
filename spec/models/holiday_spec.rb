@@ -116,20 +116,26 @@ describe "get holidays statistics for entire universe" do
     @holiday_one    = Factory( :holiday, :state => 1, :leave_type => 'etc' ) 
     @holiday_two    = Factory( :holiday, :state => 1, :leave_type => 'etc' ) 
     @holiday_three  = Factory( :holiday, :state => 1, :leave_type => 'etc' ) 
+    @holiday_four   = Factory( :holiday, :state => 0, :leave_type => 'etc' ) 
 
     @user_one.holidays << [ @holiday_one, @holiday_two ]
     @user_two.holidays << [ @holiday_three ]
     
   end
     
-    it "should calculate remaining days for all users" do
-      Holiday.get_remaining_leave.should eql( 24 )
-    end#it
-    
     it "calculated used leave days for all users" do
+      # even though there are four holidays, this method
+      # only returns holidays that have been approved
+      # => state == 1 
       Holiday.get_taken_leave.should eql( 6 )
     end#it
 
+    it "calculates available leave for all users" do
+      # this is handled by the user model.
+    end
 
+    it "returns the ratio of taken / available leave for all users" do
+      Holiday.get_leave_ratio.should eql( 1 )
+    end
 end#desc
 

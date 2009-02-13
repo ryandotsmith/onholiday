@@ -10,10 +10,12 @@
 
 	<ul class="form">
 	<% form_for([@user,@holiday], :html => {:class => "user_form"}) do |f| %>
+	
 		<li>
 			<%= f.label :leave_type%>
 			<%= f.select(:leave_type, Holiday.get_holiday_types )%>
 		</li>
+	
 		<li>
 	    <%= f.label 'Begin' %><br />
 		<%= f.text_field :begin_time %>
@@ -22,17 +24,18 @@
 		<li> Half Day      <%= radio_button_tag :length_opt , 'half', 'checked'  %></li>
 		<li> Whole Day     <%= radio_button_tag :length_opt , 'whole' %></li>
 		<li> Multiple Days <%= radio_button_tag 	:length_opt , 'many' %> </li>
+	
 		<li id="end_time" style='display:none'>
 	    <%= f.label 'End' %><br />
 		<%= f.text_field :end_time %>
 		</li>
+	
 		<li>
 		<%= f.label 'Description' %><br />
 		<%= f.text_area :description, :size => '40x5' %>		
 		</li>
-		<li>
-	    <%= f.submit "Submit" %>
-		</li>
+	
+		<li><%= f.submit "Submit" %></li>
 	</ul>
 	<% end %>
 	
