@@ -43,7 +43,7 @@ class HolidaysController < ApplicationController
     @holiday.adjust(params[:length_opt]) if @holiday.valid?
     respond_to do |format|
       if @holiday.save
-        #Postoffice.deliver_new_request( @holiday )
+        Postoffice.deliver_new_request( @holiday )
         format.html { redirect_to user_path(@user) }
         format.xml  { render :xml => @holiday, :status => :created, :location => @holiday }
       else
