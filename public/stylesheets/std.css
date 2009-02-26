@@ -46,6 +46,11 @@ a.ast {
 #admin_pending_requests h2 {
 	color:white;
 }
+#show_holiday_details {
+	background-color:grey;
+	margin-left:1em;
+	margin-right:1em;
+}
 #user_status {
 	filter: alpha(opacity=90);
 	opacity=90;

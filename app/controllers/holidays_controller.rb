@@ -55,13 +55,14 @@ class HolidaysController < ApplicationController
 
   def update
     @holiday = Holiday.find(params[:id])
-    @holiday.approve( current_user ) if params[:approved] == "true"
-    @holiday.deny( current_user ) if params[:deny] == "true"
+    # need to factor these into a method in the model !! 
+      @holiday.approve( current_user ) if params[:approved] == "true"
+      @holiday.deny( current_user ) if params[:deny] == "true"
+    ### 
     respond_to do |format|
       if @holiday.update_attributes(params[:holiday])
         format.html { redirect_to(@holiday) }
         format.xml  { head :ok }
-        format.js
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @holiday.errors, :status => :unprocessable_entity }

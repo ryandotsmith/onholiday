@@ -1,0 +1,7 @@
+<% if current_user.is_admin %>
+<h2>
+<a href="#admin_pending_r" rel="facebox[.bolder]">test</a>
+<%= link_to_function "Requests Queue ( #{Holiday.get_pending.length} )", " " %>										
+
+</h2>
+<% end %>

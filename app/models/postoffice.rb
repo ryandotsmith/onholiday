@@ -17,4 +17,17 @@ class Postoffice < ActionMailer::Base
     @body["request"]  = request
   end#end method
 
+  def new_request_to( user )
+    @subject    =   '[ onholiday ] request submitted '
+    @recipients =   user.email.to_s unless user.email.nil?
+    @from       =   'onHoliday@gsenterprises.com'
+    @sent_on    =   Time.now
+  end
+  
+  def request_change( request, status )
+    @subject    =   '[ onholiday ] request updated'
+    @recipients =   user.email.to_s unless user.email.nil?
+    @from       =   'onHoliday@gsenterprises.com'
+    @sent_on    =   Time.now
+  end
 end#end class

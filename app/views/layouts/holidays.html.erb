@@ -8,11 +8,9 @@
 	<% get_css.each do |sheet| %>
 		<%= stylesheet_link_tag sheet %>
 	<% end %>
-
-	<%= stylesheet_link_tag 'theme/ui.all.css'%>	
-	<%= javascript_include_tag :defaults %>
-  	<%= javascript_include_tag "jquery.corners.js"%>
-  	<%= javascript_include_tag "jquery.datepicker.js"%>
+	<% get_js.each do |js|%>
+		<%= javascript_include_tag js %>
+	<% end%>
 	
 	
 

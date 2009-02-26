@@ -1,14 +1,3 @@
-<%= link_to_function "close",:class => "close" do |page|
-	page[:admin_pending_requests].visual_effect :fade, 
-					   							:duration => 0.2
-	page.reload
-	
-end %>										
-<% taken = Holiday.get_taken_leave %>
-<% total = User.get_total_holiday_time%>
-<%= taken %>
-<%= total %>
-
 <table id ="pending_requests"class="show_table">
 	<caption> The following users would like some time off </caption>
 	<tr>
@@ -52,4 +41,3 @@ end %>
 	</tr>
 <% end %>
 </table>
-<%= Gchart.pie_3d(:data => [taken,total], :format => 'image_tag')%>

@@ -6,27 +6,24 @@
 
 <div id="right">
 </div><!--end right-->
-<div id="admin_pending_requests" style="display:none">
+
+<div id="admin_pending_r" style="display:none">
 	<!--#####################################-->
 		<% if current_user.is_admin %>
-		<h2>Requests Queue </h2>
 			<%= render 	:partial => 'users/admin/pending_requests', 
 						:locals => { :requests => Holiday.get_pending } %>
 		<% end %>
 	<!--#####################################-->
-
 </div><!-- end admin_pending_requests-->
 
 <div id="center">
 	<h1><%=h @user.name %></h1>
-	<% if current_user.is_admin %>
-	<h2>
-	<%= link_to_function "Requests Queue ( #{Holiday.get_pending.length} )" do|page|
-	    	page[:admin_pending_requests].visual_effect :appear, 
-							   							:duration => 0.2
-	    end %>										
-	</h2>
-	<% end %>
+
+	<div id="pending_requests_queue">
+		<%= render 	:partial => 'users/admin/pending_requests_queue',
+					:locals  => { :user => @user }%>
+	</div><!--end pending_requests_queue-->
+
 	<h2>Your Pending Requests</h2>
 	<ul class="show">
 		<% @user.holidays.each do |holiday|%>
@@ -47,6 +44,23 @@
 	</ul>
 
 	<h2>Your History</h2>
-		<%= render :partial => 'holiday_history', :locals => {:user => @user}%>
+	<div id="show_holiday_history">
+		<table id="holiday_history_table" class='tablesorter'>
+		<thead><tr>
+		<th> submitted</th>
+		<th> status </th>
+		<th> description </th>
+		<th> length </th>
+		<th> begin date</th>
+		<th> end date</th>
+		</tr>
+		<% @user.holidays.each do |holiday|%>
+		</tr></thead>
+		<%= render 	:partial => 'holidays/show_holiday_details',
+					:locals  => { :holiday => holiday }%>
+		</tr>
+		<% end %>
+		</table>
+	</div><!--end show_holiday_history-->
 
 </div><!--end inside_center-->

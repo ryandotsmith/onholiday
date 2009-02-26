@@ -78,19 +78,19 @@ class Holiday < ActiveRecord::Base
   #approve( user ) should get called from 
   # update action in holiday controller. 
   def approve( user )
+    #Postoffice.deliver_request_change( self, :approve )
     self.reviewed_by = user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
-    self.save
   end
   ####################
   #deny( user ) should get called from 
   # update action in holiday controller. 
   def deny( user )
+    #Postoffice.deliver_request_change( self, :denied )
     self.reviewed_by = user.login
     self.reviewed_on = DateTime.now
     self.state       = -1
-    self.save
   end
   ####################
   #adjust( params ) is a method that will get called from the 
@@ -109,6 +109,7 @@ class Holiday < ActiveRecord::Base
       self.end_time   = self.begin_time.end_of_day
       self.save!
     else
+      self.begin_time = begin_time.beginning_of_day
       self.end_time = end_time.end_of_day
       self.save!
     end

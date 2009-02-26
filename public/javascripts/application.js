@@ -33,4 +33,11 @@ $(document).ready( function() {
 		});		
 		/******************END******************/
 	
-})
+	//User#show
+	$('#holiday_history_table').tablesorter(
+		{ widthFixed: true, widgets: ['zebra']
+	});
+
+	$('a[rel*=facebox]').facebox() 
+
+})//END Application.js

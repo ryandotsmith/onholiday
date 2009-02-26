@@ -1,12 +1,21 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  ####################
-  #get_css should get
-  #=>
-  # and should return
-  #=>
   def get_css
-    ['std','list','table','form']
+    [ 'std',
+      'list',
+      'table',
+      'form',
+      'theme/ui.all.css',
+      'tablesort/tablesort.css',
+      'facebox.css']
+  end
+  def get_js
+    [ :defaults,
+      'jquery.corners.js',
+      'jquery.easing.min.js',
+      'jquery.tablesorter.min.js',
+      'facebox.js'
+      ]
   end
   ####################
   #current_user should get
