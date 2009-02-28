@@ -4,37 +4,19 @@
 	</div><!--end -->
 </div>
 
-<div id="right">
-</div><!--end right-->
-
-<div id="admin_pending_r" style="display:none">
-	<!--#####################################-->
-		<% if current_user.is_admin %>
-			<%= render 	:partial => 'users/admin/pending_requests', 
-						:locals => { :requests => Holiday.get_pending } %>
-		<% end %>
-	<!--#####################################-->
-</div><!-- end admin_pending_requests-->
-
 <div id="center">
+
 	<h1><%=h @user.name %></h1>
 
-	<div id="pending_requests_queue">
-		<%= render 	:partial => 'users/admin/pending_requests_queue',
+	<div id="link_request_queue">
+		<%= render 	:partial => 'users/admin/link_request_queue',
 					:locals  => { :user => @user }%>
 	</div><!--end pending_requests_queue-->
 
 	<h2>Your Pending Requests</h2>
-	<ul class="show">
-		<% @user.holidays.each do |holiday|%>
-			<% if holiday.state.zero?%>
-			<li>
-			<%= distance_of_time_in_words(holiday.begin_time, holiday.end_time ) %>
-			Starting on <%= holiday.begin_time%>
-			</li>
-			<% end %>
-		<% end %>
-	</ul>
+	<div id="pending_requests">
+		<%= render :partial => 'pending_requests', :locals => { :user => @user }%>		
+	</div><!--end pending_requests-->
 
 	<h2> You have used </h2>
 	<ul class="show">
@@ -62,5 +44,19 @@
 		<% end %>
 		</table>
 	</div><!--end show_holiday_history-->
-
 </div><!--end inside_center-->
+
+<div id="waiting_divs" style="display:none">
+	<div id="admin_pending_requests" class="waiting_divs">
+		<!--#####################################-->
+			<% if current_user.is_admin %>
+				<%= render 	:partial => 'users/admin/pending_requests', 
+							:locals => { :requests => Holiday.get_pending } %>
+			<% end %>
+		<!--#####################################-->		
+		<div class="close">
+			<%= link_to_function "close", "$('#waiting_divs').fade()"%>
+		</div><!--end close-->
+	</div><!--end pending_request_queue-->
+
+</div><!-- end waiting_div s-->

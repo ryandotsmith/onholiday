@@ -1,0 +1,10 @@
+<ul class="show">
+	<% user.holidays.each do |holiday|%>
+		<% if holiday.state.zero?%>
+		<li>
+		<%= distance_of_time_in_words(holiday.begin_time, holiday.end_time ) %>
+		Starting on <%= holiday.begin_time%>
+		</li>
+		<% end %>
+	<% end %>
+</ul>

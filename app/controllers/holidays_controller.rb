@@ -63,6 +63,7 @@ class HolidaysController < ApplicationController
       if @holiday.update_attributes(params[:holiday])
         format.html { redirect_to(@holiday) }
         format.xml  { head :ok }
+        format.js   
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @holiday.errors, :status => :unprocessable_entity }

@@ -1,7 +1,9 @@
 <td><%= holiday.created_at %></td>
 <% if holiday.state == 1 # 1 => that holiday was approved%>
 	<td> approved </td> 
-<% else %>
+<% elsif holiday.state == 0 %>
+	<td> pending </td>
+<% elsif holiday.state == -1 %>
 	<td>denied</td>
 <% end %>
 <td><%= holiday.description[0..24] %></td>

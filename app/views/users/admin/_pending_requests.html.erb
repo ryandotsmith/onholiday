@@ -1,4 +1,4 @@
-<table id ="pending_requests"class="show_table">
+<table id ='admin_pending_requests_table' class='show_table'>
 	<caption> The following users would like some time off </caption>
 	<tr>
 		<th>User</th>
@@ -21,22 +21,20 @@
 		<%= request.description[0..24] + " ..." if request.description.length >= 25 %>
 		</td>
 
-		<td><%= check_box_tag "approve_#{request.id}", true %></td>
-			<%= observe_field "approve_#{request.id}", 
-				:url  		 => { :controller   => 'holidays',
-								  :action		=> 'update',
-								  :id			=> request.id },
-				:method	 	=> 'put',
-				:with 	 	=> 'approved'	
-			%>
-		<td><%= check_box_tag "deny_#{request.id}", true %></td>
-			<%= observe_field "deny_#{request.id}", 
-				:url  		 => { :controller   => 'holidays',
-								  :action		=> 'update',
-								  :id			=> request.id },
-				:method	 	=> 'put',
-				:with 	 	=> 'deny'	
-			%>
+		<td><%= button_to_remote "approve",
+		 							:url	=>	{   :controller	=>	'holidays',
+													:action		=>	'update',
+													:id			=>	request.id,
+													:approved	=>  true },
+									:method	  => 'put' %>
+		</td>
+		<td><%= button_to_remote "deny",
+		 							:url	=>	{   :controller	=>	'holidays',
+													:action		=>	'update',
+													:id			=>	request.id,
+													:deny		=>	true },
+									:method	=>	'put' %>
+		</td>
 					
 	</tr>
 <% end %>

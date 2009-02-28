@@ -1,2 +1,12 @@
-page[:pending_requests].replace_html :partial => 'users/admin/pending_requests',  
-                                     :locals => {:requests => Holiday.get_pending}
+page.replace      'admin_pending_requests_table', 
+                                        :partial =>  'users/admin/pending_requests', 
+                                        :locals  =>  { :requests => Holiday.get_pending }
+
+page.replace_html 'link_request_queue', :partial =>  'users/admin/link_request_queue',
+                                        :locals  => { :user => @user }
+
+page.replace_html 'pending_requests',   :partial => 'users/pending_requests', 
+                                        :locals => { :user => current_user }
+
+page.visual_effect :highlight, 'admin_pending_requests'
+                                        

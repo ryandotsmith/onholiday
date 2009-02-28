@@ -20,32 +20,7 @@ a.ast {
 	font-size:3em;
 	float:left;
 }
-#pending_requests {
-	margin:auto;
-}
-#admin_pending_requests {
-	position:fixed;
-	top:20%;
-	margin-left:200px;
-	text-align:center;	
-	min-width:35em;
-	max-width:45em;
-	min-height:300px;
-	max-height:600px;
-	background-color:#2E306B;
-	border:1em solid grey;
-}
-#admin_pending_requests .close {
-	color:red;
-	font-size:16pt;
-	text-decoration:none;
-	position:absolute;
-	top:0px;
-	left:0px;
-}
-#admin_pending_requests h2 {
-	color:white;
-}
+
 #show_holiday_details {
 	background-color:grey;
 	margin-left:1em;
@@ -125,10 +100,39 @@ a.ast {
 }
 
 #center {
+	position:relative;
 	margin-left: 200px;
 	margin-right: 250px;
 	padding: 1em;
-	max-width: 40em;
+	width: 35em;
+}
+#waiting_divs {
+	position:absolute;
+	top:0;
+	height:auto;
+	width:45em;
+	margin-left:12%;
+	background-color:gray;
+	padding:1em;
+}
+.waiting_divs {
+	position:relative;
+	min-width:35em;
+	max-width:45em;
+	min-height:300px;
+	max-height:600px;
+	background-color:#2E306B;
+}
+#waiting_divs .close a {
+	position:absolute;
+	width:100%;
+	bottom:0;
+	padding-top:3px;
+	padding-bottom:3px;
+	text-align:right;
+	border-top:2px solid white;
+	color:white;
+	font-size:16pt;
 }
 #center h1 {
 	font-size:14pt;

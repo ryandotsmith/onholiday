@@ -82,6 +82,7 @@ class Holiday < ActiveRecord::Base
     self.reviewed_by = user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
+    self.save!
   end
   ####################
   #deny( user ) should get called from 
@@ -91,6 +92,7 @@ class Holiday < ActiveRecord::Base
     self.reviewed_by = user.login
     self.reviewed_on = DateTime.now
     self.state       = -1
+    self.save!
   end
   ####################
   #adjust( params ) is a method that will get called from the 

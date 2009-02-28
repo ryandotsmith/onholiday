@@ -3,7 +3,8 @@
 $(document).ready( function() {
 
 	//User#show _pendtion_requests_queue
-	$("div#admin_pending_requests").corners("5px");
+	$("#waiting_divs").corners("5px");
+	
 	/******************END******************/
 
 	// Holiday#new
@@ -37,7 +38,5 @@ $(document).ready( function() {
 	$('#holiday_history_table').tablesorter(
 		{ widthFixed: true, widgets: ['zebra']
 	});
-
-	$('a[rel*=facebox]').facebox() 
 
 })//END Application.js

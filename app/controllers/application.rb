@@ -9,7 +9,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery  #:secret => '4f88732ee102eb78af32ee59062d4ea1'
   require 'gchart'
   require 'facets/dictionary'
-
+  
+  
+  include FaceboxRender
+  
+  
   ####################
   #login() should get
   #=>

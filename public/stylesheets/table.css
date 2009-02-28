@@ -33,6 +33,7 @@ table.show_table caption {
 }
 
 table.show_table {
+	margin:auto;
 	font-family:helvetica;
 	font-size:10pt;
 	color:white;
