@@ -92,18 +92,20 @@ describe "adjust for half or whole days" do
   end
 end #end describe
 
+describe "one holiday per day" do
+
+  it "should not allow multiple holidays on one calendar day" do
+    
+  end#it
+
+  it "should allow mixed partials" do
+    # i use 1/2 day for personal and 1/2 day for sick all on one calendar day
+
+  end#it
+
+end#des
+
 describe "should return specific data sets" do
-  
-  it "should get all pending requests" do
-    @holiday1 = Factory( :holiday , :state => 0)
-    @holiday2 = Factory( :holiday , :state => 1)
-    @holiday3 = Factory( :holiday , :state => 0)
-    Holiday.get_pending.length.should eql( 2 )
-    Holiday.get_pending.include?(@holiday1).should eql( true )
-    Holiday.get_pending.include?(@holiday2).should eql( false )
-    Holiday.get_pending.include?(@holiday3).should eql( true )
-  end
-end
 
 describe "get holidays statistics for entire universe" do
   

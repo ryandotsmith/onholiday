@@ -4,8 +4,8 @@ class Holiday < ActiveRecord::Base
   validates_presence_of :begin_time, :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
 #  validate :prohibit_time_travel
-
-
+  
+  
   ####################
   #self.get_leave_ratio should get
   #=>
@@ -39,16 +39,16 @@ class Holiday < ActiveRecord::Base
   #=> TODO: figure out how to axe the attribute name when
   #=>       an error message is displayed in a view. 
   def self.human_attribute_name(attribute_key_name)
-        if attribute_key_name.to_sym == :begin_time
-          " "
-        elsif attribute_key_name.to_sym == :end_time
-          " "
-        elsif attribute_key_name.to_sym == :description
-          " "
-        else
-          super
-        end
-      end
+    if attribute_key_name.to_sym == :begin_time
+      " "
+    elsif attribute_key_name.to_sym == :end_time
+      " "
+    elsif attribute_key_name.to_sym == :description
+      " "
+    else
+      super
+    end
+  end#def
     
   ####################
   #self.get_holiday_types should get

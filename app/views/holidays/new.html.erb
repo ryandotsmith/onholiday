@@ -6,7 +6,8 @@
 </div><!--end right-->
 
 <div id="center">
-	<%= error_messages_for :holiday, :message => nil, :header_message => nil %>
+	<%= error_messages_for :holiday, :message => nil, :header_message => nil,
+	 									:object_name => ""%>
 
 	<ul class="form">
 	<% form_for([@user,@holiday], :html => {:class => "user_form"}) do |f| %>
