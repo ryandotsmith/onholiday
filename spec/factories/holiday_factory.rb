@@ -6,5 +6,5 @@ Factory.define :holiday do |h|
   h.reviewed_on "#{DateTime.now}"
   h.begin_time "#{ DateTime.now.beginning_of_day }"
   h.end_time "#{  DateTime.now.end_of_day + 2.days }"
-  h.user_id 1
+  h.association :user
 end

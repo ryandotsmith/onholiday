@@ -1,6 +1,10 @@
 require 'facets/dictionary'
 class Holiday < ActiveRecord::Base
+
   belongs_to :user
+  has_many :whole_days
+  has_many :half_days
+
   validates_presence_of :begin_time, :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
 #  validate :prohibit_time_travel
@@ -23,7 +27,7 @@ class Holiday < ActiveRecord::Base
   # and should return
   #=>
   def self.get_taken_leave
-    sum = 0
+    sum = 0.0
     Holiday.find(:all).each do |holiday|
       if holiday.state == 1
         sum += holiday.get_length
@@ -125,9 +129,31 @@ class Holiday < ActiveRecord::Base
   # This particular method will subtract the dates (which will yield the diff in sec)
   # and then convert the difference to a float.
   def get_length
-    delta = (self.end_time.to_datetime - self.begin_time.to_datetime).to_f
-    return 0.5 if (0..0.5).include?(delta)
-    delta.round
+    #delta = (self.end_time.to_datetime - self.begin_time.to_datetime).to_f
+    #return 0.5 if (0..0.5).include?(delta)
+    #delta.round
+    length = 0.0
+      whole_days.each { length += 1.0 }
+      half_days.each { length += 0.5 }
+    length
   end# end method
+  
+  def add_days( type )
+    n = (end_time.to_date - begin_time.to_date).to_i
+    return if n < 0
+    n.times do |d|
+      self.whole_days.create if type == 'whole'
+      self.half_days.create  if type == 'half'
+    end#
+  end#add_days
+
+  def print_days_in_between()
+    array = []
+    n = ( end_time.to_date - begin_time.to_date).to_i
+    n.times do |t|
+      array << ( begin_time.to_date + t.days )
+    end    
+    array
+  end
 
 end# end class

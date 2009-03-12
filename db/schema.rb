@@ -9,7 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090105205840) do
+ActiveRecord::Schema.define(:version => 20090311203129) do
+
+  create_table "half_days", :force => true do |t|
+    t.integer  "holiday_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "holidays", :force => true do |t|
     t.integer  "user_id"
@@ -32,6 +38,12 @@ ActiveRecord::Schema.define(:version => 20090105205840) do
     t.integer  "max_vacation", :default => 10
     t.integer  "max_etc",      :default => 10
     t.boolean  "is_admin",     :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "whole_days", :force => true do |t|
+    t.integer  "holiday_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
