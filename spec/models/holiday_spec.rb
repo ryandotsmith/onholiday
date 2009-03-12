@@ -109,7 +109,7 @@ describe "get holidays statistics for entire universe" do
   
   before(:each) do
     @user_one       = Factory( :user , :login =>  "jbillings")
-    @user_two       = Factory( :user , :login =>  "rsmith")
+    @user_two       = Factory( :user , :login =>  "jhoover")
 
     @holiday_one    = Factory( :holiday, :state => 1, :leave_type => 'etc', :user => @user_one ) 
     @holiday_two    = Factory( :holiday, :state => 1, :leave_type => 'etc', :user => @user_one ) 
