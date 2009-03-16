@@ -7,7 +7,7 @@
 	<td>denied</td>
 <% end %>
 <td><%= holiday.description[0..24] %></td>
-<td><%= distance_of_time_in_words(holiday.end_time,holiday.begin_time)%></td>
+<td><%= length_of_holiday_in_words( holiday) %></td>
 <td><%= holiday.begin_time %></td>
 <td><%= holiday.end_time %></td>
 

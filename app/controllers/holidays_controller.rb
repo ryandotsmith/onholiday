@@ -2,6 +2,8 @@ require 'casclient'
 require 'casclient/frameworks/rails/filter'
 
 class HolidaysController < ApplicationController
+
+
 ######################################################
   before_filter CASClient::Frameworks::Rails::Filter
   before_filter :login
@@ -19,7 +21,7 @@ class HolidaysController < ApplicationController
   end
 
   def show
-    @holiday = Holiday.find(params[:id])
+    @holiday = Holiday.find( params[:id] )
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @holiday }
@@ -39,11 +41,12 @@ class HolidaysController < ApplicationController
   end
 
   def create
-    @holiday = @user.holidays.build(params[:holiday])
-    @holiday.adjust(params[:length_opt]) if @holiday.valid?
+    @holiday = @user.holidays.build( params[:holiday] )
     respond_to do |format|
-      if @holiday.save
+      @holiday.update_hook( params[:length_opt] )
+      if @holiday.save()
         Postoffice.deliver_new_request( @holiday )
+
         format.html { redirect_to user_path(@user) }
         format.xml  { render :xml => @holiday, :status => :created, :location => @holiday }
       else

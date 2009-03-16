@@ -1,23 +1,16 @@
 class User < ActiveRecord::Base
+
   has_many :holidays, :dependent => :destroy
   validates_uniqueness_of :login
   
-  ####################
-  #list_admins should get
-  #=>
-  # and should return
-  #=>
   def self.list_admins
     ["rsmith","dpanjada","csmith","gsmith"]
   end
-  ####################
-  #get_admins should get
-  #=>
-  # and should return
-  #=>
+
   def self.get_admins
     User.find_all_by_is_admin(true)
   end
+
   ####################
   #verify should get
   #=> a string that represents a user login.
@@ -44,11 +37,9 @@ class User < ActiveRecord::Base
       return user
     end#end if 
   end#end verify()
+
   ####################
   #update_attr(user, credentials) should get
-  #=>
-  # and should return
-  #=>
   def self.update_attr(user, credentials)
     u = User.find_by_login(user)
     u.email = credentials['mail']
@@ -60,9 +51,6 @@ class User < ActiveRecord::Base
   end
   ####################
   #self.get_total_holiday_time should get
-  #=>
-  # and should return
-  #=>
   def self.get_total_holiday_time
     sum = 0
     User.find(:all).each do |user|
@@ -74,9 +62,6 @@ class User < ActiveRecord::Base
   end#def
   ####################
   #self.get_taken_holiday_time should get
-  #=>
-  # and should return
-  #=>
   def self.get_taken_holiday_time
     sum = 0
     Holiday.find(:all).each do |holiday|
@@ -88,9 +73,6 @@ class User < ActiveRecord::Base
   end#def
   ####################
   #get_total_holiday_time should get
-  #=>
-  # and should return
-  #=>
   def get_total_holiday_time
       total_time = 0
       holidays.each do |holiday|
@@ -99,10 +81,7 @@ class User < ActiveRecord::Base
       total_time
   end#end method
   ####################
-  #get_taken_holiday_time should get called by a user
-  #=>
-  # and should return a hash with :leave_type => days taken
-  #=>
+  # get_taken_holiday_time should get called by a user
   def get_taken_holiday_time
     results = Dictionary.new
     Holiday.get_holiday_types.each {|t| results[t.to_sym] = 0.0 }
@@ -111,6 +90,17 @@ class User < ActiveRecord::Base
     end
     results
   end
+
+  def get_list_of_dates
+    array = []
+    holidays = Holiday.find_all_by_user_id( self )
+    holidays.each do |h|
+      h.print_days_in_between.each do |dates|
+        array << dates
+      end#dates
+    end#h
+    array
+  end#get_list_of_dates
   ####################
   #get_remaining_holiday_time should get
   #=>

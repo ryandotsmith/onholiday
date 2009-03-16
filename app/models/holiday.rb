@@ -5,11 +5,19 @@ class Holiday < ActiveRecord::Base
   has_many :whole_days
   has_many :half_days
 
-  validates_presence_of :begin_time, :message => "please specify beginning time"
+  validates_presence_of :begin_time,  :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
-#  validate :prohibit_time_travel
+
+  validate :prohibit_time_travel
+  validate_on_create :not_nice_twice
   
-  
+  def update_hook( type='whole' )
+    self.begin_time = begin_time.beginning_of_day
+    self.end_time ||= self.begin_time
+    self.end_time = end_time.end_of_day
+    self.add_days(type)
+  end
+
   ####################
   #self.get_leave_ratio should get
   #=>
@@ -66,10 +74,25 @@ class Holiday < ActiveRecord::Base
   ####################
   #prohibit_time_travel 
   def prohibit_time_travel
-    if get_length < 0
+    if end_time < begin_time
       errors.add_to_base "Time travel is strictly prohibited! Correct ending date."
     end
   end
+  ####################
+  #not_nice_twice
+  def not_nice_twice
+    if in_range_of_existing
+      errors.add_to_base "This request contains a day that already belongs to one of your holidays."
+    end
+  end#not_nice_twice
+  ####################
+  #in_range_of_existing
+  def in_range_of_existing
+    # return false if the intersection of the arrays is 0
+    # return true if the requested holiday has days belonging to other holidays
+    (self.user.get_list_of_dates & self.print_days_in_between) != []
+  end#in_range_of_existing
+
   ####################
   #get_pending should get called from a holiday
   # and should return all holidays that have state == 0
@@ -99,29 +122,7 @@ class Holiday < ActiveRecord::Base
     self.save!
   end
   ####################
-  #adjust( params ) is a method that will get called from the 
-  # create action of the holiday controller. This method will only 
-  # get called if the holiday is valid! 
-  # =>  begining_of_date => 0
-  # =>  end_of_day => 23:59:59
-  def adjust( params )
-    case params
-    when "half"
-      self.begin_time = self.begin_time.beginning_of_day
-      self.end_time   = self.begin_time + 5.hours
-      self.save!
-    when "whole"
-      self.begin_time = self.begin_time.beginning_of_day
-      self.end_time   = self.begin_time.end_of_day
-      self.save!
-    else
-      self.begin_time = begin_time.beginning_of_day
-      self.end_time = end_time.end_of_day
-      self.save!
-    end
-  end
-  ####################
-  #get_length should get called any time that you need
+  # get_length should get called any time that you need
   # to display the length of a holiday. Since the DB only 
   # holds a begin and end DateTime, you can add methods similar to this one 
   # to represent holiday length in a view. 
@@ -129,9 +130,6 @@ class Holiday < ActiveRecord::Base
   # This particular method will subtract the dates (which will yield the diff in sec)
   # and then convert the difference to a float.
   def get_length
-    #delta = (self.end_time.to_datetime - self.begin_time.to_datetime).to_f
-    #return 0.5 if (0..0.5).include?(delta)
-    #delta.round
     length = 0.0
       whole_days.each { length += 1.0 }
       half_days.each { length += 0.5 }
@@ -139,17 +137,21 @@ class Holiday < ActiveRecord::Base
   end# end method
   
   def add_days( type )
-    n = (end_time.to_date - begin_time.to_date).to_i
+    n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
     return if n < 0
-    n.times do |d|
-      self.whole_days.create if type == 'whole'
-      self.half_days.create  if type == 'half'
+    dates = user.get_list_of_dates.uniq
+    n.times do |t|
+      unless dates.include?( begin_time.to_date + t.days )
+        self.whole_days.build if type == 'many'
+        self.whole_days.build if type == 'whole'
+        self.half_days.build  if type == 'half'
+      end#unless
     end#
   end#add_days
 
   def print_days_in_between()
     array = []
-    n = ( end_time.to_date - begin_time.to_date).to_i
+    n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
     n.times do |t|
       array << ( begin_time.to_date + t.days )
     end    

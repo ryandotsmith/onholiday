@@ -49,14 +49,27 @@ end
 describe "Provide valuable statistics on holiday data" do
  
   before(:each) do
+    date_time = DateTime.now
     @user = Factory( :user )
-    @h1   = Factory( :holiday,:state => 1 , :user => @user)
-    @h2   = Factory( :holiday,:state => 1 , :user => @user)
-    @h3   = Factory( :holiday,:state => 1, :leave_type => 'vacation', :user => @user)
-    @user.holidays.each {|h| h.add_days('whole')}
+    @h1   = Factory( :holiday,:state => 1 , :user => @user,
+                                            :begin_time => date_time,
+                                            :end_time   => date_time + 2.days)
 
+    @h2   = Factory( :holiday,:state => 1 , :user => @user,
+                                            :begin_time => date_time + 4.days,
+                                            :end_time   => date_time + 6.days)
+
+    @h3   = Factory( :holiday,:state => 1, :leave_type => 'vacation', :user => @user,
+                                            :begin_time => date_time + 8.days,
+                                            :end_time   => date_time + 10.days)
+
+  end#do 
+
+  it "should return a list of dates of days included in all of user's holidays" do
+    @user.get_list_of_dates.length.should eql( 6 )
+    @user.get_list_of_dates.first.class.should eql( Date )
   end
-  
+
   it "should return the number of days taken on holiday" do
 
     ordered_dictionary = Dictionary.new

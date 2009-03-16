@@ -12,7 +12,7 @@
 	</tr>	
 <% requests.each do |request| %>
 	<tr>
-		<td><%= link_to "#{request.user.login}", request %></td>
+		<td><%= link_to "#{ request.user.login }", request %></td>
 		<td><%= request.leave_type %></td>
 		<td><%= request.get_length%></td>
 		<td><%= request.user.get_remaining_holiday_time[request.leave_type.to_sym]%></td>
