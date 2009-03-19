@@ -15,7 +15,14 @@ class Holiday < ActiveRecord::Base
     self.begin_time = begin_time.beginning_of_day
     self.end_time ||= self.begin_time
     self.end_time = end_time.end_of_day
+    # based on what type is, add_days will create new objects
+    # and add them to the holiday. This function requires that 
+    # begin_time is set to 0:0:0 and end_time is set to 23:59:59
     self.add_days(type)
+    # once the objects have been created and added to the holiday, 
+    # the begin_time and end_time should be reset to reflect business hours.
+    # This needs to happen before the holiday gets pushed to google calendar.
+    self.adjust_time( type )
   end
 
   ####################
@@ -149,6 +156,13 @@ class Holiday < ActiveRecord::Base
       end#unless
     end#
   end#add_days
+
+  ####################
+  #adjust_time( type )
+  def adjust_time( type )
+    self.begin_time  = self.begin_time.beginning_of_day + 7.hours + 30.minutes
+    self.end_time    = self.end_time.beginning_of_day + 17.hours
+  end#adjust_time( type )
 
   def print_days_in_between()
     array = []
