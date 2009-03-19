@@ -277,7 +277,18 @@ describe "getting a list of dates that the user has holidays for" do
   end
 end#des
 
+describe "pushing a holiday to gcal" do
+  before(:each) do
+    @user     = Factory( :user)
+    @holiday  = Factory( :holiday, :user => @user )
 
+  end#before
+
+  it "raise exception if the push fails" do
+
+  end#it
+
+end#desc
 
 
 

@@ -106,6 +106,7 @@ class Holiday < ActiveRecord::Base
   # update action in holiday controller. 
   def approve( user )
     #Postoffice.deliver_request_change( self, :approve )
+    self.push_to_gcal
     self.reviewed_by = user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
@@ -157,5 +158,10 @@ class Holiday < ActiveRecord::Base
     end    
     array
   end
+  ####################
+  #push_to_gcal
+  def push_to_gcal
+    ActiveCalendar::Engine.create_event :event => self
+  end#push_to_gcal
 
 end# end class

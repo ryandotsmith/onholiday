@@ -13,7 +13,7 @@ class Base
   attr_reader :client
   def initialize
     @@client = GData::Client::Calendar.new
-    @@client.clientlogin( 'rsmith@gsenterprises.com','password')
+    @@client.clientlogin( 'rsmith@gsenterprises.com','Rs*kc*1986')
   end#initialize
   
 end#Base
@@ -108,46 +108,64 @@ class Event < Base
          xmlns:gCal='http://schemas.google.com/gCal/2005'
          gd:etag='FkkOQgZGeip7ImA6WhVR'>
     <id>#{ event.self_link }</id>
-    <published>2006-03-30T22:00:00.000Z</published>
+    <published>#{ event.created_at.xmlschema }</published>
     <updated>#{ DateTime.now }</updated>
     <category scheme='http://schemas.google.com/g/2005#kind'
       term='http://schemas.google.com/g/2005#event'></category>
-    <title type='text'>#{ holiday.user_name }</title>
-    <content type='text'>#{ holiday.description }</content>
+    <title type='text'>#{ event.user_name }</title>
+    <content type='text'>#{ event.description }</content>
     <gd:transparency
       value='http://schemas.google.com/g/2005#event.opaque'>
     </gd:transparency>
     <gd:eventStatus
       value='http://schemas.google.com/g/2005#event.confirmed'>
     </gd:eventStatus>
-    <gd:when startTime='#{ DateTime.now }'
-      endTime='#{ DateTime.now }'>
+    <gd:when startTime='#{ event.begin_time.xmlschema }'
+      endTime='#{ event.end_time.xmlschema }'>
     </gd:when>
   </entry>
 EOF
   end
 
 
-  def self.make_post_xml( holiday )
+  def self.make_post_xml( event )
     rere = <<EOF
       <entry xmlns='http://www.w3.org/2005/Atom'
           xmlns:gd='http://schemas.google.com/g/2005'>
         <category scheme='http://schemas.google.com/g/2005#kind'
           term='http://schemas.google.com/g/2005#event'></category>
-        <title type='text'> #{ holiday.user.name } </title>
-        <content type='text'>#{ holiday.description }</content>
+        <title type='text'> #{ event.user.name } </title>
+        <content type='text'>#{ event.description }</content>
         <gd:transparency
           value='http://schemas.google.com/g/2005#event.opaque'>
         </gd:transparency>
         <gd:eventStatus
           value='http://schemas.google.com/g/2005#event.confirmed'>
         </gd:eventStatus>
-        <gd:when startTime='#{ holiday.begin_time.xmlschema}' endTime='#{ (holiday.begin_time + 3.days).xmlschema }'/>
-        <gd:extendedProperty name="holiday_id" value="#{ holiday.id }" />
+        <gd:when startTime='#{ event.begin_time.strftime("%Y-%m-%dT%H:%M:%S") }'
+            endTime='#{ event.end_time.strftime("%Y-%m-%dT%H:%M:%S") }'></gd:when>
+        <gd:extendedProperty name="holiday_id" value="#{ event.id }" />
       </entry>
 EOF
   end#make_xml
 
 end#Events
 
+class Engine
+    ####################
+    #create_event( options )
+    def self.create_event( options={} )
+      event = options[:event]
+      Base.new
+  #    Calendar.get_calendars.each {|c| calendar = c if c == target_cal}
+  #    calendar ||= Calendar.get_calendars.last
+      calendar = Calendar.get_calendars.last
+      Event.load( calendar )
+      Event.create( event )
+    end#create_event
+  
+end  
+  
 end#Module Active Calendar
+
+

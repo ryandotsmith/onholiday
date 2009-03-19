@@ -32,8 +32,8 @@ class User < ActiveRecord::Base
       return true
     else
       User.create!( :login => user, 
-                :name => credentials['cn'], 
-                :email => credentials['mail'])
+                    :name => credentials['cn'], 
+                    :email => credentials['mail'])
       return user
     end#end if 
   end#end verify()

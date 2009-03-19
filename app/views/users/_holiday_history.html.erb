@@ -5,7 +5,7 @@
 		<p>APPROVED</p>
 		by <%= holiday.reviewed_by %>
 		for a <%= holiday.leave_type %> holiday
-		for <%= distance_of_time_in_words(holiday.end_time,holiday.begin_time)%>
+		for <%= length_of_holiday_in_words( holiday) %>
 		</li>
 	<% elsif holiday.state == -1 %>
 		<li class="false">

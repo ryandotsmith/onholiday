@@ -51,60 +51,63 @@ describe "Provide valuable statistics on holiday data" do
   before(:each) do
     date_time = DateTime.now
     @user = Factory( :user )
-    @h1   = Factory( :holiday,:state => 1 , :user => @user,
+    @h1   = Factory.build( :holiday,:state => 1 , :user => @user,
                                             :begin_time => date_time,
                                             :end_time   => date_time + 2.days)
-
-    @h2   = Factory( :holiday,:state => 1 , :user => @user,
+    @h1.update_hook('whole')
+    @h1.save
+    @h2   = Factory.build( :holiday,:state => 1 , :user => @user,
                                             :begin_time => date_time + 4.days,
                                             :end_time   => date_time + 6.days)
-
-    @h3   = Factory( :holiday,:state => 1, :leave_type => 'vacation', :user => @user,
+    @h2.update_hook('whole')
+    @h2.save
+    @h3   = Factory.build( :holiday,:state => 1, :leave_type => 'vacation', :user => @user,
                                             :begin_time => date_time + 8.days,
                                             :end_time   => date_time + 10.days)
-
+    @h3.update_hook('whole')
+    @h3.save
   end#do 
 
   it "should return a list of dates of days included in all of user's holidays" do
-    @user.get_list_of_dates.length.should eql( 6 )
+    @user.get_list_of_dates.length.should eql( 9 )
     @user.get_list_of_dates.first.class.should eql( Date )
   end
 
   it "should return the number of days taken on holiday" do
 
     ordered_dictionary = Dictionary.new
-    ordered_dictionary[:etc] = 4
+    ordered_dictionary[:etc] = 6.0
     ordered_dictionary[:personal] = 0
-    ordered_dictionary[:vacation] = 2
+    ordered_dictionary[:vacation] = 3.0
     @user.holidays.length.should eql( 3 )
-    @user.get_total_holiday_time.should eql( 6.0 )
+    @user.get_total_holiday_time.should eql( 9.0 )
     @user.get_taken_holiday_time.should == ordered_dictionary
 
   end
   
   it "should return a hash of holidays with the number of days the user has taken" do
     ordered_dictionary = Dictionary.new
-    ordered_dictionary[:etc] = 1.0
-    ordered_dictionary[:personal] = 5.0
-    ordered_dictionary[:vacation] = 3.0
+    ordered_dictionary[:etc] = 4.0
+    ordered_dictionary[:personal] = 10.0
+    ordered_dictionary[:vacation] = 7.0
     @user.holidays.length.should eql( 3 )
-    @user.get_total_holiday_time.should eql( 6.0 )
+    @user.get_total_holiday_time.should eql( 9.0 )
     @user.get_remaining_holiday_time.should == ordered_dictionary    
   end
   
   it "should return a hash of holidays with the number of days the user has left" do
     ordered_dictionary = Dictionary.new
-    ordered_dictionary[:etc] = 1.0
-    ordered_dictionary[:personal] = 5.0
-    ordered_dictionary[:vacation] = 3.0
+    ordered_dictionary[:etc] = 4.0
+    ordered_dictionary[:personal] = 10.0
+    ordered_dictionary[:vacation] = 7.0
     @user.holidays.length.should eql( 3 )
-    @user.get_total_holiday_time.should eql( 6.0 )
+    @user.get_total_holiday_time.should eql( 9.0 )
     @user.get_remaining_holiday_time.should == ordered_dictionary
   end
   
   it "should return max holiday time for ALL users" do
     @user.holidays << [@h1,@h2]
-    User.get_total_holiday_time.should eql( 15 )
+    User.get_total_holiday_time.should eql( 30 )
   end
 
 end

@@ -46,7 +46,7 @@ class HolidaysController < ApplicationController
       @holiday.update_hook( params[:length_opt] )
       if @holiday.save()
         Postoffice.deliver_new_request( @holiday )
-
+        
         format.html { redirect_to user_path(@user) }
         format.xml  { render :xml => @holiday, :status => :created, :location => @holiday }
       else
