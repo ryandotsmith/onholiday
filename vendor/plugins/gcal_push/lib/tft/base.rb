@@ -3,7 +3,7 @@ module TFT
 
     class Base
 
-      attr_reader :client, :user
+      cattr_reader :client, :user
       
       def initialize
         file = File.open("#{RAILS_ROOT}/config/gcal.yml")

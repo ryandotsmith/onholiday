@@ -39,6 +39,16 @@ module TFT
         Event.load( @calendar )
         Event.create( event )        
       end#push_to_calendar
+      ####################
+      #delete_from_calendar()
+      def delete_from_calendar()
+        event = self
+        Base.new
+        Calendar.get_calendars.each { |c| @calendar = c if c.title == Holiday.default_calendar }
+        Event.load( @calendar )
+        to_be_del = Event.find_by_holiday_id( event.id )
+        Event.delete( to_be_del )
+      end#delete_from_calendar()
     end# InstanceMethods
 
   end# GCalPush

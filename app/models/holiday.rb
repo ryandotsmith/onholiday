@@ -12,7 +12,13 @@ class Holiday < ActiveRecord::Base
 
   validate :prohibit_time_travel
   validate_on_create :not_nice_twice
-  
+
+  ####################
+  #before_destroy
+  def before_destroy
+    self.delete_from_calendar
+  end#before_destroy
+
   def update_hook( type='whole' )
     self.begin_time = begin_time.beginning_of_day
     self.end_time ||= self.begin_time
