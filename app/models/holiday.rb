@@ -1,7 +1,7 @@
 require 'facets/dictionary'
 class Holiday < ActiveRecord::Base
 
-  pushes_to_gcal
+  pushes_to_gcal :calendar => 'onholiday'
 
   belongs_to :user
   has_many :whole_days

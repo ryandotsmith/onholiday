@@ -42,7 +42,7 @@ module TFT
         doc = Hpricot( response.to_s)
         (doc/:entry).each do |e|
           # needs fixing. 
-          event   = Event.new(@@calendar)
+          event   = Event.new
           event.holiday_id      = (e/'gd:extendedproperty').first
           event.title           = (e/:title).inner_text
           event.edit_link       = (e/:link/"[@rel=edit]").first[:href]    

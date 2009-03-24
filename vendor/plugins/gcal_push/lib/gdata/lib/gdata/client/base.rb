@@ -71,6 +71,7 @@ module GData
       def make_request(method, url, body = '')
         headers = self.prepare_headers
         headers['If-Match'] = "*" if method == :put
+        headers['If-Match'] = "*" if method == :delete
         request = GData::HTTP::Request.new(url, :headers => headers, 
           :method => method, :body => body)
         

@@ -54,6 +54,7 @@ namespace :deploy do
   desc "Symlink shared configs and folders on each release."
     task :symlink_shared do
       run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+      run "ln -nfs #{shared_path}/config/gcal.yml #{release_path}/config/gcal.yml"
       run "touch #{release_path}/config/environment.rb"
       run "ln -nfs #{shared_path}/config/environment.rb #{release_path}/config/environment.rb"
     end

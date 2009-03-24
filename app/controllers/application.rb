@@ -10,8 +10,6 @@ class ApplicationController < ActionController::Base
   require 'gchart'
   require 'facets/dictionary'
   
-  require 'lib/syncs_gcal.rb'
-  
   ####################
   #login() should get
   #=>
