@@ -1,6 +1,8 @@
 require 'facets/dictionary'
 class Holiday < ActiveRecord::Base
 
+  pushes_to_gcal
+
   belongs_to :user
   has_many :whole_days
   has_many :half_days
@@ -15,21 +17,18 @@ class Holiday < ActiveRecord::Base
     self.begin_time = begin_time.beginning_of_day
     self.end_time ||= self.begin_time
     self.end_time = end_time.end_of_day
-    # based on what type is, add_days will create new objects
+    # based on what type is, add_days will create new day-type-objects
     # and add them to the holiday. This function requires that 
     # begin_time is set to 0:0:0 and end_time is set to 23:59:59
     self.add_days(type)
-    # once the objects have been created and added to the holiday, 
+    # once the day-type-objects have been created and added to the holiday, 
     # the begin_time and end_time should be reset to reflect business hours.
     # This needs to happen before the holiday gets pushed to google calendar.
     self.adjust_time( type )
   end
 
   ####################
-  #self.get_leave_ratio should get
-  #=>
-  # and should return
-  #=>
+  #self.get_leave_ratio 
   def self.get_leave_ratio
     max   = User.get_total_holiday_time
     taken = Holiday.get_taken_leave
@@ -38,9 +37,6 @@ class Holiday < ActiveRecord::Base
 
   ####################
   #self.get_remaining_leave should get
-  #=>
-  # and should return
-  #=>
   def self.get_taken_leave
     sum = 0.0
     Holiday.find(:all).each do |holiday|
@@ -97,7 +93,7 @@ class Holiday < ActiveRecord::Base
   def in_range_of_existing
     # return false if the intersection of the arrays is 0
     # return true if the requested holiday has days belonging to other holidays
-    (self.user.get_list_of_dates & self.print_days_in_between) != []
+    (self.user.get_list_of_dates & self.included_dates) != []
   end#in_range_of_existing
 
   ####################
@@ -143,20 +139,17 @@ class Holiday < ActiveRecord::Base
       half_days.each { length += 0.5 }
     length
   end# end method
-  
+  ####################
+  # add_days
   def add_days( type )
     n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
     return if n < 0
-    dates = user.get_list_of_dates.uniq
     n.times do |t|
-      unless dates.include?( begin_time.to_date + t.days )
-        self.whole_days.build if type == 'many'
-        self.whole_days.build if type == 'whole'
-        self.half_days.build  if type == 'half'
-      end#unless
+      self.whole_days.build if type == 'many'
+      self.whole_days.build if type == 'whole'
+      self.half_days.build  if type == 'half'
     end#
   end#add_days
-
   ####################
   #adjust_time( type )
   def adjust_time( type )
@@ -164,18 +157,26 @@ class Holiday < ActiveRecord::Base
     self.end_time    = self.end_time.beginning_of_day + 17.hours
   end#adjust_time( type )
 
-  def print_days_in_between()
+  def included_dates()
     array = []
     n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
-    n.times do |t|
+    (0..n).each do |t|
       array << ( begin_time.to_date + t.days )
     end    
     array
   end
   ####################
-  #push_to_gcal
-  def push_to_gcal
-    ActiveCalendar::Engine.create_event :event => self
-  end#push_to_gcal
+  #included_dates
+  #  returns a list of dates that are 
+  #  the days between and including the begin_time and end_time
+  #    
+  def included_dates
+    array = []
+    n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
+    (0..n).each do |t|
+      array << ( begin_time.to_date + t.days)
+    end
+    array
+  end#included_dates
 
 end# end class

@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
     array = []
     holidays = Holiday.find_all_by_user_id( self )
     holidays.each do |h|
-      h.print_days_in_between.each do |dates|
+      h.included_dates.each do |dates|
         array << dates
       end#dates
     end#h

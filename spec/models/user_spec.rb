@@ -69,8 +69,16 @@ describe "Provide valuable statistics on holiday data" do
   end#do 
 
   it "should return a list of dates of days included in all of user's holidays" do
+    # since the holidays created in the before block have unique calendars days,
+    # and each holiday has 2 calendars days, the list of dates should containt 
+    # 6 dates. 
     @user.get_list_of_dates.length.should eql( 9 )
     @user.get_list_of_dates.first.class.should eql( Date )
+  end
+  it "should only take into account unique calendar days" do
+    # this should not be an issue. A holiday that is created will 
+    # fail validation if the given holiday
+    
   end
 
   it "should return the number of days taken on holiday" do

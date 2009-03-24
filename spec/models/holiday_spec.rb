@@ -7,18 +7,61 @@ require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
 ### Factory :holiday => defaults[ end_time - begin_time == 2.days]
 
 describe "creating a holiday" do
+
   before(:each) do
-    @user    = Factory( :user )
-    @holiday = Factory.build( :holiday, :user => @user, 
-                                  :begin_time => DateTime.now,
-                                  :end_time => nil)
-    @holiday.update_hook('whole')
+    @user     = Factory( :user )
+    @dt       = DateTime.now
   end#before
-  it "should not care if end time is nil" do
-    @holiday.end_time.should_not eql( nil )
-    @holiday.end_time.should eql( @holiday.begin_time.end_of_day )
-    @holiday.get_length.should eql( 1.0 )
-  end
+  
+  describe "creating half day" do
+
+    it "should save when nothing is wrong" do
+      holiday = Factory.build( :holiday,  :user => @user, 
+                                    :begin_time => @dt,
+                                    :end_time   => nil)
+      holiday.update_hook( 'half' )
+      holiday.save.should eql( true )      
+    end# it
+
+    it "should fail when days in holiday are already covered by existing holiday" do
+      holiday = Factory.build( :holiday, :user => @user, 
+                                    :begin_time => @dt,
+                                    :end_time   => nil)
+      holiday.update_hook( 'half' )
+      holiday.save.should eql( true )      
+
+      bad_holiday = Factory.build( :holiday, :user => @user, 
+                                    :begin_time => @dt,
+                                    :end_time   => nil)
+      bad_holiday.update_hook( 'half' )
+      bad_holiday.should_not be_valid
+      bad_holiday.save.should eql( false )            
+    end
+    it "should fail when half day falls into existing range of holidays" do
+      holiday = Factory.build( :holiday, :user => @user, 
+                                    :begin_time => @dt,
+                                    :end_time   => @dt + 5.days)
+      holiday.update_hook( 'whole' )
+      holiday.save.should eql( true )      
+
+      bad_holiday = Factory.build( :holiday, :user => @user, 
+                                    :begin_time => @dt + 2.days,
+                                    :end_time   => nil)
+      bad_holiday.update_hook( 'half' )
+      bad_holiday.should_not be_valid
+      bad_holiday.save.should eql( false )            
+      
+    end
+    
+  end# half day
+
+  describe "creating a whole day" do
+    
+  end# whole day
+
+  describe "creatinga range of days" do
+    
+  end# range day
 
 end#des
 
@@ -265,15 +308,25 @@ describe "getting a list of dates that the user has holidays for" do
   end#do
   
   it "should return a list of a range of days that span a holiday" do
-    @holiday.print_days_in_between().length.should eql( 4 )
+    @holiday.included_dates().length.should eql( 5 )
   end
   
   it "should find a day that is in range of a holiday" do
     @arb_day = DateTime.now + 2.days
     @arb_day = @arb_day.to_date
-    @holiday.print_days_in_between.include?( @arb_day ).should eql( true )
+    @holiday.included_dates.include?( @arb_day ).should eql( true )
     @arb_day += 3.days
-    @holiday.print_days_in_between.include?( @arb_day ).should eql( false )
+    @holiday.included_dates.include?( @arb_day ).should eql( false )
+  end
+
+  it "should return the begin_date for half-day holidays" do
+    @h = Factory.build( :holiday, :user => @user, 
+                            :begin_time   =>  DateTime.now,
+                            :end_time     =>  nil)
+    @h.update_hook('half')
+    @h.save
+    @h.included_dates.include?( DateTime.now.to_date ).should eql( true )
+    @h.included_dates.length.should eql( 1 )
   end
 end#des
 
