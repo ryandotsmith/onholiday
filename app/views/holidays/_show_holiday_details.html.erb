@@ -1,5 +1,5 @@
 <td><%= holiday.created_at %></td>
-<% if holiday.state == 1 # 1 => that holiday was approved%>
+<% if holiday.state == 1 %>
 	<td> approved </td> 
 <% elsif holiday.state == 0 %>
 	<td> pending </td>
