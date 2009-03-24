@@ -11,7 +11,7 @@ module TFT
 
       def self.get_calendars
        calendars = []
-       url = "http://www.google.com/calendar/feeds/rsmith@gsenterprises.com"
+       url = "http://www.google.com/calendar/feeds/#{@@user}"
        response = @@client.get( url ).to_xml
        doc = Hpricot( response.to_s )
        (doc/:entry).each do |entry|

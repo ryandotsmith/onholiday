@@ -37,7 +37,7 @@ module TFT
       def self.get_events
         events  = []
         id = @@calendar.link
-        url = "http://www.google.com/calendar/feeds/rsmith@gsenterprises.com/full"
+        url = "http://www.google.com/calendar/feeds/#{Base.user}/full"
         response = @@client.get( id ).to_xml
         doc = Hpricot( response.to_s)
         (doc/:entry).each do |e|
