@@ -109,7 +109,7 @@ class Holiday < ActiveRecord::Base
   # update action in holiday controller. 
   def approve( user )
     #Postoffice.deliver_request_change( self, :approve )
-    self.push_to_gcal
+    self.push_to_calendar
     self.reviewed_by = user.login
     self.reviewed_on = DateTime.now
     self.state       = 1

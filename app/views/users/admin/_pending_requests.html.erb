@@ -8,6 +8,7 @@
 		<th>Description of Leave</th>
 		<th>Approve</th>
 		<th>Deny</th>
+		<th></th>
 
 	</tr>	
 <% requests.each do |request| %>
@@ -26,7 +27,8 @@
 													:action		=>	'update',
 													:id			=>	request.id,
 													:approved	=>  true },
-									:method	  => 'put' %>
+									:method	  => 'put',
+									:loading  => 	"$('##{request.id.to_s + '_button'}').appear();" %>
 		</td>
 		<td><%= button_to_remote "deny",
 		 							:url	=>	{   :controller	=>	'holidays',
@@ -35,7 +37,9 @@
 													:deny		=>	true },
 									:method	=>	'put' %>
 		</td>
-					
+		<td id= "<%=request.id.to_s + '_button'%>" style="display:none;"  >
+			<%= image_tag('spinner.gif')%>
+		</td>
 	</tr>
 <% end %>
 </table>

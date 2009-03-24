@@ -53,7 +53,7 @@
 				<%= render 	:partial => 'users/admin/pending_requests', 
 							:locals => { :requests => Holiday.get_pending } %>
 			<% end %>
-		<!--#####################################-->		
+		<!--#####################################-->	
 		<div class="close">
 			<%= link_to_function "close", "$('#waiting_divs').fade()"%>
 		</div><!--end close-->
