@@ -28,13 +28,6 @@ module TFT
     module InstanceMethods 
       @calendar = nil
       ####################
-      #get_options
-      def get_options
-        event = self
-        Base.new( options )
-        Calendar.get_options
-      end#get_options
-      ####################
       #push_to_calendar
       def push_to_calendar( )
         event = self
