@@ -42,7 +42,7 @@ module TFT
       def delete_from_calendar()
         event = self
         Base.new
-        Calendar.get_calendars.each { |c| @calendar = c if c.title == Holiday.default_calendar }
+        Calendar.get_calendars.each { |c| @calendar = c if c.title == options[:calendar] }
         Event.load( @calendar )
         to_be_del = Event.find_by_holiday_id( event.id )
         Event.delete( to_be_del )
