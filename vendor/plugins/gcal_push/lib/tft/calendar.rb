@@ -8,7 +8,11 @@ module TFT
         @link   = ""
         @title  = ""
       end
-
+      ####################
+      #self.get_options
+      def self.get_options
+        @@event.send(@@unid)
+      end#self.get_options
       def self.get_calendars
        calendars = []
        url = "http://www.google.com/calendar/feeds/#{@@user}"

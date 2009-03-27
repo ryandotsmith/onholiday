@@ -14,13 +14,11 @@ module TFT
     module ActMethods 
       def pushes_to_gcal( options={} )
         unless included_modules.include? InstanceMethods 
-          cattr_accessor :default_calendar
-          self.default_calendar = options[:calendar]
+          cattr_accessor :options
           extend ClassMethods 
           include InstanceMethods 
         end# unless
-        
-        @@options = options
+        self.options = options
       end # pushes_to_gcal
     end # ActMethods
 
@@ -30,11 +28,18 @@ module TFT
     module InstanceMethods 
       @calendar = nil
       ####################
+      #get_options
+      def get_options
+        event = self
+        Base.new( options )
+        Calendar.get_options
+      end#get_options
+      ####################
       #push_to_calendar
       def push_to_calendar( )
-        event       = self
-        Base.new
-        Calendar.get_calendars.each { |c| @calendar = c if c.title == Holiday.default_calendar }
+        event = self
+        Base.new( options )
+        Calendar.get_calendars.each { |c| @calendar = c if c.title == options[:default_calendar] }
         @calendar ||= Calendar.get_calendars.first
         Event.load( @calendar )
         Event.create( event )        

@@ -12,7 +12,9 @@
 		<%= render 	:partial => 'users/admin/link_request_queue',
 					:locals  => { :user => @user }%>
 	</div><!--end pending_requests_queue-->
-
+	<div id="link_embedded_gcal">
+		<%= render :partial => 'link_embedded_gcal'%>
+	</div><!--end link_embedded_gcal-->
 	<h2>Your Pending Requests</h2>
 	<div id="pending_requests">
 		<%= render :partial => 'pending_requests', :locals => { :user => @user }%>		
@@ -47,7 +49,8 @@
 </div><!--end inside_center-->
 
 <div id="waiting_divs" style="display:none">
-	<div id="admin_pending_requests" class="waiting_divs">
+
+	<div id="admin_pending_requests" class="inside_waiting_div" style='display:none'>
 		<!--#####################################-->
 			<% if current_user.is_admin %>
 				<%= render 	:partial => 'users/admin/pending_requests', 
@@ -55,8 +58,18 @@
 			<% end %>
 		<!--#####################################-->	
 		<div class="close">
-			<%= link_to_function "close", "$('#waiting_divs').fade()"%>
+			<%= link_to_function "close", "$('#waiting_divs,#admin_pending_requests').fade();"%>
 		</div><!--end close-->
+
 	</div><!--end pending_request_queue-->
+
+	<div id="embedded_gcal" class="inside_waiting_div" style='display:none'>
+		<%= render :partial => 'embedded_gcal'%>
+
+		<div class="close">
+			<%= link_to_function "close", "$('#waiting_divs,#embedded_gcal').fade();"%>
+		</div><!--end close-->
+
+	</div><!--end embedded_gcal-->
 
 </div><!-- end waiting_div s-->

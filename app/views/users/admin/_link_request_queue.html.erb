@@ -1,6 +1,6 @@
 <% if current_user.is_admin %>
 <h2>
 <%= link_to_function "Requests Queue ( #{Holiday.get_pending.length} )", 
-						"$('#waiting_divs').appear(); " %>										
+						"$('#waiting_divs').appear(); $('#admin_pending_requests').appear();" %>										
 </h2>
 <% end %>

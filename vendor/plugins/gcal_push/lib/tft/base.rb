@@ -5,7 +5,13 @@ module TFT
 
       cattr_reader :client, :user
       
-      def initialize
+      def initialize( options )
+        @@unid            = options[:unid]||= :id
+        @@title           = options[:title] ||= :title
+        @@description     = options[:options] ||= :options
+        @@begin_datetime  = options[:begin_datetime] ||= :begin_datetime
+        @@end_datetime    = options[:end_datetime] ||= :end_datetime
+
         file = File.open("#{RAILS_ROOT}/config/gcal.yml")
         @@gcal_push_config = YAML.load(file)
         @@user = @@gcal_push_config['default']['username']
