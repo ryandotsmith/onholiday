@@ -32,7 +32,7 @@ module TFT
       def push_to_calendar( )
         event = self
         Base.new( options )
-        Calendar.get_calendars.each { |c| @calendar = c if c.title == options[:default_calendar] }
+        Calendar.get_calendars.each { |c| @calendar = c if c.title == options[:calendar] }
         @calendar ||= Calendar.get_calendars.first
         Event.load( @calendar )
         Event.create( event )        
