@@ -5,7 +5,7 @@ module TFT
 
       cattr_reader :client, :user
       
-      def initialize( options )
+      def initialize( options={} )
         @@unid            = options[:unid]||= :id
         @@title           = options[:title] ||= :title
         @@description     = options[:options] ||= :options
