@@ -58,7 +58,7 @@
 			<% end %>
 		<!--#####################################-->	
 		<div class="close">
-			<%= link_to_function "close", "$('#waiting_divs,#admin_pending_requests').fade();"%>
+			<%= link_to_function "close", "$('#admin_pending_requests, #waiting_divs').fade();"%>
 		</div><!--end close-->
 
 	</div><!--end pending_request_queue-->
@@ -67,7 +67,7 @@
 		<%= render :partial => 'embedded_gcal'%>
 
 		<div class="close">
-			<%= link_to_function "close", "$('#waiting_divs,#embedded_gcal').fade();"%>
+			<%= link_to_function "close", "$('#embedded_gcal, #waiting_divs ').fade();"%>
 		</div><!--end close-->
 
 	</div><!--end embedded_gcal-->
