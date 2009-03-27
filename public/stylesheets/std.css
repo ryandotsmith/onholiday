@@ -119,6 +119,7 @@ a.ast {
 	position:relative;
 	background-color:#2E306B;
 	min-height:300px;
+	min-width:600px;
 	padding-bottom:25px;
 }
 #waiting_divs .close a {
