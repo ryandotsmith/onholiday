@@ -6,16 +6,13 @@ module ApplicationHelper
       'table',
       'form',
       'theme/ui.all.css',
-      'tablesort/tablesort.css',
-      'facebox.css']
+      'tablesort/tablesort.css']
   end
   def get_js
     [ :defaults,
       'jquery.corners.js',
       'jquery.easing.min.js',
-      'jquery.tablesorter.min.js',
-      'facebox.js'
-      ]
+      'jquery.tablesorter.min.js']
   end
   ####################
   #current_user should get

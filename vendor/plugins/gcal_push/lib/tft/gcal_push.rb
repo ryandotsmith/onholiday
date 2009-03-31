@@ -4,6 +4,7 @@ require 'base'
 require 'calendar'
 require 'event'
 require 'yaml'
+
 module TFT
   module GcalPush
 
@@ -42,7 +43,7 @@ module TFT
 
       ####################
       #delete_from_calendar()
-      def delete_from_calendar( calendar )
+      def delete_from_calendar( calendar=nil )
         event = self
         calendar ||= options[:calendar]
         Base.new
