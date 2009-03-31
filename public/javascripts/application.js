@@ -4,7 +4,8 @@ $(document).ready( function() {
 
 	//User#show _pendtion_requests_queue
 	$("#waiting_divs").corners("5px");
-	
+	$("#container").corners("15px");
+	$(".info_navigation ul").corners("10px top")
 	/******************END******************/
 
 	// Holiday#new
