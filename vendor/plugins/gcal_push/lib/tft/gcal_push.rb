@@ -30,7 +30,7 @@ module TFT
 
       ####################
       #push_to_calendar
-      def push_to_calendar( calendar )
+      def push_to_calendar( calendar=nil )
         event = self
         calendar ||= options[:calendar]
         Base.new( options )

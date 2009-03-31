@@ -3,8 +3,8 @@ namespace :utils do
   desc "push all holidays to calendar"
   task(:push_all => :environment) do
         # Find users to email
-        for holiday in Holiday.find_by_state(1)
-                puts "pushing #{holiday.title}"
+        for holiday in Holiday.find_all_by_state(1)
+                puts "pushing #{holiday.user.name}"
                 holiday.push_to_calendar
         end
   end
