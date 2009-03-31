@@ -3,11 +3,13 @@ module TFT
 
     class Calendar < Base
       attr_accessor :title, :link
+
       def initialize
         super
         @link   = ""
         @title  = ""
       end
+
       def self.get_calendars
        calendars = []
        url = "http://www.google.com/calendar/feeds/#{@@user}"
@@ -26,4 +28,3 @@ module TFT
 
   end# GCalPush
 end# TFT
-

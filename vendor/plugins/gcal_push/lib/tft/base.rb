@@ -8,7 +8,7 @@ module TFT
       def initialize( options={} )
         @@unid            = options[:unid]||= :id
         @@title           = options[:title] ||= :title
-        @@description     = options[:options] ||= :options
+        @@description     = options[:description] ||= :description
         @@begin_datetime  = options[:begin_datetime] ||= :begin_datetime
         @@end_datetime    = options[:end_datetime] ||= :end_datetime
 
