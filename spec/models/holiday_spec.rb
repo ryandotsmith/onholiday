@@ -7,7 +7,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
 ### Factory :holiday => defaults[ end_time - begin_time == 2.days]
 
 describe "creating a holiday" do
-
   before(:each) do
     @user     = Factory( :user )
     @dt       = DateTime.now
