@@ -8,26 +8,23 @@ module ApplicationHelper
       'theme/ui.all.css',
       'tablesort/tablesort.css']
   end
+
   def get_js
     [ :defaults,
       'jquery.corners.js',
       'jquery.easing.min.js',
       'jquery.tablesorter.min.js']
   end
-  ####################
-  #current_user should get
-  #=>
-  # and should return
-  #=>
+  
+  def shorten( object )
+    return object if object.length < 25 
+		object[0..24] + " ..."
+  end#shorten
   def current_user
     #@user = User.find_by_login(session[:cas_user])
     User.find_by_login(session[:cas_user])
   end
-  ####################
-  #is_admin?( user ) should get
-  #=> a user object
-  # and should return
-  #=>
+
   def authorized
     unless current_user.is_admin
       flash[:notice] = "This feature requires elevated credentials."
