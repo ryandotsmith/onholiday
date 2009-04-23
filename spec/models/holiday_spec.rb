@@ -1,4 +1,3 @@
-require 'facets/dictionary'
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
@@ -169,18 +168,19 @@ describe "should return specific data sets" do
       @user_one       = Factory( :user , :login =>  "jbillings")
       @user_two       = Factory( :user , :login =>  "jhoover")
 
+      # 3 days
       @holiday_one    = Factory.build( :holiday, :state => 1, :leave_type => 'etc', :user => @user_one,
                                                   :begin_time => date,
                                                   :end_time   => date + 2.days) 
       @holiday_one.update_hook('whole')      
       @holiday_one.save!
-
+      # 3 days
       @holiday_two    = Factory.build( :holiday, :state => 1, :leave_type => 'etc', :user => @user_one, 
                                                   :begin_time => date + 14.days,
                                                   :end_time   => date + 16.days) 
       @holiday_two.update_hook('whole')      
       @holiday_two.save!
-      
+      # 3 days
       @holiday_three  = Factory.build( :holiday, :state => 1, :leave_type => 'etc', :user => @user_two, 
                                                   :begin_time => date + 18.days,
                                                   :end_time   => date + 20.days ) 
@@ -202,7 +202,11 @@ describe "should return specific data sets" do
       # The other two days of leave come from holiday_four which belongs to user_two
       Holiday.get_taken_leave.should eql( 9.0 )
     end#it
-
+    it "should calulate holidays taken by single user" do
+      sum = 0
+      @user_one.holidays.each {|h| sum += h.included_dates().length }
+      sum.should == ( 8 )
+    end
     it "calculates available leave for all users" do
     # this is handled by the user model.
     end

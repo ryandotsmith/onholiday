@@ -1,4 +1,3 @@
-require 'facets/dictionary'
 class Holiday < ActiveRecord::Base
 
   pushes_to_gcal  :calendar         =>  'onholiday', 
