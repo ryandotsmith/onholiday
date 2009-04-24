@@ -1,51 +1,62 @@
-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
 require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
 
+
 ### Factory :holiday => defaults[ end_time - begin_time == 2.days]
+SUNDAY    = Date.today.change(:year => 2009, :month => 5, :day => 3 )
+MONDAY    = Date.today.change(:year => 2009, :month => 5, :day => 4 )
+TUESDAY   = Date.today.change(:year => 2009, :month => 5, :day => 5 )
+WEDNESDAY = Date.today.change(:year => 2009, :month => 5, :day => 6 )
+THURSDAY  = Date.today.change(:year => 2009, :month => 5, :day => 7 )
+FRIDAY    = Date.today.change(:year => 2009, :month => 5, :day => 8 )
+SATURDAY  = Date.today.change(:year => 2009, :month => 5, :day => 9 )
 
 describe "creating a holiday" do
   before(:each) do
     @user     = Factory( :user )
-    @dt       = DateTime.now
+    @dt       = MONDAY
   end#before
   
   describe "creating half day" do
 
     it "should save when nothing is wrong" do
-      holiday = Factory.build( :holiday,  :user => @user, 
-                                    :begin_time => @dt,
-                                    :end_time   => nil)
-      holiday.update_hook( 'half' )
+      holiday = Factory.build(  :holiday,  
+                                :type => 'half',
+                                :user => @user, 
+                                :begin_time => MONDAY,
+                                :end_time   => nil)
       holiday.save.should eql( true )      
     end# it
 
     it "should fail when days in holiday are already covered by existing holiday" do
-      holiday = Factory.build( :holiday, :user => @user, 
-                                    :begin_time => @dt,
-                                    :end_time   => nil)
-      holiday.update_hook( 'half' )
+      holiday = Factory.build(  :holiday, 
+                                :type => 'half',
+                                :user => @user, 
+                                :begin_time => @dt,
+                                :end_time   => nil)
       holiday.save.should eql( true )      
 
-      bad_holiday = Factory.build( :holiday, :user => @user, 
+      bad_holiday = Factory.build( :holiday, 
+                                    :type => 'whole',
+                                    :user => @user, 
                                     :begin_time => @dt,
                                     :end_time   => nil)
-      bad_holiday.update_hook( 'half' )
       bad_holiday.should_not be_valid
       bad_holiday.save.should eql( false )            
     end
     it "should fail when half day falls into existing range of holidays" do
-      holiday = Factory.build( :holiday, :user => @user, 
-                                    :begin_time => @dt,
-                                    :end_time   => @dt + 5.days)
-      holiday.update_hook( 'whole' )
-      holiday.save.should eql( true )      
+      holiday = Factory(  :holiday, 
+                          :type => 'many',
+                          :user => @user, 
+                          :begin_time => @dt,
+                          :end_time   => @dt + 4.days)
 
-      bad_holiday = Factory.build( :holiday, :user => @user, 
+      bad_holiday = Factory.build(  :holiday, 
+                                    :type => 'whole',
+                                    :user => @user, 
                                     :begin_time => @dt + 2.days,
                                     :end_time   => nil)
-      bad_holiday.update_hook( 'half' )
       bad_holiday.should_not be_valid
       bad_holiday.save.should eql( false )            
       
@@ -93,33 +104,31 @@ end
 
 describe "get length of holiday" do
   
-  it "should return an integer which represents the number of whole days" do
-    dt = DateTime.now
-    @holiday = Factory.build( 
+  it "should return an float which represents the number of whole days" do
+    dt = MONDAY
+    @holiday = Factory( 
                         :holiday, 
                         :begin_time => dt,
                         :end_time   => dt + 1.days )
-    @holiday.update_hook( 'whole' )
     @holiday.get_length.should eql( 2.0 )
   end# end it 
 
   it "should correctly calculate 1 day of leave " do
-    bt  = DateTime.now
-    @holiday = Factory.build( 
+    bt  = MONDAY
+    @holiday = Factory( 
                         :holiday,
                         :begin_time =>  bt,
                         :end_time   =>  bt  )
-    @holiday.update_hook( 'whole' )
     @holiday.get_length.should eql( 1.0 )
     
   end
   it "should correctly calculate 2 days of leave " do
-    bt  = DateTime.now.beginning_of_day
-    @holiday = Factory.build( 
+    bt  = MONDAY
+    @holiday = Factory( 
                         :holiday,
+                        :type => 'many',
                         :begin_time =>  bt,
                         :end_time   =>  bt + 1.days )  
-    @holiday.update_hook( 'whole' )
     @holiday.get_length.should eql( 2.0 )
   end# it
   
@@ -139,22 +148,21 @@ describe "adjust for half or whole days" do
   end
 
   it "should add 5 hours to the begin date time" do
-    @holiday = Factory.build( 
-                              :holiday, 
+    @holiday = Factory(       :holiday, 
+                              :type => 'half',
                               :begin_time => DateTime.now,
-                              :end_time   => DateTime.now )
+                              :end_time   => nil )
     # have to override the before_save method to make a half day save
-    @holiday.update_hook('half')
     @holiday.get_length.should eql( 0.5 )
     
   end
 
   it "should add 24 hours to the current DateTime submitted" do
-    @holiday = Factory.build( 
+    @holiday = Factory( 
                         :holiday, 
+                        :type => 'whole',
                         :begin_time => DateTime.now,
-                        :end_time   => DateTime.now )
-    @holiday.update_hook('whole')
+                        :end_time   => nil )
     @holiday.get_length.should eql( 1.0 )
     
   end
@@ -164,35 +172,42 @@ describe "should return specific data sets" do
 
     describe "get holidays statistics for entire universe" do
     before(:each) do      
-      date = DateTime.now
+      date = MONDAY
       @user_one       = Factory( :user , :login =>  "jbillings")
       @user_two       = Factory( :user , :login =>  "jhoover")
 
       # 3 days
-      @holiday_one    = Factory.build( :holiday, :state => 1, :leave_type => 'etc', :user => @user_one,
-                                                  :begin_time => date,
-                                                  :end_time   => date + 2.days) 
-      @holiday_one.update_hook('whole')      
-      @holiday_one.save!
+      @holiday_one    = Factory(  :holiday, 
+                                  :type  => 'many',
+                                  :state => 1, 
+                                  :leave_type => 'etc', 
+                                  :user => @user_one,
+                                  :begin_time => date,
+                                  :end_time   => date + 2.days) 
       # 3 days
-      @holiday_two    = Factory.build( :holiday, :state => 1, :leave_type => 'etc', :user => @user_one, 
-                                                  :begin_time => date + 14.days,
-                                                  :end_time   => date + 16.days) 
-      @holiday_two.update_hook('whole')      
-      @holiday_two.save!
+      @holiday_two    = Factory(  :holiday, 
+                                  :type  => 'many',
+                                  :state => 1, 
+                                  :leave_type => 'etc', 
+                                  :user => @user_one, 
+                                  :begin_time => date + 7.days,
+                                  :end_time   => date + 9.days) 
       # 3 days
-      @holiday_three  = Factory.build( :holiday, :state => 1, :leave_type => 'etc', :user => @user_two, 
-                                                  :begin_time => date + 18.days,
-                                                  :end_time   => date + 20.days ) 
-      @holiday_three.update_hook('whole')      
-      @holiday_three.save!
+      @holiday_three  = Factory(  :holiday, 
+                                  :type  => 'many',
+                                  :state => 1, 
+                                  :leave_type => 'etc', 
+                                  :user => @user_two, 
+                                  :begin_time => date + 14.days,
+                                  :end_time   => date + 16.days ) 
       
-      @holiday_four   = Factory.build( :holiday, :state => 0, :leave_type => 'etc', :user => @user_two, 
-                                                  :begin_time => date + 32.days,
-                                                  :end_time   => date + 34.days ) 
-      @holiday_four.update_hook('whole')      
-      @holiday_four.save!
-
+      @holiday_four   = Factory(  :holiday, 
+                                  :type  => 'many',
+                                  :state => 0, 
+                                  :leave_type => 'etc', 
+                                  :user => @user_two, 
+                                  :begin_time => date + 32.days,
+                                  :end_time   => date + 34.days ) 
     end
 
     it "calculated used leave days for all users" do
@@ -205,13 +220,12 @@ describe "should return specific data sets" do
     it "should calulate holidays taken by single user" do
       sum = 0
       @user_one.holidays.each {|h| sum += h.included_dates().length }
-      sum.should == ( 8 )
+      sum.should == ( 6.0 )
     end
     it "calculates available leave for all users" do
     # this is handled by the user model.
     end
 
-    it "returns the ratio of taken / available leave for all users" 
 
     end#desc
 
@@ -222,30 +236,31 @@ describe "creating two holidays on one calendar day" do
   describe "using set theory to " do
 
     it "should not find a holiday in range when user has only one holiday" do
-      @user    = Factory( :user , :login => 'rsmithwhowho')
-      @holiday = Factory.build( :holiday, 
-                                :user => @user,
+      user    = Factory( :user , :login => 'rsmithwhowho')
+      holiday = Factory.build(  :holiday, 
+                                :user => user,
                                 :begin_time =>  DateTime.now,
                                 :end_time   =>  DateTime.now + 2.days)
-      @holiday.in_range_of_existing.should eql( false )      
+      holiday.in_range_of_existing.should eql( false )      
     end#it
 
     it "should error when a user has one holiday and then requests idenctical set of days for holiday" do
-      @user    = Factory( :user , :login => 'rsmithwhowho')
-      @holiday = Factory.build( :holiday, 
-                                :user => @user,
-                                :begin_time =>  DateTime.now,
-                                :end_time   =>  DateTime.now + 2.days)
+      user    = Factory( :user , :login => 'rsmithwhowho')
+      holiday = Factory.build( :holiday, 
+                          :type => 'many',
+                          :user => user,
+                          :begin_time =>  DateTime.now,
+                          :end_time   =>  DateTime.now + 2.days)
 
-      @holiday.in_range_of_existing.should eql( false )      
-      @holiday.update_hook('whole')
-      @holiday.save
+      holiday.in_range_of_existing.should eql( false )      
+      holiday.save.should eql( true )
 
-      @holiday = Factory.build( :holiday, 
-                                :user => @user,
-                                :begin_time =>  DateTime.now,
-                                :end_time   =>  DateTime.now + 2.days)
-      @holiday.in_range_of_existing.should eql( true )      
+      another_holiday = Factory.build(  :holiday, 
+                                        :type => 'many',
+                                        :user => user,
+                                        :begin_time =>  DateTime.now,
+                                        :end_time   =>  DateTime.now + 2.days)
+      another_holiday.in_range_of_existing.should eql( true )      
     end#it
 
   end#des
@@ -256,17 +271,20 @@ describe "creating two holidays on one calendar day" do
     end#before
 
     it "should add an error when a new holiday is spanning previous holidays" do
-      @holiday1 = Factory.build( :holiday,  :user => @user,
+      @holiday1 = Factory.build(  :holiday,  
+                                  :type => 'whole',
+                                  :user => @user,
                                   :begin_time => DateTime.now,
                                   :end_time   => DateTime.now + 2.days)
-      @holiday1.update_hook('whole')
+
       @holiday1.in_range_of_existing.should eql( false )
       @holiday1.save.should eql( true )
 
-      @holiday2 = Factory.build( :holiday,  :user => @user,
+      @holiday2 = Factory.build(  :holiday,  
+                                  :type => 'whole',
+                                  :user => @user,
                                   :begin_time => DateTime.now,
                                   :end_time   => DateTime.now + 3.days)              
-      @holiday2.update_hook('whole')
       @holiday2.in_range_of_existing.should eql( true )
       @holiday2.save
       @holiday2.should_not be_valid
@@ -276,21 +294,17 @@ describe "creating two holidays on one calendar day" do
   end#describe
   
   describe "creating a new holiday should only add unqique calendar days to a holdiay" do
-    date = DateTime.now
+    date = MONDAY
     before(:each) do
       @user = Factory( :user )
-      @holiday1 = Factory.build( :holiday, :user => @user, 
+      @holiday1 = Factory(  :holiday, :user => @user, 
                             :begin_time => date,
                             :end_time   => date + 2.days)
-      @holiday1.update_hook('whole')
-      @holiday1.save
 
-      @holiday2 = Factory.build( :holiday, :user => @user, 
-                            :begin_time => date ,
-                            :end_time   => date + 2.days)
-      @holiday2.update_hook('whole')
-      @holiday2.save.should eql( false )
-     
+      @holiday2 = Factory.build(  :holiday, :user => @user, 
+                                  :begin_time => date ,
+                                  :end_time   => date + 2.days)
+      @holiday2.should_not be_valid     
     end#before
 
     it "should calculate only uniquie holiday days" do
@@ -304,31 +318,33 @@ end#describe
 describe "getting a list of dates that the user has holidays for" do
 
   before(:each) do
+   dt = MONDAY
    @user = Factory( :user ) 
-   @holiday = Factory.build( :holiday, :user => @user,
-                                 :begin_time => DateTime.now.beginning_of_day,
-                                 :end_time   => DateTime.now.beginning_of_day + 4.days )
+   @holiday = Factory(    :holiday, 
+                          :type => 'many',
+                          :user => @user,
+                          :begin_time => dt,
+                          :end_time   => dt + 2.days )
   end#do
   
   it "should return a list of a range of days that span a holiday" do
-    @holiday.included_dates().length.should eql( 5 )
+    @holiday.included_dates().length.should eql( 3 )
   end
   
   it "should find a day that is in range of a holiday" do
-    @arb_day = DateTime.now + 2.days
-    @arb_day = @arb_day.to_date
+    @arb_day = TUESDAY
     @holiday.included_dates.include?( @arb_day ).should eql( true )
-    @arb_day += 3.days
+    @arb_day = FRIDAY
     @holiday.included_dates.include?( @arb_day ).should eql( false )
   end
 
   it "should return the begin_date for half-day holidays" do
-    @h = Factory.build( :holiday, :user => @user, 
-                            :begin_time   =>  DateTime.now,
-                            :end_time     =>  nil)
-    @h.update_hook('half')
-    @h.save
-    @h.included_dates.include?( DateTime.now.to_date ).should eql( true )
+    @h = Factory(   :holiday, 
+                    :type => 'half',
+                    :user => @user, 
+                    :begin_time   =>  FRIDAY,
+                    :end_time     =>  nil)
+    @h.included_dates.include?( FRIDAY ).should eql( true )
     @h.included_dates.length.should eql( 1 )
   end
 end#des
@@ -346,7 +362,20 @@ describe "pushing a holiday to gcal" do
 
 end#desc
 
+describe "removing weekends from holiday range" do
+  before(:each)do
+    friday  = DateTime.now.change(:year => 2009, :month => 5, :day => 8 )
+    tuesday = DateTime.now.change(:year => 2009, :month => 5, :day => 12)
 
+    @holiday = Factory( :holiday,
+                        :type =>  'many',
+                        :begin_time =>  friday,
+                        :end_time   =>  tuesday )
+  end
+  it "should remove saturday and sunday from a holiday's range" do
+    @holiday.get_length.should == 3.0
+  end
+end
 
 
 

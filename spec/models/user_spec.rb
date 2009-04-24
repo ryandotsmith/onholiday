@@ -3,6 +3,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
 require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
 
+SUNDAY    = Date.today.change(:year => 2009, :month => 5, :day => 3 )
+MONDAY    = Date.today.change(:year => 2009, :month => 5, :day => 4 )
+TUESDAY   = Date.today.change(:year => 2009, :month => 5, :day => 5 )
+WEDNESDAY = Date.today.change(:year => 2009, :month => 5, :day => 6 )
+THURSDAY  = Date.today.change(:year => 2009, :month => 5, :day => 7 )
+FRIDAY    = Date.today.change(:year => 2009, :month => 5, :day => 8 )
+SATURDAY  = Date.today.change(:year => 2009, :month => 5, :day => 9 )
+
+
 describe User do
   before(:each) do
     @valid_attributes = {
@@ -49,23 +58,27 @@ end
 describe "Provide valuable statistics on holiday data" do
  
   before(:each) do
-    date_time = DateTime.now
+    date_time = MONDAY
     @user = Factory( :user )
-    @h1   = Factory.build( :holiday,:state => 1 , :user => @user,
-                                            :begin_time => date_time,
-                                            :end_time   => date_time + 2.days)
-    @h1.update_hook('whole')
-    @h1.save
-    @h2   = Factory.build( :holiday,:state => 1 , :user => @user,
-                                            :begin_time => date_time + 4.days,
-                                            :end_time   => date_time + 6.days)
-    @h2.update_hook('whole')
-    @h2.save
-    @h3   = Factory.build( :holiday,:state => 1, :leave_type => 'vacation', :user => @user,
-                                            :begin_time => date_time + 8.days,
-                                            :end_time   => date_time + 10.days)
-    @h3.update_hook('whole')
-    @h3.save
+    @h1   = Factory(  :holiday,
+                      :type  => 'many',
+                      :state => 1 , 
+                      :user => @user,
+                      :begin_time => date_time,
+                      :end_time   => date_time + 2.days)
+    @h2   = Factory(  :holiday,
+                      :type => 'many',
+                      :state => 1 , 
+                      :user => @user,
+                      :begin_time => date_time + 7.days,
+                      :end_time   => date_time + 9.days)
+    @h3   = Factory(  :holiday,
+                      :type => 'many',
+                      :state => 1, 
+                      :leave_type => 'vacation', 
+                      :user => @user,
+                      :begin_time => date_time + 14.days,
+                      :end_time   => date_time + 16.days)
   end#do 
 
   it "should return a list of dates of days included in all of user's holidays" do
