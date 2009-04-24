@@ -37,7 +37,11 @@ $(document).ready( function() {
 	
 	//User#show
 	$('#holiday_history_table').tablesorter(
-		{ widthFixed: true, widgets: ['zebra']
-	});
+		{ widthFixed: true, widgets: ['zebra']}
+	);
+	
+	$('#holiday_index_table').tablesorter(
+		{ widgets: ['zebra'] }
+	);
 
 })//END Application.js

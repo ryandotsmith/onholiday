@@ -1,6 +1,6 @@
-require 'facets/dictionary'
 class Holiday < ActiveRecord::Base
-
+  # using this attr to pass "whole", "half", "many"
+  attr_accessor :type
   pushes_to_gcal  :calendar         =>  'onholiday', 
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
@@ -19,20 +19,6 @@ class Holiday < ActiveRecord::Base
   def before_destroy
     self.delete_from_calendar
   end#before_destroy
-
-  def update_hook( type='whole' )
-    self.begin_time = begin_time.beginning_of_day
-    self.end_time ||= self.begin_time
-    self.end_time = end_time.end_of_day
-    # based on what type is, add_days will create new day-type-objects
-    # and add them to the holiday. This function requires that 
-    # begin_time is set to 0:0:0 and end_time is set to 23:59:59
-    self.add_days(type)
-    # once the day-type-objects have been created and added to the holiday, 
-    # the begin_time and end_time should be reset to reflect business hours.
-    # This needs to happen before the holiday gets pushed to google calendar.
-    self.adjust_time( type )
-  end
 
   ####################
   #self.get_leave_ratio 
@@ -142,10 +128,21 @@ class Holiday < ActiveRecord::Base
   # and then convert the difference to a float.
   def get_length
     length = 0.0
-      whole_days.each { length += 1.0 }
-      half_days.each { length += 0.5 }
+    difference  = ( self.end_time.to_datetime - self.begin_time.to_datetime).to_f
+    if difference.approx(0.1875, 0.01)
+      length = 0.5
+    elsif difference.approx(0.3958, 0.01)
+      length = 1.0
+    else 
+      self.included_dates.each {|date| length += 1.0 if date.working_day? }
+    end
     length
   end# end method
+  ####################
+  #to_f
+  def to_f
+    (self.end_time.to_datetime - self.begin_time.to_datetime).to_f
+  end#to_f
   ####################
   # add_days
   def add_days( type )
@@ -159,31 +156,30 @@ class Holiday < ActiveRecord::Base
   end#add_days
   ####################
   #adjust_time( type )
-  def adjust_time( type )
-    self.begin_time  = self.begin_time.beginning_of_day + 7.hours + 30.minutes
-    self.end_time    = self.end_time.beginning_of_day + 17.hours
+  def adjust_time!( type )
+    case type
+    when 'half'
+      self.begin_time = self.begin_time.to_datetime.change( :hour => 7,  :min => 30 )
+      self.end_time   = self.begin_time.to_datetime.change( :hour => 12, :min => 00 )
+    when 'whole'
+      self.begin_time = self.begin_time.to_datetime.change( :hour => 7, :min => 30 )
+      self.end_time   = self.begin_time.to_datetime.change( :hour => 17, :min => 00 )
+    when 'many'
+      self.begin_time = self.begin_time.to_datetime.change( :hour => 7, :min => 30 )
+      self.end_time   = self.end_time.to_datetime.change( :hour => 17, :min => 00 )
+    end
   end#adjust_time( type )
 
-  def included_dates()
-    array = []
-    n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
-    (0..n).each do |t|
-      array << ( begin_time.to_date + t.days )
-    end    
-    array
-  end
   ####################
   #included_dates
   #  returns a list of dates that are 
   #  the days between and including the begin_time and end_time
-  #    
   def included_dates
     array = []
-    n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
-    (0..n).each do |t|
-      array << ( begin_time.to_date + t.days)
+    begin_time.to_date.upto(end_time.to_date) do |date|
+      array << date if date.working_day?
     end
     array
   end#included_dates
-
+  
 end# end class
