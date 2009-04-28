@@ -43,7 +43,7 @@ class HolidaysController < ApplicationController
   def create
     @holiday = @user.holidays.build( params[:holiday] )
     respond_to do |format|
-      @holiday.update_hook( params[:length_opt] )
+      #@holiday.update_hook( params[:length_opt] )
       if @holiday.save()
         Postoffice.deliver_new_request( @holiday )        
         format.html { redirect_to user_path(@user) }

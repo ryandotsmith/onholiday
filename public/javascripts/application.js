@@ -13,20 +13,20 @@ $(document).ready( function() {
 	$("#holiday_begin_time").datepicker();
 	$("#holiday_end_time").datepicker();
 	
-	$("#length_opt_half").attr("checked", "checked"); 
+	$("#holiday_type_half").attr("checked", "checked"); 
 	$("input[@id=holiday_end_time]").val("")
 
-	$("input[@name='length_opt']").change(
+	$("input[@name='holiday[type]']").change(
 		function()
 		{
-		if ($("input[@id='length_opt_many']:checked").val())
+		if ($("input[@id='holiday_type_many']:checked").val())
 			$("#end_time").appear();
-		else if ($("input[@id='length_opt_whole']:checked").val())
+		else if ($("input[@id='holiday_type_whole']:checked").val())
 		{
 			$("#end_time").fade();
 			$("input[@id=holiday_end_time]").val("")
 		}
-		else if ($("input[@id='length_opt_half']:checked").val())
+		else if ($("input[@id='holiday_type_half']:checked").val())
 		{
 			$("#end_time").fade();
 			$("input[@id=holiday_end_time]").val("")			
