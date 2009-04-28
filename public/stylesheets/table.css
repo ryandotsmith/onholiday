@@ -1,7 +1,9 @@
 table.index_table {
 	font-family: Arial;
 	background-color:#99CCff;
-	width:100%;
+	min-width:600px;
+	margin-left:auto;
+	margin-right:auto;
 }
 table.index_table tr {
 	background-color: #99CCff;
