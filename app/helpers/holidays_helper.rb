@@ -10,7 +10,7 @@ module HolidaysHelper
     when -1
       return "<a style='color:red'>denied</a>"
     when 0
-      return "<a style='color:yellow'>pending</a>"
+      return "<a style='color:orange'>pending</a>"
     when 1
       return "<a style='color:green'>approved</a>"
     end#end case

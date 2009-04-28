@@ -1,6 +1,7 @@
 class Holiday < ActiveRecord::Base
   # using this attr to pass "whole", "half", "many"
   attr_accessor :type
+
   pushes_to_gcal  :calendar         =>  'onholiday', 
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
@@ -138,22 +139,7 @@ class Holiday < ActiveRecord::Base
     end
     length
   end# end method
-  ####################
-  #to_f
-  def to_f
-    (self.end_time.to_datetime - self.begin_time.to_datetime).to_f
-  end#to_f
-  ####################
-  # add_days
-  def add_days( type )
-    n = (end_time.to_datetime - begin_time.to_datetime).to_f.round
-    return if n < 0
-    n.times do |t|
-      self.whole_days.build if type == 'many'
-      self.whole_days.build if type == 'whole'
-      self.half_days.build  if type == 'half'
-    end#
-  end#add_days
+
   ####################
   #adjust_time( type )
   def adjust_time!( type )

@@ -22,9 +22,9 @@
 		<%= f.text_field :begin_time, :autocomplete => 'off' %>
 		</li>
 		
-		<li> Half Day      <%= f.radio_button :type , 'half', 'checked'  %></li>
+		<li> Half Day      <%= f.radio_button :type , 'half'  %></li>
 		<li> Whole Day     <%= f.radio_button :type , 'whole' %></li>
-		<li> Multiple Days <%= f.radio_button :type , 'many' %> </li>
+		<li> Multiple Days <%= f.radio_button :type , 'many'  %> </li>
 	
 		<li id="end_time" style='display:none'>
 	    <%= f.label 'End' %><br />
