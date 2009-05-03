@@ -20,6 +20,7 @@ module ApplicationHelper
     return object if object.length < 25 
 		object[0..24] + " ..."
   end#shorten
+
   def current_user
     #@user = User.find_by_login(session[:cas_user])
     User.find_by_login(session[:cas_user])

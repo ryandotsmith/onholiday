@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090311203129) do
+ActiveRecord::Schema.define(:version => 20090429160932) do
 
   create_table "half_days", :force => true do |t|
     t.integer  "holiday_id"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 20090311203129) do
 
   create_table "holidays", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "state",       :default => 0
+    t.integer  "state",        :default => 0
     t.string   "reviewed_by"
     t.datetime "reviewed_on"
     t.datetime "begin_time"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20090311203129) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "leave_length"
   end
 
   create_table "users", :force => true do |t|

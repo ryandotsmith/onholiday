@@ -19,12 +19,12 @@
 	
 		<li>
 	    <%= f.label 'Begin' %><br />
-		<%= f.text_field :begin_time, :autocomplete => 'off' %>
+		  <%= f.text_field :begin_time, :autocomplete => 'off' %>
 		</li>
 		
-		<li> Half Day      <%= radio_button :holiday, :type , 'half'  %></li>
-		<li> Whole Day     <%= radio_button :holiday, :type , 'whole' %></li>
-		<li> Multiple Days <%= radio_button :holiday, :type , 'many' %> </li>
+		<li><%= label_tag "Half Day "    %> <%= f.radio_button  :leave_length , 'half', :html => "checked"  %></li>
+		<li><%= label_tag "Whole Day "   %> <%= f.radio_button  :leave_length , 'whole' %></li>
+		<li><%= label_tag "Multiple Day "%> <%= f.radio_button  :leave_length , 'many'  %></li>
 	
 		<li id="end_time" style='display:none'>
 	    <%= f.label 'End' %><br />

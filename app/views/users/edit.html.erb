@@ -18,7 +18,8 @@
 							:default => @user.send("max_#{holiday}".to_sym) %>
 			</li>
 		<% end %>
-	    <% if current_user.is_admin%>
+		<%= link_to "Assign Holiday", new_user_holiday_url(@user)%>	
+	  <% if current_user.is_admin%>
 		<% end %> 
 	    <li>
 		    <%= f.submit "Update" %>

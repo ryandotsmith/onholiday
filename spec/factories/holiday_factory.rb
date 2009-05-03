@@ -1,6 +1,6 @@
 time = DateTime.now
 Factory.define :holiday do |h|
-  h.type
+  h.leave_length 'many'
   h.leave_type 'etc'
   h.description "who ha"
   h.state 0

@@ -12,15 +12,19 @@
 		<%= render 	:partial => 'users/admin/link_request_queue',
 					:locals  => { :user => @user }%>
 	</div><!--end pending_requests_queue-->
+
 	<div id="link_embedded_gcal">
 		<%= render :partial => 'link_embedded_gcal'%>
 	</div><!--end link_embedded_gcal-->
+
 	<h2>Your Pending Requests</h2>
+
 	<div id="pending_requests">
 		<%= render :partial => 'pending_requests', :locals => { :user => @user }%>		
 	</div><!--end pending_requests-->
 
 	<h2> You have used </h2>
+
 	<ul class="show">
 	<% @user.get_taken_holiday_time.each do |key,value|%>
 		<li><%= value %> of <%= @user.send("max_#{key}")%> days for <%= key %></li>
@@ -49,27 +53,21 @@
 </div><!--end inside_center-->
 
 <div id="waiting_divs" style="display:none">
-
 	<div id="admin_pending_requests" class="inside_waiting_div" style='display:none'>
 		<!--#####################################-->
 			<% if current_user.is_admin %>
 				<%= render 	:partial => 'users/admin/pending_requests', 
 							:locals => { :requests => Holiday.get_pending } %>
 			<% end %>
+			<div class="close">
+				<%= link_to_function "close", "$('#admin_pending_requests, #waiting_divs').fade();"%>
+			</div><!--end close-->
 		<!--#####################################-->	
-		<div class="close">
-			<%= link_to_function "close", "$('#admin_pending_requests, #waiting_divs').fade();"%>
-		</div><!--end close-->
-
 	</div><!--end pending_request_queue-->
-
 	<div id="embedded_gcal" class="inside_waiting_div" style='display:none'>
 		<%= render :partial => 'embedded_gcal'%>
-
 		<div class="close">
 			<%= link_to_function "close", "$('#embedded_gcal, #waiting_divs ').fade();"%>
-		</div><!--end close-->
-
+		</div><!--end close--> 
 	</div><!--end embedded_gcal-->
-
 </div><!-- end waiting_div s-->

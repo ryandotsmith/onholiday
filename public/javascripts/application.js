@@ -3,8 +3,8 @@
 $(document).ready( function() {
 
 	//User#show _pendtion_requests_queue
-	$("#waiting_divs").corners("5px");
-	$("#container").corners("15px");
+	$("#waiting_divs").corners("anti-alias mozilla");
+	$("#container").corners(" bottom 15px");
 	$(".info_navigation ul").corners("10px top")
 	/******************END******************/
 
@@ -16,17 +16,18 @@ $(document).ready( function() {
 	$("#holiday_type_half").attr("checked", "checked"); 
 	$("input[@id=holiday_end_time]").val("")
 
-	$("input[@name='holiday[type]']").change(
+	$("input[@name='holiday[leave_length]']").change(
 		function()
 		{
-		if ($("input[@id='holiday_type_many']:checked").val())
+		if ($("input[@id='holiday_leave_length_many']:checked").val())
 			$("#end_time").appear();
-		else if ($("input[@id='holiday_type_whole']:checked").val())
+
+		else if ($("input[@id='holiday_leave_length_whole']:checked").val())
 		{
 			$("#end_time").fade();
 			$("input[@id=holiday_end_time]").val("")
 		}
-		else if ($("input[@id='holiday_type_half']:checked").val())
+		else if ($("input[@id='holiday_leave_length_half']:checked").val())
 		{
 			$("#end_time").fade();
 			$("input[@id=holiday_end_time]").val("")			

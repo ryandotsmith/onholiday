@@ -1,19 +1,19 @@
 class Holiday < ActiveRecord::Base
-  # using this attr to pass "whole", "half", "many"
-  attr_accessor :type
 
-  pushes_to_gcal  :calendar         =>  'onholiday', 
+  pushes_to_gcal  :calendar         =>  'rubytest', 
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
+
   belongs_to :user
   has_many :whole_days
   has_many :half_days
 
+  validate :prohibit_time_travel
+  validate_on_create :not_nice_twice
+
   validates_presence_of :begin_time,  :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
 
-  validate :prohibit_time_travel
-  validate_on_create :not_nice_twice
 
   ####################
   #before_destroy
@@ -40,24 +40,6 @@ class Holiday < ActiveRecord::Base
     end
     sum
   end#def
-
-  # ~\  hackety hack
-  # until i can find a good solution for cleaning up 
-  # how rails handels error messages, I will change the 
-  # human readables to empty strings. 
-  #=> TODO: figure out how to axe the attribute name when
-  #=>       an error message is displayed in a view. 
-  def self.human_attribute_name(attribute_key_name)
-    if attribute_key_name.to_sym == :begin_time
-      " "
-    elsif attribute_key_name.to_sym == :end_time
-      " "
-    elsif attribute_key_name.to_sym == :description
-      " "
-    else
-      super
-    end
-  end#def
     
   ####################
   #self.get_holiday_types should get
@@ -71,17 +53,17 @@ class Holiday < ActiveRecord::Base
   ####################
   #prohibit_time_travel 
   def prohibit_time_travel
-    if end_time < begin_time
-      errors.add_to_base "Time travel is strictly prohibited! Correct ending date."
-    end
+    errors.add_to_base "Time travel is strictly prohibited! Correct ending date." if
+      !begin_time.nil? and end_time < begin_time
   end
+ 
   ####################
   #not_nice_twice
   def not_nice_twice
-    if in_range_of_existing
-      errors.add_to_base "This request contains a day that already belongs to one of your holidays."
-    end
+    errors.add_to_base "This request contains a day that already belongs to one of your holidays." if
+      !begin_time.nil? and in_range_of_existing
   end#not_nice_twice
+ 
   ####################
   #in_range_of_existing
   def in_range_of_existing
@@ -143,6 +125,7 @@ class Holiday < ActiveRecord::Base
   ####################
   #adjust_time( type )
   def adjust_time!( type )
+    return if self.begin_time.nil?
     case type
     when 'half'
       self.begin_time = self.begin_time.to_datetime.change( :hour => 7,  :min => 30 )
