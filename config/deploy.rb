@@ -1,8 +1,9 @@
 #############################################################
 #	Application
 #############################################################
-
-set :application, "onholiday"
+require 'capistrano/ext/multistage'
+set :stages, %w(production staging)
+set :application, "onholiday_#{stage}"
 set :deploy_to, "/var/app/#{application}"
 
 #############################################################
@@ -12,6 +13,8 @@ set :deploy_to, "/var/app/#{application}"
 default_run_options[:pty] = true
 set :use_sudo, false
 set :local_scm_command, "/usr/local/git/bin/git"
+set :keep_releases, 3
+set :git_enable_submodules, 1
 
 #############################################################
 #	Servers
