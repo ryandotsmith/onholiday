@@ -16,7 +16,7 @@ Rails::Initializer.run do |config|
       :lib => 'will_paginate', 
       :source => 'http://gems.github.com'
 end
-require 'rubygems'
+
 require 'monkey.rb'
 require 'facets/dictionary'
 require 'convert_data.rb'

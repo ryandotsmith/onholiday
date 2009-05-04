@@ -1,3 +1,4 @@
+require 'rubygems'
 class HolidayWorker < Workling::Base 
   ####################
   #publish
