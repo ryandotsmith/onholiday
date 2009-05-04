@@ -50,7 +50,7 @@ end
 God.watch do |w|
   script = "#{RAILS_ROOT}/script/workling_client"
   w.name = "onholiday-workling"
-  w.group = "mailit"
+  w.group = "onholiday"
   w.interval = 60.seconds
   w.start = "#{script} start"
   w.restart = "#{script} restart"
