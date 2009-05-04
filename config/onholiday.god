@@ -1,4 +1,5 @@
 # script/workling_starling_client
+RAILS_ENV = 'production'
 workling = File.join(File.dirname(__FILE__), '..', 'vendor', 'plugins', 'workling', 'script', 'listen.rb')
 options = {
   :app_name   => "workling",
