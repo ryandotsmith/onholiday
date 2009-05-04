@@ -1,1 +1,1 @@
-set :branch, "production"
+set :branch, "master"
