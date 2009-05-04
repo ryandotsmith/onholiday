@@ -7,4 +7,3 @@ config/database.yml
 config/gcal.yml
 coverage/*
 db/*.sqlite3
-config/environment.rb
