@@ -1,5 +1,8 @@
 class Holiday < ActiveRecord::Base
-
+  # 0.1875 != 0.5 , nevertheless, these calculations were decided
+  # to be accurate based upon our business logic. 
+  HALF_DAY  = 0.1875
+  WHOLE_DAY = 0.3958
   pushes_to_gcal  :calendar         =>  'rubytest', 
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
@@ -13,29 +16,22 @@ class Holiday < ActiveRecord::Base
 
   validates_presence_of :begin_time,  :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
-
-
-  ####################
-  #before_destroy
-  def before_destroy
-    self.delete_from_calendar
-  end#before_destroy
-
+  
   ####################
   #self.get_leave_ratio 
   def self.get_leave_ratio
-    max   = User.get_total_holiday_time
-    taken = Holiday.get_taken_leave
+    max   = User.get_total_holiday_time()
+    taken = Holiday.get_taken_leave()
     max / taken
   end
 
   ####################
   #self.get_remaining_leave should get
-  def self.get_taken_leave
+  def self.get_taken_leave()
     sum = 0.0
     Holiday.find(:all).each do |holiday|
       if holiday.state == 1
-        sum += holiday.get_length
+        sum += holiday.get_length()
       end
     end
     sum
@@ -81,22 +77,23 @@ class Holiday < ActiveRecord::Base
     Holiday.find_all_by_state(0).to_a
   end
   ####################
-  #approve( user ) should get called from 
+  #approve
   # update action in holiday controller. 
-  def approve( user )
+  def approve( current_user )
     #Postoffice.deliver_request_change( self, :approve )
-    self.push_to_calendar
-    self.reviewed_by = user.login
+    HolidayWorker.asynch_publish( :holiday_id => self.id, :user_id => self.user.id ) 
+    self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
     self.save!
   end
   ####################
-  #deny( user ) should get called from 
+  #deny
   # update action in holiday controller. 
-  def deny( user )
+  # current_user should be an "admin" since 
+  def deny( current_user )
     #Postoffice.deliver_request_change( self, :denied )
-    self.reviewed_by = user.login
+    self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = -1
     self.save!
@@ -109,12 +106,13 @@ class Holiday < ActiveRecord::Base
   #
   # This particular method will subtract the dates (which will yield the diff in sec)
   # and then convert the difference to a float.
-  def get_length
-    length = 0.0
+  def get_length()
+    length      = 0.0
     difference  = ( self.end_time.to_datetime - self.begin_time.to_datetime).to_f
-    if difference.approx(0.1875, 0.01)
+    # approx is a monkey patch ( look-out! ). it uses the concept of epsilon math. 
+    if difference.approx( HALF_DAY, 0.01)
       length = 0.5
-    elsif difference.approx(0.3958, 0.01)
+    elsif difference.approx( WHOLE_DAY, 0.01)
       length = 1.0
     else 
       self.included_dates.each {|date| length += 1.0 if date.working_day? }
@@ -123,7 +121,7 @@ class Holiday < ActiveRecord::Base
   end# end method
 
   ####################
-  #adjust_time( type )
+  #adjust_time
   def adjust_time!( type )
     return if self.begin_time.nil?
     case type
@@ -137,7 +135,7 @@ class Holiday < ActiveRecord::Base
       self.begin_time = self.begin_time.to_datetime.change( :hour => 7, :min => 30 )
       self.end_time   = self.end_time.to_datetime.change( :hour => 17, :min => 00 )
     end
-  end#adjust_time( type )
+  end#adjust_time
 
   ####################
   #included_dates

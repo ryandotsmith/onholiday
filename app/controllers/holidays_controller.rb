@@ -58,8 +58,8 @@ class HolidaysController < ApplicationController
   def update
     @holiday = Holiday.find(params[:id])
     # need to factor these into a method in the model !! 
-      HolidayWorker.asynch_publish( :holiday_id => @holiday.id, :user_id => current_user.id ) if params[:approved] == "true"
-      @holiday.deny( current_user ) if params[:deny] == "true"
+      @holiday.approve( current_user) if params[:approved] == "true"
+      @holiday.deny( current_user )   if params[:deny] == "true"
     ### 
     respond_to do |format|
       if @holiday.update_attributes(params[:holiday])

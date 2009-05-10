@@ -1,16 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
-require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
-
-
-### Factory :holiday => defaults[ end_time - begin_time == 2.days]
-SUNDAY    = Date.today.change(:year => 2009, :month => 5, :day => 3 )
-MONDAY    = Date.today.change(:year => 2009, :month => 5, :day => 4 )
-TUESDAY   = Date.today.change(:year => 2009, :month => 5, :day => 5 )
-WEDNESDAY = Date.today.change(:year => 2009, :month => 5, :day => 6 )
-THURSDAY  = Date.today.change(:year => 2009, :month => 5, :day => 7 )
-FRIDAY    = Date.today.change(:year => 2009, :month => 5, :day => 8 )
-SATURDAY  = Date.today.change(:year => 2009, :month => 5, :day => 9 )
 
 describe "creating a holiday" do
   before(:each) do
@@ -377,5 +365,13 @@ describe "removing weekends from holiday range" do
   end
 end
 
+describe "sending holiday data to google calendars" do
 
+  it "should push to calendar on create" do
+      holiday = Factory(:holiday)
+      HolidayWorker.should_receive(:asynch_publish)
+      holiday.approve( Factory( :user , :login => "jb") )      
+  end
+  
+end
 

@@ -1,17 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-require File.expand_path(File.dirname(__FILE__) + '/../factories/holiday_factory')
-require File.expand_path(File.dirname(__FILE__) + '/../factories/user_factory')
-
-SUNDAY    = Date.today.change(:year => 2009, :month => 5, :day => 3 )
-MONDAY    = Date.today.change(:year => 2009, :month => 5, :day => 4 )
-TUESDAY   = Date.today.change(:year => 2009, :month => 5, :day => 5 )
-WEDNESDAY = Date.today.change(:year => 2009, :month => 5, :day => 6 )
-THURSDAY  = Date.today.change(:year => 2009, :month => 5, :day => 7 )
-FRIDAY    = Date.today.change(:year => 2009, :month => 5, :day => 8 )
-SATURDAY  = Date.today.change(:year => 2009, :month => 5, :day => 9 )
-
-
 describe User do
   before(:each) do
     @valid_attributes = {

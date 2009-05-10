@@ -29,5 +29,6 @@ class Postoffice < ActionMailer::Base
     @recipients =   user.email.to_s unless user.email.nil?
     @from       =   'onHoliday@gsenterprises.com'
     @sent_on    =   Time.now
+    @body["request"]  = request
   end
 end#end class

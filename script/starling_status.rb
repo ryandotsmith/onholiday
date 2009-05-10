@@ -1,7 +1,8 @@
+RAILS_ENV='production'
+
 require 'pp'
 
 puts '=> Loading Rails...'
-RAILS_ENV='production'
 require File.dirname(__FILE__) + '/../config/environment'
 require File.dirname(__FILE__) + '/../vendor/plugins/workling/lib/workling/remote/invokers/basic_poller'
 require File.dirname(__FILE__) + '/../vendor/plugins/workling/lib/workling/routing/class_and_method_routing'
