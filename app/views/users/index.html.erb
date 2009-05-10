@@ -1,11 +1,14 @@
-<table class="index_table">
+<table id='users_index_table' class="tablesorter">
 <caption> used / available </caption>
+<thead>
 <tr>
-    <th>Login</th>
+  <th>Login</th>
 	<% @users.first.get_taken_holiday_time.each do |key,value|%>
 		<th><%= key %> </th>
 	<% end %>
 </tr>
+</thead>
+<tbody>
 <% for user in @users %>
 <tr>
     <td><%= link_to "#{user.login}",edit_user_path(user) %></td>
@@ -15,4 +18,5 @@
 </tr>
 
 <% end %>
+</tbody>
 </table>

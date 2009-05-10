@@ -41,8 +41,7 @@ $(document).ready( function() {
 		{ widthFixed: true, widgets: ['zebra']}
 	);
 	
-	$('#holiday_index_table').tablesorter(
-		{ widgets: ['zebra'] }
-	);
-
+	$('#holiday_index_table').tablesorter({ widgets: ['zebra'] });
+	
+	$('#users_index_table').tablesorter({ widgets: ['zebra'] });
 })//END Application.js

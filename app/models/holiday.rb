@@ -3,7 +3,8 @@ class Holiday < ActiveRecord::Base
   # to be accurate based upon our business logic. 
   HALF_DAY  = 0.1875
   WHOLE_DAY = 0.3958
-  pushes_to_gcal  :calendar         =>  'rubytest', 
+
+  pushes_to_gcal  :calendar         =>  'onholiday', 
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
 
