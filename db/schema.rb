@@ -11,12 +11,6 @@
 
 ActiveRecord::Schema.define(:version => 20090429160932) do
 
-  create_table "half_days", :force => true do |t|
-    t.integer  "holiday_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "holidays", :force => true do |t|
     t.integer  "user_id"
     t.integer  "state",        :default => 0
@@ -39,12 +33,6 @@ ActiveRecord::Schema.define(:version => 20090429160932) do
     t.integer  "max_vacation", :default => 10
     t.integer  "max_etc",      :default => 10
     t.boolean  "is_admin",     :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "whole_days", :force => true do |t|
-    t.integer  "holiday_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

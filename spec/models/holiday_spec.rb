@@ -262,8 +262,8 @@ describe "creating two holidays on one calendar day" do
       @holiday1 = Factory.build(  :holiday,  
                                   :leave_length => 'whole',
                                   :user => @user,
-                                  :begin_time => DateTime.now,
-                                  :end_time   => DateTime.now + 2.days)
+                                  :begin_time => MONDAY,
+                                  :end_time   => WEDNESDAY)
 
       @holiday1.in_range_of_existing.should eql( false )
       @holiday1.save.should eql( true )
@@ -271,8 +271,8 @@ describe "creating two holidays on one calendar day" do
       @holiday2 = Factory.build(  :holiday,  
                                   :leave_length => 'whole',
                                   :user => @user,
-                                  :begin_time => DateTime.now,
-                                  :end_time   => DateTime.now + 3.days)              
+                                  :begin_time => MONDAY,
+                                  :end_time   => THURSDAY )              
       @holiday2.in_range_of_existing.should eql( true )
       @holiday2.save
       @holiday2.should_not be_valid

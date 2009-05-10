@@ -7,7 +7,7 @@ module RevertData
         holiday.adjust_time!('half') if holiday.half_days.length > 0
         holiday.adjust_time!('whole') if holiday.whole_days.length == 1
         holiday.adjust_time!('many') if holiday.whole_days.length > 1
-        holiday.save!
+        holiday.save( false )
       end
     end#update_time
   end
