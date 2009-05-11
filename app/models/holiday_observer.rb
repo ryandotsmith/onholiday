@@ -4,8 +4,8 @@ class HolidayObserver < ActiveRecord::Observer
     holiday.adjust_time!( holiday.leave_length )
   end
 
-  def before_destroy
-    self.delete_from_calendar
+  def before_destroy( holiday )
+    holiday.delete_from_calendar
   end
 
 end
