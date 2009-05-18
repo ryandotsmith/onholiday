@@ -82,7 +82,7 @@ class Holiday < ActiveRecord::Base
   # update action in holiday controller. 
   def approve( current_user )
     #Postoffice.deliver_request_change( self, :approve )
-    HolidayWorker.asynch_publish( :holiday_id => self.id, :user_id => self.user.id ) 
+    HolidayWorker.asynch_publish( :holiday_id => self.id ) 
     self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
