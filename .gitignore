@@ -5,5 +5,7 @@ doc/api
 doc/app
 config/database.yml
 config/gcal.yml
+config/workling.yml
+config/onholiday.god
 coverage/*
 db/*.sqlite3

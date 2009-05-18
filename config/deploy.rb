@@ -58,6 +58,8 @@ namespace :deploy do
     task :symlink_shared do
       run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
       run "ln -nfs #{shared_path}/config/gcal.yml #{release_path}/config/gcal.yml"
+      run "ln -nfs #{shared_path}/config/workling.yml #{release_path}/config/workling.yml"
+      run "ln -nfs #{shared_path}/config/onholiday.god #{release_path}/config/onholiday.god"
       run "touch #{release_path}/config/environment.rb"
       run "ln -nfs #{shared_path}/config/environment.rb #{release_path}/config/environment.rb"
     end
