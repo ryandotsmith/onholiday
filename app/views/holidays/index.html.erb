@@ -1,22 +1,25 @@
+<% content_for :title, "holidays"%>
 <table id='holiday_index_table' class='tablesorter'>
 	<thead>
-  <tr>
-	<th>Date Submitted</th>
-	<th>User</th>
-	<th>Type</th>
-	<th>Days Requested</th>
-	<th>Length</th>
-	<th>Status</th>
-	<th>Description</th>
-	<th>Reviewed By </th>
-  </tr>
+	  <tr>
+			<th>Details</th>
+			<th>Date Submitted</th>
+			<th>User</th>
+			<th>Type</th>
+			<th>Days Requested</th>
+			<th>Length</th>
+			<th>Status</th>
+			<th>Description</th>
+			<th>Reviewed By </th>
+	  </tr>
 	</thead>
 
 	<tbody>
 <% for holiday in @holidays %>
 	<tr>
+		<td><%= link_to "details", holiday %></td>
 		<td><%= holiday.created_at.to_s%></td>
-		<td><%= link_to "#{holiday.user.name}", holiday %></td>
+		<td><%= link_to "#{holiday.user.name}", holidays_url(:search => holiday.user.login) %></td>
 		<td><%= holiday.leave_type%></td>
 		<td><%= holiday.begin_time.to_s + " - " + holiday.end_time.to_s%></td>
 		<td><%= holiday.get_length%></td>

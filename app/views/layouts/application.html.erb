@@ -2,15 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>Users: <%= controller.action_name %></title>
-	<% get_css.each do |sheet| %>
+	<title><%= yield :title %></title>
+	<link rel="icon" type="image/vnd.microsoft.icon" href="/images/icon.png">
+	<% get_css(controller).each do |sheet| %>
   		<%= stylesheet_link_tag sheet %>
 	<% end %>
 	<% get_js.each do |js|%>
 		<%= javascript_include_tag js %>
-	<% end%>
-  
- 	
+	<% end%> 	
 </head>
 
 <body>
@@ -20,8 +19,8 @@
 	
 	<div id="container">
 		<div id="info_bar">
-		<%= flash[:warning]%>
-		<%= flash[:notice] %>
+			<%= flash[:warning]%>
+			<%= flash[:notice] %>
 		</div>
 		<%= render :partial => "/global/navigation" %>
 		<%= yield  %>

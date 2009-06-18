@@ -1,43 +1,34 @@
 <div id="left">
-	
 </div><!--end left-->
-<div id="right">
-	
+
+<div id="right">	
 </div><!--end right-->
 
 <div id="center">
 	<%= error_messages_for :holiday, :message => nil, :header_message => nil,
 	 									:object_name => ""%>
 
-	<ul class="form">
-	<% form_for([@user,@holiday], :html => {:class => "user_form"}) do |f| %>
+	<% form_for [@user,@holiday] do |f| %>
+		<fieldset>
+		<%= f.label :leave_type, "What type of Holiday"%>
+		<%= f.select(:leave_type, Holiday.get_holiday_types )%>
+
+    <%= f.label :begin_time, "Begin Date" %>
+	  <%= f.text_field :begin_time, :autocomplete => 'off' %>
+		<%= f.label :leave_length, "Length"%>
+		<a>half</a><%= f.radio_button  :leave_length , 'half', :checked => true %>
+		<a>whole</a><%= f.radio_button  :leave_length , 'whole' %>
+		<a>span</a><%= f.radio_button  :leave_length , 'many'  %>
 	
-		<li>
-			<%= f.label :leave_type%>
-			<%= f.select(:leave_type, Holiday.get_holiday_types )%>
-		</li>
+		<div id="end_time" style='display:none;'>
+	    <%= f.label :end_time, 'End' %>
+			<%= f.text_field :end_time , :autocomplete => 'off'%>			
+		</div><!--end end_time-->
 	
-		<li>
-	    <%= f.label 'Begin' %><br />
-		  <%= f.text_field :begin_time, :autocomplete => 'off' %>
-		</li>
-		
-		<li><%= label_tag "Half Day "    %> <%= f.radio_button  :leave_length , 'half', :checked => true %></li>
-		<li><%= label_tag "Whole Day "   %> <%= f.radio_button  :leave_length , 'whole' %></li>
-		<li><%= label_tag "Multiple Day "%> <%= f.radio_button  :leave_length , 'many'  %></li>
-	
-		<li id="end_time" style='display:none'>
-	    <%= f.label 'End' %><br />
-		<%= f.text_field :end_time , :autocomplete => 'off'%>
-		</li>
-	
-		<li>
-		<%= f.label 'Description' %><br />
+		<%= f.label 'Description' %>
 		<%= f.text_area :description, :size => '40x5' %>		
-		</li>
+		</fieldset>
 	
-		<li><%= f.submit "Submit" %></li>
-	</ul>
-	<% end %>
-	
+		<%= f.submit "Submit" %>
+	<% end %>	
 </div><!--end center-->

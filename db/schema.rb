@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090429160932) do
+ActiveRecord::Schema.define(:version => 20090618165756) do
 
   create_table "holidays", :force => true do |t|
     t.integer  "user_id"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20090429160932) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "leave_length"
+    t.string   "action_notes"
   end
 
   create_table "users", :force => true do |t|

@@ -10,12 +10,7 @@
 	<li><%= f.label 'Leave Type'%></li>
 	<li><%= f.select(:leave_type, Holiday.get_holiday_types, 
 						:selected => @holiday.leave_type.to_s )%></li>
-
-	<li></li>
-	<li></li>
-	<li></li>
-
-	  <%= f.error_messages %>
+  <%= f.error_messages %>
 
 	    <%= f.submit "Update" %>
 	<% end %>

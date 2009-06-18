@@ -1,0 +1,4 @@
+<% remote_form_for holiday, :html => { :method => :put } do |f|%>
+	<%= f.text_field :action_notes %>
+	<%= f.submit "add note"%> <%= link_to_function "not now", "$('#action_notes').fade();"%>
+<% end %>

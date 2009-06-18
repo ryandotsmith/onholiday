@@ -3,7 +3,6 @@ require 'casclient/frameworks/rails/filter'
 
 class HolidaysController < ApplicationController
 
-
 ######################################################
   before_filter CASClient::Frameworks::Rails::Filter
   before_filter :login
@@ -13,7 +12,8 @@ class HolidaysController < ApplicationController
 ######################################################  
 
   def index
-    @holidays = Holiday.paginate :page => params[:page], :order => 'created_at DESC', :per_page => 10
+    #@holidays = Holiday.paginate :page => params[:page], :order => 'created_at DESC', :per_page => 10
+    @holidays = Holiday.search(params[:search], params[:page])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @holidays }
@@ -65,7 +65,7 @@ class HolidaysController < ApplicationController
       if @holiday.update_attributes(params[:holiday])
         format.html { redirect_to(@holiday) }
         format.xml  { head :ok }
-        format.js   
+        format.js
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @holiday.errors, :status => :unprocessable_entity }

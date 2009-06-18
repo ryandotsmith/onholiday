@@ -1,28 +1,37 @@
+<% content_for :title,  "[#{@holiday.user.name}] holiday"  %>
+
 <div id="left">
-	
+	<% if current_user.is_admin%>
+		<%= link_to "#{image_tag( 'edit_holiday_button.png')}", edit_holiday_path %>
+		<%= link_to "#{image_tag( 'delete_holiday_button.png')}", @holiday, :confirm => 'Are you sure?', :method => :delete %>
+	<% end %>		
 </div><!--end left-->
 <div id="right">
 	
 </div><!--end left-->
-<div id="center">
-	<h1><%= get_state( @holiday ) %></h1>
-	
-	<h1><%=@holiday.user.name%> has requested 
-		<%= @holiday.get_length%> days of 
-		<%= @holiday.leave_type%>
-	</h1>
-	<p>{ <%= @holiday.description %> }</p>
-			<h2><%= @holiday.user.name%> has</h2> 
-			<p>
-			<% 	@holiday.user.get_remaining_holiday_time.each do |key,value|%>
-					<%= value || 0 %>
-		  	 	 of <%= key %> remaining <br />
-			<% end %>
-			</p>
-	<% if current_user.is_admin%>
-	<%= link_to 'Edit', edit_holiday_path %></td>    
-	<%= link_to 'Delete', @holiday, :confirm => 'Are you sure?', :method => :delete %></td>    
-	<% end %>	
-</div><!--end left-->
+<div id="center">	
+    <h1><%=@holiday.user.name%></h1>
+		<table>
+		<tbdoy>
+		  <tr>
+		    <td>Status</td>
+		    <td><%= get_state( @holiday ) %></td>
+		  </tr>
+		  <tr>
+		    <td>Length</td>
+		    <td><%= pluralize @holiday.get_length, "day" %></td>
+		  </tr>
+		  <tr>
+		    <td>Type</td>
+		    <td><%= @holiday.leave_type%></td>
+		  </tr>
+		  <tr>
+		    <td>Description</td>
+		    <td><%= @holiday.description %></td>
+		  </tr>
+		</tbody>
+		</table>
+		</div><!--end days_remaining-->
+</div><!--end center-->
 
 

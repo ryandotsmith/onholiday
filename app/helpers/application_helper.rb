@@ -1,12 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  def get_css
-    [ 'std',
-      'list',
-      'table',
-      'form',
-      'theme/ui.all.css',
-      'tablesort/tablesort.css']
+  def get_css( controller )
+    [controller.controller_name, 'application','tablesort/tablesort.css','theme/ui.all.css','table']
   end
 
   def get_js
@@ -16,10 +11,17 @@ module ApplicationHelper
       'jquery.tablesorter.min.js']
   end
   
-  def shorten( object )
-    return object if object.length < 25 
-		object[0..24] + " ..."
+  def shorten( attr , len=24)
+    attr.length <= len ? attr : attr[0..len] + "... "  
   end#shorten
+
+  def n_a_ify( string )
+    string.length.zero? ? %W( NA ) : string
+  end
+  
+  def date_ify( date )
+    date.strftime('%m/%d/%Y')
+  end
 
   def current_user
     #@user = User.find_by_login(session[:cas_user])

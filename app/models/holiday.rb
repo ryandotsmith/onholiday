@@ -3,8 +3,9 @@ class Holiday < ActiveRecord::Base
   # to be accurate based upon our business logic. 
   HALF_DAY  = 0.1875
   WHOLE_DAY = 0.3958
+  RAILS_ENV == "production" ? calendar = "onholiday" : calendar = "rubytest"
 
-  pushes_to_gcal  :calendar         =>  'onholiday', 
+  pushes_to_gcal  :calendar         =>  calendar, 
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
 
@@ -17,7 +18,16 @@ class Holiday < ActiveRecord::Base
 
   validates_presence_of :begin_time,  :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
-  
+
+  # i expect search to only be called in code when the search parameter 
+  # is built. I am not ready to have the search parameter be user input.
+  def self.search(search, page)
+    user = User.find_by_login(search)
+    return paginate( :page => page ) if user.nil?
+    paginate :per_page => 20, :page => page,
+             :conditions => ['user_id like ?', "%#{user.id}%"], :order => 'user_id'
+  end
+ 
   ####################
   #self.get_leave_ratio 
   def self.get_leave_ratio

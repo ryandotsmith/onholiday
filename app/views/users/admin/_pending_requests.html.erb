@@ -24,17 +24,17 @@
 
 		<td><%= button_to_remote "approve",
 		 							:url	=>	{   :controller	=>	'holidays',
-													:action		=>	'update',
-													:id			=>	request.id,
-													:approved	=>  true },
+																:action		=>	'update',
+																:id			=>	request.id,
+																:approved	=>  true },
 									:method	  => 'put',
 									:loading  => 	"$('##{request.id.to_s + '_button'}').appear();" %>
 		</td>
 		<td><%= button_to_remote "deny",
 		 							:url	=>	{   :controller	=>	'holidays',
-													:action		=>	'update',
-													:id			=>	request.id,
-													:deny		=>	true },
+																:action		=>	'update',
+																:id			=>	request.id,
+																:deny		=>	true },
 									:method	=>	'put' %>
 		</td>
 		<td id= "<%=request.id.to_s + '_button'%>" style="display:none;"  >

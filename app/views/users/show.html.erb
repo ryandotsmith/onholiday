@@ -1,21 +1,21 @@
+<% content_for :title, "[#{@user.name}] profile"%>
 <div id="left">
-	<div class="navigation">
-		<%= link_to "Request Holiday", new_user_holiday_url(@user)%>	
-	</div><!--end -->
+		<%= link_to "#{image_tag('new_holiday_button.png')}", new_user_holiday_url(@user)%>	
+	<ul>
+		<li id="link_request_queue">
+			<%= render 	:partial => 'users/admin/link_request_queue',
+						:locals  => { :user => @user }%>
+		</li><!--end pending_requests_queue-->
+
+		<li id="link_embedded_gcal">
+			<%= render :partial => 'link_embedded_gcal'%>
+		</li><!--end link_embedded_gcal-->
+	<ul>
 </div>
 
 <div id="center">
 
 	<h1><%=h @user.name %></h1>
-
-	<div id="link_request_queue">
-		<%= render 	:partial => 'users/admin/link_request_queue',
-					:locals  => { :user => @user }%>
-	</div><!--end pending_requests_queue-->
-
-	<div id="link_embedded_gcal">
-		<%= render :partial => 'link_embedded_gcal'%>
-	</div><!--end link_embedded_gcal-->
 
 	<h2>Your Pending Requests</h2>
 
@@ -53,6 +53,9 @@
 </div><!--end inside_center-->
 
 <div id="waiting_divs" style="display:none">
+	<div id="action_notes"style='display:none'>
+		
+	</div><!--end action_comments-->
 	<div id="admin_pending_requests" class="inside_waiting_div" style='display:none'>
 		<!--#####################################-->
 			<% if current_user.is_admin %>

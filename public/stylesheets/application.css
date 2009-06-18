@@ -1,3 +1,5 @@
+/*******    Atoms 			*/
+
 body {
 	padding:0;
 	margin:0;
@@ -5,32 +7,37 @@ body {
 	font-family:helvetica;
 	
 }
-
-h1 a {
-	color:inherit;
-	text-decoration:none;
+a	{
+	font-size:13px;
+	color:#565656;
 }
-h1 a:hover {
-	color:green;
+h1{
 }
-
-a.ast {
-	font-family:times;
-	color:green;
-	padding-top:10px;
-	font-size:3em;
-	float:left;
+h2 {
+	font-size:15px;
 }
-
-#show_holiday_details {
-	background-color:grey;
-	margin-left:1em;
-	margin-right:1em;
+img {
+	border:none;
 }
-
+form {
+  margin-left:15px;
+  font:16pt Times;
+}
+label {
+  float: none;
+  text-align:left;
+  display:block;
+  color: gray;
+  font: 20px Arial;
+	margin-top:10px;
+}
+fieldset{
+	border:none;
+}
+/*******    Structure 			*/
 #header {
 	width:100%;
-	height:150px;
+	height:100px;
 	background-color: #2C211B;
 }
 #header img{
@@ -41,13 +48,13 @@ a.ast {
 	text-decoration:none;
 }
 #info_bar {
-	width:800px;
+	width:900px;
 	height:50px;
 	background: #7E71D1;
 	text-align:center;
 }
 .info_navigation {
-	width:800px;
+	width:900px;
 	background: #7E71D1;
 	text-align:center;
 }
@@ -78,7 +85,8 @@ a.ast {
 }
 
 #container {
-	width: 800px;
+	width: 900px;
+	min-height:600px;
 	margin:0 auto;
 	background-color: #DEDEDE;
 	color: #333;
@@ -87,21 +95,36 @@ a.ast {
 #center {
 	position:relative;
 	width:500px;
-	margin-left: 200px;
+	margin-left: 250px;
+}
+#left {
+	float: left;
+	width: 200px;
+	margin-top:2em;
 	padding: 1em;
+}
+#right {
+	float: right;
+	width: 250px;
+	margin: 0;
+	padding: 1em;
+}
+#footer {
+
 }
 #waiting_divs {
 	position:absolute;
-	top:155px;
+	top:100px;
 	padding:15px;
 	background:#616161;
+	margin-left:200px;
 }
 .inside_waiting_div {
 	position:relative;
-	background-color:#2E306B;
+	background-color:#DEDEDE;
 	min-height:300px;
-	width:770px;
 	padding-bottom:25px;
+	margin:0 auto;
 }
 #waiting_divs .close a {
 	position:absolute;
@@ -116,45 +139,6 @@ a.ast {
 	color:white;
 	font-size:16pt;
 }
-#center h1 {
-	font-size:14pt;
-}
-#center h2 {
-	color:gray;
-	font-size:9pt;
-}
-#left {
-	float: left;
-	width: 160px;
-	margin: 0;
-	padding: 1em;
-}
-#right {
-	float: right;
-	width: 250px;
-	margin: 0;
-	padding: 1em;
-}
-#footer {
-
-}
-.page_object {
-	border: 1px solid black;
-}
-.tips h3 {
-	font-weight:bold;
-	font-color:#382D24;
-	font-size:1.9em;
-}
-.tips ul {
-	list-style:none;
-	text-decoration:none;
-}
-.tips li {
-	padding:.3em;
-	font-size:.95em;
-}
-
 .navigation {
 	padding-top:3em;
 	margin-bottom:2em;
@@ -172,6 +156,7 @@ a.ast {
 }
 
 
+/************** 				Errors      */
 .fieldWithErrors {
   padding:2px;
   background-color:#B23E32;
