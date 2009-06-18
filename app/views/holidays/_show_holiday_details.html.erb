@@ -1,12 +1,6 @@
 <td><%= holiday.created_at %></td>
-<% if holiday.state == 1 %>
-	<td> approved </td> 
-<% elsif holiday.state == 0 %>
-	<td> pending </td>
-<% elsif holiday.state == -1 %>
-	<td>denied</td>
-<% end %>
-<td><%= holiday.description[0..24] %></td>
+<td><%= link_to in_words( holiday.state ),"#", :class => 'cluetip', :title => holiday.action_notes %></td>
+<td><%= shorten holiday.description %></td>
 <td><%= length_of_holiday_in_words( holiday) %></td>
 <td><%= holiday.begin_time %></td>
 <td><%= holiday.end_time %></td>

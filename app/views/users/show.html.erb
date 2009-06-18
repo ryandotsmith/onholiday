@@ -1,18 +1,27 @@
 <% content_for :title, "[#{@user.name}] profile"%>
 <div id="left">
-		<%= link_to "#{image_tag('new_holiday_button.png')}", new_user_holiday_url(@user)%>	
+		<%= link_to "#{image_tag('new_holiday_request_button.png')}", new_user_holiday_url(@user)%>	
 	<ul>
+		<% if current_user.is_admin %>
 		<li id="link_request_queue">
 			<%= render 	:partial => 'users/admin/link_request_queue',
 						:locals  => { :user => @user }%>
 		</li><!--end pending_requests_queue-->
-
+		<% end %>
 		<li id="link_embedded_gcal">
 			<%= render :partial => 'link_embedded_gcal'%>
 		</li><!--end link_embedded_gcal-->
+	<li id='tips_link'><%= link_to_function "Pro Tips", "$('#tips').slideDown();"%></li>
+	<div id='tips'class="protip" style='display:none;'>
+		<li>Hover over the status field to view notes regarding your request</li>
+		<%= link_to_function "close", "$('#tips').slideUp();"%>
 	<ul>
-</div>
 
+	</div><!--end protip-->
+
+</div>
+<div id="right">
+</div><!--end right-->
 <div id="center">
 
 	<h1><%=h @user.name %></h1>

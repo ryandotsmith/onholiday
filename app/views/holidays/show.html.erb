@@ -15,7 +15,7 @@
 		<tbdoy>
 		  <tr>
 		    <td>Status</td>
-		    <td><%= get_state( @holiday ) %></td>
+		    <td><%= in_words( @holiday.state ) %></td>
 		  </tr>
 		  <tr>
 		    <td>Length</td>
@@ -29,6 +29,11 @@
 		    <td>Description</td>
 		    <td><%= @holiday.description %></td>
 		  </tr>
+		  <tr>
+		    <td>Admin Notes</td>
+		    <td><%= @holiday.action_notes %></td>
+		  </tr>
+
 		</tbody>
 		</table>
 		</div><!--end days_remaining-->

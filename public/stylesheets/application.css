@@ -34,6 +34,9 @@ label {
 fieldset{
 	border:none;
 }
+td {
+	margin-left:10px;
+}
 /*******    Structure 			*/
 #header {
 	width:100%;
@@ -48,13 +51,13 @@ fieldset{
 	text-decoration:none;
 }
 #info_bar {
-	width:900px;
+	width: 1000px;
 	height:50px;
 	background: #7E71D1;
 	text-align:center;
 }
 .info_navigation {
-	width:900px;
+	width: 1000px;
 	background: #7E71D1;
 	text-align:center;
 }
@@ -85,7 +88,7 @@ fieldset{
 }
 
 #container {
-	width: 900px;
+	width: 1000px;
 	min-height:600px;
 	margin:0 auto;
 	background-color: #DEDEDE;
@@ -105,8 +108,8 @@ fieldset{
 }
 #right {
 	float: right;
-	width: 250px;
-	margin: 0;
+	width: 200px;
+	margin-top:2em;
 	padding: 1em;
 }
 #footer {
@@ -155,6 +158,21 @@ fieldset{
 	text-decoration:none;
 }
 
+/************** 				Special      */
+
+.protip{
+	background-color:#F3ECBA;
+	padding:5px;
+
+}
+.protip h3 {
+	font-size:15px;
+}
+.protip ul {
+}
+.protip li {
+	font-size:13px;
+}
 
 /************** 				Errors      */
 .fieldWithErrors {

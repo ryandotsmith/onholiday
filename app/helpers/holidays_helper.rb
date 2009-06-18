@@ -1,10 +1,21 @@
 module HolidaysHelper
 
-  ####################
-  #get_state() should get
-  #=> a holiday object 
-  # and should return
-  #=>
+  def display_search_params( params )
+    "#{params[:search]}'s holidays. #{link_to 'all users', holidays_path }" if
+      params[:search]
+  end
+
+  def in_words( state )
+    case state
+    when -1
+      return "denied"
+    when 0
+      return "pending"
+    when 1
+      return "approved"
+    end#end case
+  end
+
   def get_state( holiday )
     case holiday.state
     when -1

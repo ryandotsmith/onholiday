@@ -5,16 +5,18 @@
 	
 </div><!--end right-->
 <div id="center">
-	<ul class ="form">
 	<% form_for([@user,@holiday], :html => {:class => 'user_form'}) do |f| %>
-	<li><%= f.label 'Leave Type'%></li>
-	<li><%= f.select(:leave_type, Holiday.get_holiday_types, 
-						:selected => @holiday.leave_type.to_s )%></li>
   <%= f.error_messages %>
+	<fieldset>
+	<%= f.label :action_notes, "Notes"%>
+	<%= f.text_field :action_notes %>
 
-	    <%= f.submit "Update" %>
+	<%= f.label :leave_type, 'Leave Type'%>	
+	<%= f.select(:leave_type, Holiday.get_holiday_types, 
+						:selected => @holiday.leave_type.to_s )%>
+	</fieldset>
+  <%= f.submit "Update" %>
 	<% end %>
-	</ul>
 	
 </div><!--end center-->
 

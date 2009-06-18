@@ -1,14 +1,23 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+
   def get_css( controller )
-    [controller.controller_name, 'application','tablesort/tablesort.css','theme/ui.all.css','table']
+    [ controller.controller_name, 
+      'application',
+      'tablesort/tablesort.css',
+      'theme/ui.all.css',
+      'table',
+      'list',
+      'jquery.cluetip.css' ]
   end
 
-  def get_js
+  def get_js( controller )
     [ :defaults,
+      controller.controller_name, 
       'jquery.corners.js',
       'jquery.easing.min.js',
-      'jquery.tablesorter.min.js']
+      'jquery.tablesorter.min.js',
+      'jquery.cluetip.js']
   end
   
   def shorten( attr , len=24)

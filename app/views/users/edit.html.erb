@@ -1,5 +1,7 @@
 <div id="left">
-
+	<%= link_to "#{ image_tag 'new_holiday_button.png'}", new_user_holiday_url(@user)%>	
+	<%= link_to "#{image_tag 'delete_user_button.png'}", @user, :confirm => 'Are you sure?', :method => :delete %>
+	<ul><li><%= link_to "back to users", users_url %></li></ul>
 </div><!--end left-->
 <div id="right">
 	
@@ -9,26 +11,15 @@
 	<h2><%= @user.email %></h2>
 	<% form_for(@user, :html => {:class => "user_form"}) do |f| %>
 	  <%= f.error_messages %>
-	<ul class="form">
+		<fieldset>
 		<% Holiday.get_holiday_types.each do |holiday|%>
-			<li>
-			<%= f.label holiday %>
+			<%= f.label "max_#{holiday}".to_sym, "max #{holiday} days" %>
 			<%= f.text_field "max_#{holiday}".to_sym, 
 							:size => 2,
 							:default => @user.send("max_#{holiday}".to_sym) %>
-			</li>
 		<% end %>
-		<%= link_to "Assign Holiday", new_user_holiday_url(@user)%>	
-	  <% if current_user.is_admin%>
-		<% end %> 
-	    <li>
-		    <%= f.submit "Update" %>
-		</li>
-		<li class="cancel">
-		<%= link_to 'Delete', @user, :confirm => 'Are you sure?', :method => :delete %>
-		</li>
-
-	</ul>
+		</fieldset>
+    <%= f.submit "Update" %>
 	<% end %>
 	
 </div><!--end center-->

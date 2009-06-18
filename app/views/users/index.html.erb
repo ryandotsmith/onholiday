@@ -1,7 +1,10 @@
+<% content_for :title, "users"%>
 <table id='users_index_table' class="tablesorter">
 <caption> used / available </caption>
 <thead>
 <tr>
+  <th>Edit</th>
+  <th>Name</th>
   <th>Login</th>
 	<% @users.first.get_taken_holiday_time.each do |key,value|%>
 		<th><%= key %> </th>
@@ -11,7 +14,9 @@
 <tbody>
 <% for user in @users %>
 <tr>
-    <td><%= link_to "#{user.login}",edit_user_path(user) %></td>
+	<td><%= link_to "edit",edit_user_path(user) %></td>
+	<td><%= user.name %></td>
+	<td><%= user.login %></td>
 	<% user.get_taken_holiday_time.each do |key,value|%>
 		<td><%= value %> / <%= user.send("max_#{key}")%> </td>
 	<% end %>

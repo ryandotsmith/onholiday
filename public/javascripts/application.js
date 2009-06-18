@@ -1,12 +1,14 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 $(document).ready( function() {
-
 	//User#show _pendtion_requests_queue
 	$("#waiting_divs").corners("anti-alias mozilla");
 	$("#container").corners(" bottom 15px");
 	$(".info_navigation ul").corners("10px top")
 	/******************END******************/
+	$('a.cluetip').cluetip({	splitTitle: '|',
+														showTitle: false
+												});
 
 	// Holiday#new
 

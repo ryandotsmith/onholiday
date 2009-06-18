@@ -1,4 +1,6 @@
 <% content_for :title, "holidays"%>
+
+<%= display_search_params params %>
 <table id='holiday_index_table' class='tablesorter'>
 	<thead>
 	  <tr>
@@ -24,9 +26,8 @@
 		<td><%= holiday.begin_time.to_s + " - " + holiday.end_time.to_s%></td>
 		<td><%= holiday.get_length%></td>
 		<td><%= get_state( holiday )%></td>
-		<td><%= shorten holiday.description %></td>
-
-		<td><%= holiday.reviewed_by %></td>
+		<td><%= link_to shorten( holiday.description ), "#", :class => 'cluetip', :title => holiday.description %></td>
+		<td><%= link_to holiday.reviewed_by, "#", :class => 'cluetip', :title => holiday.action_notes %></td>
 	</tr>
 <% end %>
 </tbody>
