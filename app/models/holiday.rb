@@ -23,7 +23,7 @@ class Holiday < ActiveRecord::Base
   # is built. I am not ready to have the search parameter be user input.
   def self.search(search, page)
     user = User.find_by_login(search)
-    return paginate( :per_page => 20, :page => page ) if user.nil?
+    return paginate( :per_page => 20, :page => page,:order => "created_at DESC" ) if user.nil?
     paginate :per_page => 20, :page => page,
              :conditions => ['user_id like ?', "%#{user.id}%"], :order => 'user_id'
   end
