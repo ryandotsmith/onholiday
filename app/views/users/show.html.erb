@@ -8,15 +8,14 @@
 						:locals  => { :user => @user }%>
 		</li><!--end pending_requests_queue-->
 		<% end %>
-		<li id="link_embedded_gcal">
-			<%= render :partial => 'link_embedded_gcal'%>
-		</li><!--end link_embedded_gcal-->
+		<li id="link_embedded_gcal"><%= render :partial => 'link_embedded_gcal'%></li><!--end link_embedded_gcal-->
 	<li id='tips_link'><%= link_to_function "Pro Tips", "$('#tips').slideDown();"%></li>
-	<div id='tips'class="protip" style='display:none;'>
+	</ul>
+	<div id='tips' class="protip" style='display:none;'>
+		<ul>
 		<li>Hover over the status field to view notes regarding your request</li>
+		</ul>
 		<%= link_to_function "close", "$('#tips').slideUp();"%>
-	<ul>
-
 	</div><!--end protip-->
 
 </div>

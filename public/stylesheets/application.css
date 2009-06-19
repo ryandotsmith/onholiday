@@ -159,7 +159,7 @@ td {
 
 /************** 				Special      */
 
-.protip{
+.protip {
 	background-color:#F3ECBA;
 	padding:5px;
 
@@ -168,6 +168,8 @@ td {
 	font-size:15px;
 }
 .protip ul {
+	margin-left:0;
+	padding-left:10px;
 }
 .protip li {
 	font-size:13px;
