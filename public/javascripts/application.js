@@ -18,18 +18,18 @@ $(document).ready( function() {
 	$("#holiday_type_half").attr("checked", "checked"); 
 	$("input[@id=holiday_end_time]").val("")
 
-	$("input[@name='holiday[leave_length]']").change(
+	$("input[@name='holiday[leave_length]']").click(
 		function()
 		{
-		if ($("input[@id='holiday_leave_length_many']:checked").val())
+		if ($("input[@name='holiday[leave_length]']:checked").val() == 'many')
 			$("#end_time").appear();
 
-		else if ($("input[@id='holiday_leave_length_whole']:checked").val())
+		else if ($("input[@name='holiday[leave_length]']:checked").val() == 'whole')
 		{
 			$("#end_time").fade();
 			$("input[@id=holiday_end_time]").val("")
 		}
-		else if ($("input[@id='holiday_leave_length_half']:checked").val())
+		else if ($("input[@name='holiday[leave_length]']:checked").val() == 'half')
 		{
 			$("#end_time").fade();
 			$("input[@id=holiday_end_time]").val("")			
