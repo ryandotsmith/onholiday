@@ -4,8 +4,7 @@ ul {
 #action_notes {
 	z-index:1;
 	position:absolute;
-	top:50px;
-	width:94.5%;
+	width:96.5%;
 	background:#414141;
 }
 #action_notes form {
