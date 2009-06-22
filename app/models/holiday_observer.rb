@@ -5,7 +5,7 @@ class HolidayObserver < ActiveRecord::Observer
   end
 
   def before_destroy( holiday )
-    holiday.delete_from_calendar if holiday.state != -1 
+    HolidayWorker.asynch_un_publish( :holiday_id => holiday.id ) 
   end
 
 end
