@@ -341,11 +341,11 @@ describe "pushing a holiday to gcal" do
   before(:each) do
     @user     = Factory( :user)
     @holiday  = Factory( :holiday, :user => @user )
-
   end#before
 
-  it "raise exception if the push fails" do
-
+  it "should add a new push job to the queue" do
+    Holiday.should_receive(:send_later).with( :update_calendar, @holiday )
+    @holiday.approve( @user )
   end#it
 
 end#desc
@@ -363,15 +363,5 @@ describe "removing weekends from holiday range" do
   it "should remove saturday and sunday from a holiday's range" do
     @holiday.get_length.should == 3.0
   end
-end
-
-describe "sending holiday data to google calendars" do
-
-  it "should push to calendar on create" do
-      holiday = Factory(:holiday)
-      HolidayWorker.should_receive(:asynch_publish)
-      holiday.approve( Factory( :user , :login => "jb") )      
-  end
-  
 end
 

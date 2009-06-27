@@ -12,7 +12,6 @@ class HolidaysController < ApplicationController
 ######################################################  
 
   def index
-    #@holidays = Holiday.paginate :page => params[:page], :order => 'created_at DESC', :per_page => 10
     @holidays = Holiday.search(params[:search], params[:page])
     respond_to do |format|
       format.html # index.html.erb
@@ -43,7 +42,6 @@ class HolidaysController < ApplicationController
   def create
     @holiday = @user.holidays.build( params[:holiday] )
     respond_to do |format|
-      #@holiday.update_hook( params[:length_opt] )
       if @holiday.save()
         Postoffice.deliver_new_request( @holiday )        
         format.html { redirect_to user_path(@user) }
@@ -57,7 +55,7 @@ class HolidaysController < ApplicationController
 
   def update
     @holiday = Holiday.find(params[:id])
-    # need to factor these into a method in the model !! 
+    # need to factor these into a method in the model ??
       @holiday.approve( current_user) if params[:approved] == "true"
       @holiday.deny( current_user )   if params[:deny] == "true"
     ### 

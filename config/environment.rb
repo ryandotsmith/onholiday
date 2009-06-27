@@ -15,6 +15,8 @@ Rails::Initializer.run do |config|
       :version => '~> 2.2.3', 
       :lib => 'will_paginate', 
       :source => 'http://gems.github.com'
+  config.gem 'facets'
+  config.gem 'daemons'
 end
 
 require 'monkey.rb'
@@ -26,6 +28,5 @@ require 'casclient/frameworks/rails/filter'
 CASClient::Frameworks::Rails::Filter.configure(
   :cas_base_url => "https://10.0.1.20/"
   )
-Workling::Remote.dispatcher = Workling::Remote::Runners::StarlingRunner.new
 ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(:default => '%m/%d/%Y')
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(:default => '%m/%d/%Y')

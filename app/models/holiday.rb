@@ -87,12 +87,16 @@ class Holiday < ActiveRecord::Base
   def self.get_pending
     Holiday.find_all_by_state(0).to_a
   end
+  #
+  def self.update_calendar( holiday_input )
+    holiday = Holiday.find( holiday_input.id )
+    holiday.push_to_calendar
+  end
   ####################
   #approve
   # update action in holiday controller. 
   def approve( current_user )
-    #Postoffice.deliver_request_change( self, :approve )
-    HolidayWorker.asynch_publish( :holiday_id => self.id ) 
+    Holiday.send_later( :update_calendar, self )
     self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
@@ -103,7 +107,6 @@ class Holiday < ActiveRecord::Base
   # update action in holiday controller. 
   # current_user should be an "admin" since 
   def deny( current_user )
-    #Postoffice.deliver_request_change( self, :denied )
     self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = -1

@@ -57,9 +57,6 @@ namespace :deploy do
   desc "Symlink shared configs and folders on each release."
     task :symlink_shared do
       run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-      run "ln -nfs #{shared_path}/config/gcal.yml #{release_path}/config/gcal.yml"
-      run "ln -nfs #{shared_path}/config/workling.yml #{release_path}/config/workling.yml"
-      run "ln -nfs #{shared_path}/config/onholiday.god #{release_path}/config/onholiday.god"
       run "touch #{release_path}/config/environment.rb"
       run "ln -nfs #{shared_path}/config/environment.rb #{release_path}/config/environment.rb"
     end
@@ -67,5 +64,25 @@ namespace :deploy do
 end
 after 'deploy:update_code', 'deploy:symlink_shared'
 #############################################################
-#	Attachment_FU 
+#	Delayed Job 
 #############################################################
+namespace :delayed_job do
+  desc "Start delayed_job process" 
+  task :start, :roles => :app do
+    run "cd #{current_path}; script/delayed_job start #{rails_env}" 
+  end
+
+  desc "Stop delayed_job process" 
+  task :stop, :roles => :app do
+    run "cd #{current_path}; script/delayed_job stop #{rails_env}" 
+  end
+
+  desc "Restart delayed_job process" 
+  task :restart, :roles => :app do
+    run "cd #{current_path}; script/delayed_job restart #{rails_env}" 
+  end
+end
+
+after "deploy:start", "delayed_job:start" 
+after "deploy:stop", "delayed_job:stop" 
+after "deploy:restart", "delayed_job:restart"
