@@ -3,11 +3,9 @@ $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname
 require 'base'
 require 'calendar'
 require 'event'
-require 'yaml'
 
 module TFT
   module GcalPush
-
     def self.included(base) 
       base.extend ActMethods 
     end 
