@@ -59,6 +59,7 @@ namespace :deploy do
       run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
       run "touch #{release_path}/config/environment.rb"
       run "ln -nfs #{shared_path}/config/environment.rb #{release_path}/config/environment.rb"
+      run "chmod 755 #{release_path}/script/delayed_job"
     end
       
 end
