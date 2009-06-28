@@ -18,7 +18,6 @@ module TFT
       end
 
       def self.create( holiday )
-        require 'ruby-debug'; debugger
         url       = @@calendar.link
         xml       = self.make_post_xml( holiday )
         response  = @@client.post( url, xml )
