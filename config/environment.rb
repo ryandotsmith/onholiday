@@ -22,9 +22,9 @@ end
 require 'monkey.rb'
 require 'facets/dictionary'
 require 'convert_data.rb'
+
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
-
 CASClient::Frameworks::Rails::Filter.configure(
   :cas_base_url => "https://10.0.1.20/"
   )
