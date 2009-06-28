@@ -5,7 +5,7 @@ require 'capistrano/ext/multistage'
 set :stages, %w(production staging)
 set( :application ) { "onholiday_#{ stage }" }
 set( :deploy_to )   { "/var/app/#{application}" }
-
+set :rails_env, "production"
 #############################################################
 #	Settings
 #############################################################
