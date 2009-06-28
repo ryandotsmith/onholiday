@@ -9,6 +9,7 @@ namespace :utils do
         puts "pushed #{h.id}"
       end#do
     end#for
+
     threads.each { |aThread|  aThread.join }
   end#task
   
