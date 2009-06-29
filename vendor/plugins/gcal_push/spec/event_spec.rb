@@ -9,6 +9,7 @@ describe "creating an event" do
     @holiday.end_time     = DateTime.now + 3.days
     @holiday.user.name    = "rsmith"
     @holiday.description  = "nothing to see"
+    
   end
   it "make XML for an event" do
     event = Gcal::Event.new( @holiday )

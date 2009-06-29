@@ -1,11 +1,15 @@
+require File.dirname(__FILE__) + '/../../../../config/boot.rb'
+require File.dirname(__FILE__) + '/../../../../config/environment.rb'
+
 namespace :gcal do
 
   desc "push all holidays to calendar"
-  task(:push_all => :environment) do
+  task :push_all do |t,args|
+    args.with_defaults(:calendar => "rubytest")
     threads = []
     for holiday in Holiday.find_all_by_state(1)
       threads << Thread.new(holiday)  do |h|
-        h.push_to_calendar
+        h.push_to_calendar args.calendar
         puts "pushed #{h.id}"
       end#do
     end#for
@@ -14,13 +18,17 @@ namespace :gcal do
   end#task
   
   desc "delete all events from calendar"
-  task(:delete_all => :environment)do
-    TFT::GcalPush::Base.new(:calendar =>  'onholiday')
-    TFT::GcalPush::Calendar.get_calendars.each { |c| @calendar = c if c.title == 'onholiday' }
-    TFT::GcalPush::Event.load( @calendar )
-    TFT::GcalPush::Event.get_events.each do |e|
-      puts "deleting #{e.title}"
-      TFT::GcalPush::Event.delete( e )
+  task :delete_all  do |t, args|
+    args.with_defaults(:calendar => "rubytest")
+    @file = YAML.load( File.open("#{RAILS_ROOT}/config/gcal.yml") )
+    @usr  = @file['default']['username']
+    @pwd  = @file['default']['password']
+    pusher    = Gcal::Pusher.new( @usr, @pwd )
+    calendar  = Gcal::Calendar.find( pusher.client, pusher.username, args.calendar )
+    events    = Gcal::Event.all( pusher, calendar )
+    events.each do |e| 
+      pusher.remove_event( e ) 
+      puts "."
     end
   end
 

@@ -33,7 +33,7 @@ module Gcal
     end#find
 
     def to_xml
-      rere = <<EOF
+      re = <<EOF
         <entry xmlns='http://www.w3.org/2005/Atom'
             xmlns:gd='http://schemas.google.com/g/2005'>
           <category scheme='http://schemas.google.com/g/2005#kind'

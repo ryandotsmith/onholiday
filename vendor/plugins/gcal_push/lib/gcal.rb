@@ -8,6 +8,8 @@ require File.dirname(__FILE__) + '/gcal/gdata'
 
 module Gcal
   def self.included(base) 
+    # base = ActiveRecord::Base
+    # self = Gcal
     base.extend ActMethods 
   end 
 
@@ -26,16 +28,16 @@ module Gcal
   end# ClassMethods
 
   module InstanceMethods 
-    @calendar = nil
-    def load_credentials
+    def load_defaults
       @file = YAML.load( File.open("#{RAILS_ROOT}/config/gcal.yml") )
-      @usr = @file['default']['username']
+      @usr  = @file['default']['username']
       @pwd  = @file['default']['password']
+      @cal  = options[:calendar]
     end
     ####################
     #push_to_calendar
-    def push_to_calendar( calendar=nil )
-      load_credentials
+    def push_to_calendar( calendar=@cal )
+      load_defaults
       pusher    = Pusher.new( @usr, @pwd )
       calendar  = Calendar.find( pusher.client, pusher.username, calendar )
       event     = Event.new( self )
@@ -44,8 +46,8 @@ module Gcal
 
     ####################
     #delete_from_calendar()
-    def delete_from_calendar( calendar=nil )
-      load_credentials
+    def delete_from_calendar( calendar=@cal )
+      load_defaults
       pusher    = Pusher.new( @usr, @pwd )
       calendar  = Calendar.find( pusher.client, pusher.username, calendar )
       event     = Event.find( pusher, calendar, self.id )

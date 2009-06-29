@@ -27,11 +27,11 @@ describe "pushing an event to the calendar" do
 
     @holiday = OpenStruct.new
     @holiday.should_receive(:user).any_number_of_times.and_return( OpenStruct.new )
-    @holiday.should_receive(:id).any_number_of_times.and_return( 1 )
+    @holiday.should_receive(:id).any_number_of_times.and_return( 31 )
     @holiday.begin_time   = DateTime.now
     @holiday.end_time     = DateTime.now + 3.days
     @holiday.user.name    = "rsmith"
-    @holiday.description  = "nothing to see"
+    @holiday.description  = "desc"
 
   end
 
