@@ -17,6 +17,7 @@ Rails::Initializer.run do |config|
       :source => 'http://gems.github.com'
   config.gem 'facets'
   config.gem 'daemons'
+  config.gem 'sanitize'
 end
 
 require 'monkey.rb'

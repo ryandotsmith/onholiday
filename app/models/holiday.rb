@@ -78,7 +78,9 @@ class Holiday < ActiveRecord::Base
     # return true if the requested holiday has days belonging to other holidays
     (self.user.get_list_of_dates & self.included_dates) != []
   end#in_range_of_existing
-
+  def sanitize_input!
+    self.description = Sanitize.clean( self.description )
+  end
   ####################
   #get_pending should get called from a holiday
   # and should return all holidays that have state == 0

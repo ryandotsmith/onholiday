@@ -6,6 +6,15 @@ describe "creating a holiday" do
     @dt       = MONDAY
   end#before
   
+  describe "scrubbing the input" do
+    it "should sanitize the description" do
+      holiday = Factory.build( :holiday, :description => "&& bad" )
+      holiday.description.should == "&& bad"
+      holiday.save
+      holiday.description.should == "&amp;&amp; bad"
+    end
+  end
+  
   describe "creating half day" do
 
     it "should save when nothing is wrong" do
