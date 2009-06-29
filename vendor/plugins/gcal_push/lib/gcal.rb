@@ -16,7 +16,7 @@ module Gcal
   module ActMethods 
     def pushes_to_gcal( options={} )
       unless included_modules.include? InstanceMethods 
-        cattr_accessor :options
+        cattr_accessor :options, :cache_cal
         extend ClassMethods 
         include InstanceMethods 
       end# unless
@@ -36,12 +36,14 @@ module Gcal
     end
     ####################
     #push_to_calendar
-    def push_to_calendar( calendar=@cal )
+    def push_to_calendar( calendar )
       load_defaults
-      pusher    = Pusher.new( @usr, @pwd )
-      calendar  = Calendar.find( pusher.client, pusher.username, calendar )
+      calendar ||= @cal
+      pusher    = Pusher.new( @usr, @pwd )      
+      cache_cal = Calendar.find( pusher.client, pusher.username, calendar ) unless
+        !cache_cal.nil? and cache_cal.title == calendar
       event     = Event.new( self )
-      pusher.send_event( calendar, event )
+      pusher.send_event( cache_cal, event )
     end#push_to_calendar
 
     ####################
