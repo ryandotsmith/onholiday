@@ -27,3 +27,4 @@ config.gem 'thoughtbot-factory_girl',
   :version => '1.2.0'
 
 config.gem 'cucumber'
+config.gem 'fakeweb'

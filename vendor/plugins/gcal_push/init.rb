@@ -3,4 +3,6 @@ $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname
 require 'gdata'
 require 'hpricot'
 require 'yaml'
-ActiveRecord::Base.send(:include, TFT::GcalPush )
+
+require File.dirname(__FILE__) + '/lib/gcal'
+ActiveRecord::Base.send(:include, Gcal )
