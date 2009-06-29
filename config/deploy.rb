@@ -82,6 +82,6 @@ namespace :delayed_job do
   end
 end
 
-after "deploy:start", "delayed_job:start" 
+after "deploy", "delayed_job:start" 
 after "deploy:stop", "delayed_job:stop" 
 after "deploy:restart", "delayed_job:restart"
