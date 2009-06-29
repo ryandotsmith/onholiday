@@ -36,7 +36,7 @@ module Gcal
     end
     ####################
     #push_to_calendar
-    def push_to_calendar( calendar )
+    def push_to_calendar( calendar=nil )
       load_defaults
       calendar ||= @cal
       pusher    = Pusher.new( @usr, @pwd )      

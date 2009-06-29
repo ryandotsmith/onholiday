@@ -92,7 +92,7 @@ class Holiday < ActiveRecord::Base
   #
   def self.update_calendar( holiday_input )
     holiday = Holiday.find( holiday_input.id )
-    holiday.push_to_calendar("onholiday")
+    holiday.push_to_calendar
   end
   ####################
   #approve
