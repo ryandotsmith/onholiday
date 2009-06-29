@@ -5,7 +5,7 @@ namespace :gcal do
 
   desc "push all holidays to calendar"
   task :push_all do |t,args|
-    args.with_defaults(:calendar => "rubytest")
+    args.with_defaults(:calendar => "onholiday")
     Holiday.find_all_by_state(1).each do |h|
         h.push_to_calendar( args.calendar )
         puts "pushed #{h.id}"
@@ -14,7 +14,7 @@ namespace :gcal do
   
   desc "delete all events from calendar"
   task :delete_all  do |t, args|
-    args.with_defaults(:calendar => "rubytest")
+    args.with_defaults(:calendar => "onholiday")
     @file = YAML.load( File.open("#{RAILS_ROOT}/config/gcal.yml") )
     @usr  = @file['default']['username']
     @pwd  = @file['default']['password']
