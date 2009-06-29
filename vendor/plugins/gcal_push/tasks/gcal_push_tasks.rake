@@ -6,6 +6,7 @@ namespace :gcal do
   desc "push all holidays to calendar"
   task :push_all do |t,args|
     args.with_defaults(:calendar => "rubytest")
+    ActiveRecord::Base.allow_concurrency = true
     threads = []
     for holiday in Holiday.find_all_by_state(1)
       threads << Thread.new(holiday)  do |h|
