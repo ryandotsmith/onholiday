@@ -90,15 +90,16 @@ class Holiday < ActiveRecord::Base
     Holiday.find_all_by_state(0).to_a
   end
   #
-  def self.update_calendar( holiday_input )
+  def self.update_calendar( holiday_input, action )
     holiday = Holiday.find( holiday_input.id )
-    holiday.push_to_calendar
+    holiday.push_to_calendar if action == :create
+    holiday.delete_from_calendar if action == :delete
   end
   ####################
   #approve
   # update action in holiday controller. 
   def approve( current_user )
-    Holiday.send_later( :update_calendar, self )
+    Holiday.send_later( :update_calendar, self, :create )
     self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = 1

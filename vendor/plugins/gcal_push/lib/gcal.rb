@@ -48,8 +48,9 @@ module Gcal
 
     ####################
     #delete_from_calendar()
-    def delete_from_calendar( calendar=@cal )
+    def delete_from_calendar( calendar=nil )
       load_defaults
+      calendar ||= @cal
       pusher    = Pusher.new( @usr, @pwd )
       calendar  = Calendar.find( pusher.client, pusher.username, calendar )
       event     = Event.find( pusher, calendar, self.id )

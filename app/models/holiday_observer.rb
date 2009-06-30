@@ -6,7 +6,7 @@ class HolidayObserver < ActiveRecord::Observer
   end
 
   def before_destroy( holiday )
-    HolidayWorker.asynch_un_publish( :holiday_id => holiday.id ) 
+    Holiday.send_later( :update_calendar, holiday, :create )
   end
 
 end
