@@ -6,7 +6,7 @@ class HolidayObserver < ActiveRecord::Observer
   end
 
   def before_destroy( holiday )
-    Holiday.send_later( :update_calendar, holiday, :create )
+    holiday.delete_from_calendar
   end
 
 end

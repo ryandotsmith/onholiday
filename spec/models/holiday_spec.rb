@@ -353,7 +353,7 @@ describe "pushing a holiday to gcal" do
   end#before
 
   it "should add a new push job to the queue" do
-    Holiday.should_receive(:send_later).with( :update_calendar, @holiday )
+    @holiday.should_receive(:send_later).with(:push_to_calendar)
     @holiday.approve( @user )
   end#it
 

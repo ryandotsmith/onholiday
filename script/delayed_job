@@ -16,7 +16,7 @@ Daemons.run_proc('job_runner', daemon_options) do
   else
     ARGV.clear
   end
-  
+
   Dir.chdir dir
   RAILS_ENV = ARGV.first || ENV['RAILS_ENV'] || 'production'
   require File.join('config', 'environment')

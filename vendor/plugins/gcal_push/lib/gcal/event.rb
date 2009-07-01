@@ -17,7 +17,7 @@ module Gcal
       (doc/:entry).each do |e|
         # needs fixing. 
         event                 = OpenStruct.new
-        event.id              = (e/'gd:extendedproperty').first
+        event.uid             = (e/'gd:extendedproperty').first
         event.user            = (e/:title).inner_text
         event.edit_link       = (e/:link/"[@rel=edit]").first[:href]    
         event.self_link       = (e/:link/"[@rel=self]").first[:href]
