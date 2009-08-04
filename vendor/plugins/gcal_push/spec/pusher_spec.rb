@@ -35,10 +35,17 @@ describe "pushing an event to the calendar" do
 
   end
 
-  it "should take an event and then send it the the calendar" do
-    pusher      = Gcal::Pusher.new( @user, @pwd )
-    calendar    = Gcal::Calendar.find( pusher.client, pusher.username, "rubytest")
-    event       = Gcal::Event.new( @holiday )
+  it "should send a post request to the GCal object" do
+    calendar  = mock( Gcal::Calendar )
+    event     = mock( Gcal::Event    )
+    client    = mock( GData::Client::Calendar )
+
+    client.should_receive(:clientlogin).and_return(true)
+    GData::Client::Calendar.should_receive(:new).and_return( client )
+    pusher = Gcal::Pusher.new( @user, @pwd )
+    pusher.client.should_receive(:post)
+    calendar.should_receive(:link)
+    event.should_receive(:to_xml)
     pusher.send_event( calendar, event )
   end
 
