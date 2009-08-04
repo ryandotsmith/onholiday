@@ -26,7 +26,7 @@ describe "deleting and event" do
     pusher    = mock( Gcal::Pusher   )
     holiday   = mock( Holiday        )
     calendar.should_receive(:link).and_return( url )
-    pusher.should_receive( :client    )
+    pusher.should_receive( :client    ).and_return( GData::Client::Base.new ) 
     pusher.should_receive( :username  ).and_return( "rsmith" )
     holiday.should_receive( :id ).and_return( 1 )
     #Gcal::Event.should_receive(:find).and_return( calendar )

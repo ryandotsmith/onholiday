@@ -15,7 +15,8 @@ Rails::Initializer.run do |config|
       :version => '~> 2.2.3', 
       :lib => 'will_paginate', 
       :source => 'http://gems.github.com'
-  config.gem 'facets'
+  config.gem 'facets',
+      :version => '~> 2.5.0'
   config.gem 'daemons'
   config.gem 'sanitize'
 end

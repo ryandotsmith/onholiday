@@ -23,7 +23,7 @@ Factory.define :holiday do |h|
   h.leave_length 'many'
   h.leave_type 'etc'
   h.description "who ha"
-  h.state 0
+  h.state 1
   h.reviewed_by 'rsmith'
   h.reviewed_on "#{DateTime.now}"
   h.begin_time "#{ time }"
