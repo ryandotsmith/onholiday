@@ -40,6 +40,7 @@ module Gcal
       load_defaults
       calendar ||= @cal
       pusher    = Pusher.new( @usr, @pwd )      
+      # ussage => rake gcal:deleted_all[calendar_name]
       cache_cal = Calendar.find( pusher.client, pusher.username, calendar ) unless
         !cache_cal.nil? and cache_cal.title == calendar
       event     = Event.new( self )

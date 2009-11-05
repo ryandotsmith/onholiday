@@ -9,6 +9,8 @@ class Holiday < ActiveRecord::Base
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
 
+
+
   belongs_to :user
   has_many :whole_days
   has_many :half_days

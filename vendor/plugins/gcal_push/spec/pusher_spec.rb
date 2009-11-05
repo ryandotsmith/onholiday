@@ -1,21 +1,19 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "establishing connection" do
 
-  before(:each) do
-    @file = YAML.load( File.open("#{RAILS_ROOT}/config/gcal.yml") )
-    @user = @file['default']['username']
-    @pwd  = @file['default']['password']
-  end
+# before(:each) do
+#   @file = YAML.load( File.open("#{RAILS_ROOT}/config/gcal.yml") )
+#   @user = @file['default']['username']
+#   @pwd  = @file['default']['password']
+# end
 
-  it "should create a new object and store the pusher's default calendar" do
-    pusher = Gcal::Pusher.new( @user, @pwd )
-  end
+# it "should create a new object and store the pusher's default calendar" do
+#   pusher = Gcal::Pusher.new( @user, @pwd )
+# end
 
-  it "should raise exception if the client can not login" do
-    lambda { Gcal::Pusher.new( @user, "badpassword" ) }.should raise_error
-  end
-  
-  
+# it "should raise exception if the client can not login" do
+#   lambda { Gcal::Pusher.new( @user, "badpassword" ) }.should raise_error
+# end
 
 end
 

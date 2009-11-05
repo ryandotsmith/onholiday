@@ -11,6 +11,7 @@ namespace :gcal do
     end#for
   end#task
   
+  # ussage => rake gcal:deleted_all[calendar_name]
   desc "delete all events from calendar"
   task :delete_all, :cal  do |t, args|
     @file = YAML.load( File.open("#{RAILS_ROOT}/config/gcal.yml") )
