@@ -12,6 +12,7 @@ end
 
 Factory.define :user do |u|
   u.login { Factory.next :login }
+  u.date_of_hire Date.today
   u.max_personal 10.0
   u.max_etc 10.0
   u.max_vacation 10.0
