@@ -16,7 +16,6 @@ describe "creating a holiday" do
   end
   
   describe "creating half day" do
-
     it "should save when nothing is wrong" do
       holiday = Factory.build(  :holiday,  
                                 :leave_length => 'half',
@@ -24,8 +23,7 @@ describe "creating a holiday" do
                                 :begin_time => MONDAY,
                                 :end_time   => nil)
       holiday.save.should eql( true )      
-    end# it
-
+    end
     it "should fail when days in holiday are already covered by existing holiday" do
       holiday = Factory.build(  :holiday, 
                                 :leave_length => 'half',
@@ -58,20 +56,111 @@ describe "creating a holiday" do
       bad_holiday.save.should eql( false )            
       
     end
+  end
+  describe "validating the users date range" do
+    before(:each) do
+    @holiday = Factory.build( :holiday, 
+                              :begin_time => DateTime.now, 
+                              :end_time   => DateTime.now - 2.days )
+    end
+    it "should ensure that end date is later than earlier date" do
+      @holiday.should_not be_valid
+      @holiday.get_length.should eql( 0.0 )
+    end
+  end
+  describe "two holidays on one calendar day" do
+    it "should not find a holiday in range when user has only one holiday" do
+      user    = Factory( :user , :login => 'rsmithwhowho')
+      holiday = Factory.build(  :holiday, 
+                                :user => user,
+                                :begin_time =>  DateTime.now,
+                                :end_time   =>  DateTime.now + 2.days)
+      holiday.in_range_of_existing.should eql( false )      
+    end#it
+
+    it "should error when a user has one holiday and then requests idenctical set of days for holiday" do
+      user    = Factory( :user , :login => 'rsmithwhowho')
+      holiday = Factory.build( :holiday, 
+                          :leave_length => 'many',
+                          :user => user,
+                          :begin_time =>  DateTime.now,
+                          :end_time   =>  DateTime.now + 2.days)
+
+      holiday.in_range_of_existing.should eql( false )      
+      holiday.save.should eql( true )
+
+      another_holiday = Factory.build(  :holiday, 
+                                        :leave_length => 'many',
+                                        :user => user,
+                                        :begin_time =>  DateTime.now,
+                                        :end_time   =>  DateTime.now + 2.days)
+      another_holiday.in_range_of_existing.should eql( true )      
+    end#it
+    describe "new holidays should be inspected and reported if they include a date in users history" do
+      before(:each) do
+        @user = Factory( :user, :login => "whowhoha" )
+      end#before
+
+      it "should add an error when a new holiday is spanning previous holidays" do
+        @holiday1 = Factory.build(  :holiday,  
+                                    :leave_length => 'whole',
+                                    :user => @user,
+                                    :begin_time => MONDAY,
+                                    :end_time   => WEDNESDAY)
+
+        @holiday1.in_range_of_existing.should eql( false )
+        @holiday1.save.should eql( true )
+
+        @holiday2 = Factory.build(  :holiday,  
+                                    :leave_length => 'whole',
+                                    :user => @user,
+                                    :begin_time => MONDAY,
+                                    :end_time   => THURSDAY )              
+        @holiday2.in_range_of_existing.should eql( true )
+        @holiday2.save
+        @holiday2.should_not be_valid
+      end
+
+      
+    end
     
-  end# half day
+    context "" do
+      date = MONDAY
+      before(:each) do
+        @user = Factory( :user )
+        @holiday1 = Factory(  :holiday, :user => @user, 
+                              :begin_time => date,
+                              :end_time   => date + 2.days)
 
-  describe "creating a whole day" do
+        @holiday2 = Factory.build(  :holiday, :user => @user, 
+                                    :begin_time => date ,
+                                    :end_time   => date + 2.days)
+        @holiday2.should_not be_valid     
+      end
+      it "should calculate only uniquie holiday days" do
+        @holiday1.get_length.should eql( 3.0 )
+      end
+    end
     
-  end# whole day
+  end#describe
 
-  describe "creatinga range of days" do
-    
-  end# range day
 
-end#des
-
-describe "returns an array of holiday types in a specific order" do
+end
+describe "Holiday states" do
+  it "should be set to pending after new" do
+    Factory(:holiday).pending?().should eql(true)
+  end
+  it "should be set to pending if state is 0" do
+    Factory(:holiday,:state => 0).pending?().should eql(true)
+  end
+  it "should be set to approved if state is 1" do
+    Factory(:holiday,:state => 1).approved?().should eql(true)
+  end
+  it "should be set to denied if state is -1" do
+    Factory(:holiday,:state => -1).denied?().should eql(true)
+  end
+end
+describe "Holiday types" do
 # For now, i will specify an array in the model that will hold strings of holidays 
 # types. This array will get returned whenever we dealing with a holiday. It should
 # be noted that there should be a database column that corresponds to the holiday name
@@ -83,20 +172,6 @@ describe "returns an array of holiday types in a specific order" do
     Holiday.get_holiday_types.should_not eql(["etc","vacation","personal"])
   end
   
-end
-
-describe "prohibiting time travel " do
-  before(:each) do
-  @holiday = Factory.build( :holiday, 
-                            :begin_time => DateTime.now, 
-                            :end_time   => DateTime.now - 2.days )
-  end
-
-  it "should ensure that end date is later than earlier date" do
-    @holiday.should_not be_valid
-    @holiday.get_length.should eql( 0.0 )
-  end
-
 end
 
 describe "get length of holiday" do
@@ -167,7 +242,7 @@ end #end describe
 
 describe "should return specific data sets" do
 
-    describe "get holidays statistics for entire universe" do
+    describe "get holidays statistics for all users" do
     before(:each) do      
       date = MONDAY
       @user_one       = Factory( :user , :login =>  "jbillings")
@@ -222,95 +297,8 @@ describe "should return specific data sets" do
     it "calculates available leave for all users" do
     # this is handled by the user model.
     end
-
-
-    end#desc
-
-end#desc
-
-describe "creating two holidays on one calendar day" do
-
-  describe "using set theory to " do
-
-    it "should not find a holiday in range when user has only one holiday" do
-      user    = Factory( :user , :login => 'rsmithwhowho')
-      holiday = Factory.build(  :holiday, 
-                                :user => user,
-                                :begin_time =>  DateTime.now,
-                                :end_time   =>  DateTime.now + 2.days)
-      holiday.in_range_of_existing.should eql( false )      
-    end#it
-
-    it "should error when a user has one holiday and then requests idenctical set of days for holiday" do
-      user    = Factory( :user , :login => 'rsmithwhowho')
-      holiday = Factory.build( :holiday, 
-                          :leave_length => 'many',
-                          :user => user,
-                          :begin_time =>  DateTime.now,
-                          :end_time   =>  DateTime.now + 2.days)
-
-      holiday.in_range_of_existing.should eql( false )      
-      holiday.save.should eql( true )
-
-      another_holiday = Factory.build(  :holiday, 
-                                        :leave_length => 'many',
-                                        :user => user,
-                                        :begin_time =>  DateTime.now,
-                                        :end_time   =>  DateTime.now + 2.days)
-      another_holiday.in_range_of_existing.should eql( true )      
-    end#it
-
-  end#des
-
-  describe "new holidays should be inspected and reported if they include a date in users history" do
-    before(:each) do
-      @user = Factory( :user, :login => "whowhoha" )
-    end#before
-
-    it "should add an error when a new holiday is spanning previous holidays" do
-      @holiday1 = Factory.build(  :holiday,  
-                                  :leave_length => 'whole',
-                                  :user => @user,
-                                  :begin_time => MONDAY,
-                                  :end_time   => WEDNESDAY)
-
-      @holiday1.in_range_of_existing.should eql( false )
-      @holiday1.save.should eql( true )
-
-      @holiday2 = Factory.build(  :holiday,  
-                                  :leave_length => 'whole',
-                                  :user => @user,
-                                  :begin_time => MONDAY,
-                                  :end_time   => THURSDAY )              
-      @holiday2.in_range_of_existing.should eql( true )
-      @holiday2.save
-      @holiday2.should_not be_valid
-    end
-
-    
-  end#describe
-  
-  describe "creating a new holiday should only add unqique calendar days to a holdiay" do
-    date = MONDAY
-    before(:each) do
-      @user = Factory( :user )
-      @holiday1 = Factory(  :holiday, :user => @user, 
-                            :begin_time => date,
-                            :end_time   => date + 2.days)
-
-      @holiday2 = Factory.build(  :holiday, :user => @user, 
-                                  :begin_time => date ,
-                                  :end_time   => date + 2.days)
-      @holiday2.should_not be_valid     
-    end#before
-
-    it "should calculate only uniquie holiday days" do
-      @holiday1.get_length.should eql( 3.0 )
-    end
-
-  end#describe
-  
-end#describe
+  end
+end
 
 describe "getting a list of dates that the user has holidays for" do
 

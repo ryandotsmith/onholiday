@@ -59,13 +59,7 @@ class User < ActiveRecord::Base
   end
 
   def self.get_taken_holiday_time
-    sum = 0
-    Holiday.find(:all).each do |holiday|
-      if holiday.state
-        sum += holiday.get_length
-      end
-    end
-    sum
+    Holiday.all_approved.inject(0) {|sum,h| sum += h.get_length }
   end
 
   def get_total_holiday_time

@@ -17,6 +17,7 @@ class Holiday < ActiveRecord::Base
   validates_presence_of :begin_time,  :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
 
+  named_scope :approved, :conditions => {:state => 1}
   # i expect search to only be called in code when the search parameter 
   # is built. I am not ready to have the search parameter be user input.
   def self.search(search, page)
@@ -95,21 +96,27 @@ class Holiday < ActiveRecord::Base
     holiday.delete_from_calendar if
       action.to_sym == :delete
   end
-  ####################
-  #approve
-  # update action in holiday controller. 
+
+  def pending?
+    state == 0
+  end
+  
+  def approved?
+    state == 1
+  end
+
+  def denied?
+    state == -1 
+  end
+
   def approve( current_user )
-    #Holiday.send_later( :update_calendar, self.id, :push )
     self.send_later( :push_to_calendar )
     self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
     self.save!
   end
-  ####################
-  #deny
-  # update action in holiday controller. 
-  # current_user should be an "admin" since 
+
   def deny( current_user )
     self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
