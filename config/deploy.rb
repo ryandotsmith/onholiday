@@ -12,7 +12,6 @@ set :rails_env, "production"
 
 default_run_options[:pty] = true
 set :use_sudo, false
-set :local_scm_command, "/usr/local/git/bin/git"
 set :keep_releases, 3
 set :git_enable_submodules, 1
 

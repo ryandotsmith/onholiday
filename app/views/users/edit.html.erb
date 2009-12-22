@@ -14,7 +14,7 @@
 	  <%= f.error_messages %>
 		<fieldset>
     <%= f.label :date_of_hire, "Date of Hire" %>
-    <%= f.date_select :date_of_hire %>
+    <%= f.date_select :date_of_hire , :start_year  => 1999, :end_year => Date.today.year%>
 		<% Holiday.get_holiday_types.each do |holiday|%>
 			<%= f.label "max_#{holiday}".to_sym, "max #{holiday} days" %>
 			<%= f.text_field "max_#{holiday}".to_sym, 
