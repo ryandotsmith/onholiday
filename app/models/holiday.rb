@@ -9,11 +9,7 @@ class Holiday < ActiveRecord::Base
                   :begin_datetime   =>  :begin_time,
                   :end_datetime     =>  :end_time
 
-
-
   belongs_to :user
-  has_many :whole_days
-  has_many :half_days
 
   validate :prohibit_time_travel
   validate_on_create :not_nice_twice
@@ -131,7 +127,7 @@ class Holiday < ActiveRecord::Base
   def get_length()
     length      = 0.0
     difference  = ( self.end_time.to_datetime - self.begin_time.to_datetime).to_f
-    # approx is a monkey patch ( look-out! ). it uses the concept of epsilon math. 
+    # approx is a monkey patch ( look out ). it uses the concept of epsilon math. 
     if difference.approx( HALF_DAY, 0.01)
       length = 0.5
     elsif difference.approx( WHOLE_DAY, 0.01)

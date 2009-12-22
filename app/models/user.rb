@@ -35,11 +35,9 @@ class User < ActiveRecord::Base
                     :name => credentials['cn'], 
                     :email => credentials['mail'])
       return user
-    end#end if 
-  end#end verify()
+    end
+  end
 
-  ####################
-  #update_attr(user, credentials) should get
   def self.update_attr(user, credentials)
     u = User.find_by_login(user)
     u.email = credentials['mail']
@@ -49,19 +47,17 @@ class User < ActiveRecord::Base
     end
     u.save!
   end
-  ####################
-  #self.get_total_holiday_time should get
+
   def self.get_total_holiday_time
     sum = 0
     User.find(:all).each do |user|
       Holiday.get_holiday_types.each do |h|
         sum += user.send("max_#{h}")
-      end#do
-    end#do
+      end
+    end
     sum
-  end#def
-  ####################
-  #self.get_taken_holiday_time should get
+  end
+
   def self.get_taken_holiday_time
     sum = 0
     Holiday.find(:all).each do |holiday|
@@ -70,18 +66,12 @@ class User < ActiveRecord::Base
       end
     end
     sum
-  end#def
-  ####################
-  #get_total_holiday_time should get
+  end
+
   def get_total_holiday_time
-      total_time = 0
-      holidays.each do |holiday|
-        total_time += holiday.get_length
-      end# end do
-      total_time
-  end#end method
-  ####################
-  # get_taken_holiday_time should get called by a user
+    holidays.inject(0) {|sum,h| sum += h.get_length}
+  end
+
   def get_taken_holiday_time
     results = Dictionary.new
     Holiday.get_holiday_types.each {|t| results[t.to_sym] = 0.0 }
@@ -97,21 +87,18 @@ class User < ActiveRecord::Base
     holidays.each do |h|
       h.included_dates.each do |dates|
         array << dates
-      end#dates
-    end#h
+      end
+    end
     array
-  end#get_list_of_dates
-  ####################
-  #get_remaining_holiday_time should get
-  #=>
-  # and should return
-  #=>
+  end
+
   def get_remaining_holiday_time
     results = Dictionary.new
     Holiday.get_holiday_types.each {|t| results[t.to_sym] = self.send("max_#{t}").to_f}
     holidays.each do |holiday|
       results[holiday.leave_type.to_sym] -= holiday.get_length if holiday.state == 1
-    end#end do
+    end
     results
-  end#end method
-end# end class
+  end
+
+end
