@@ -7,7 +7,7 @@ Feature: Updating data for a user
     Given I am signed in
 
   Scenario: Editing the hired date of a user
-    Given a user exists
+    Given an employee exists
     When I am on the edit user page
     And I select "April 26, 2009" as the "Date of Hire" date
     And I press "update"

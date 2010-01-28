@@ -63,22 +63,23 @@ class User < ActiveRecord::Base
   end
 
   def get_total_holiday_time
-    holidays.inject(0) {|sum,h| sum += h.get_length}
+    this_years_holidays.inject(0) {|sum,h| sum += h.get_length}
   end
 
   def get_taken_holiday_time
     results = Dictionary.new
     Holiday.get_holiday_types.each {|t| results[t.to_sym] = 0.0 }
-    holidays.each do |holiday|
-      results[holiday.leave_type.to_sym] += holiday.get_length if holiday.state == 1
+    this_years_holidays.each do |holiday|
+      if holiday.state == 1 and holiday.begin_time.year >= Date.today.year
+        results[holiday.leave_type.to_sym] += holiday.get_length 
+      end
     end
     results
   end
 
   def get_list_of_dates
     array = []
-    holidays = Holiday.find_all_by_user_id( self )
-    holidays.each do |h|
+    this_years_holidays.each do |h|
       h.included_dates.each do |dates|
         array << dates
       end
@@ -89,10 +90,14 @@ class User < ActiveRecord::Base
   def get_remaining_holiday_time
     results = Dictionary.new
     Holiday.get_holiday_types.each {|t| results[t.to_sym] = self.send("max_#{t}").to_f}
-    holidays.each do |holiday|
+    this_years_holidays.each do |holiday|
       results[holiday.leave_type.to_sym] -= holiday.get_length if holiday.state == 1
     end
     results
+  end
+
+  def this_years_holidays
+    holidays.select {|h| h.begin_time.year >= Date.today.year}
   end
 
 end

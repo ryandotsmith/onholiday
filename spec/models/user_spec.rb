@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-
 describe "Verify user from CAS" do
   before(:each) do
     @cas_extra = {
@@ -34,7 +33,7 @@ end
 describe "Provide valuable statistics on holiday data" do
  
   before(:each) do
-    date_time = MONDAY
+    date_time = MONDAY_THIS_YEAR
     @user = Factory( :user )
     @h1   = Factory(  :holiday,
                       :leave_length  => 'many',
@@ -55,7 +54,10 @@ describe "Provide valuable statistics on holiday data" do
                       :user => @user,
                       :begin_time => date_time + 14.days,
                       :end_time   => date_time + 16.days)
-  end#do 
+    @user.holidays << @h1
+    @user.holidays << @h2
+    @user.holidays << @h3
+  end
 
   it "should return a list of dates of days included in all of user's holidays" do
     # since the holidays created in the before block have unique calendars days,
@@ -106,5 +108,29 @@ describe "Provide valuable statistics on holiday data" do
     @user.holidays << [@h1,@h2]
     User.get_total_holiday_time.should eql( 30 )
   end
+end
 
+describe "fetching holidays that were taken in the current year" do
+  it "should select holidays with begin_time > the first of the current year" do
+    last_year = Date.new(2009,1,19) #monday
+    this_year = Date.new(2010,1,4)  #monday
+    @user    = Factory(:user)
+    @holiday1= Factory(:holiday,:user => @user,:begin_time => last_year,:end_time => last_year+1.day)
+    @holiday2= Factory(:holiday,:user => @user,:begin_time => this_year,:end_time => this_year+1.day)
+    @user.holidays << @holiday1
+    @user.holidays << @holiday2
+    @user.this_years_holidays.should eql([@holiday2]) 
+  end
+end
+describe "Calculating a user's holidays" do
+  before(:each) do
+    last_year = Date.new(2009,1,19) #monday
+    this_year = Date.new(2010,1,4)  #monday
+    @user    = Factory(:user)
+    @holiday1= Factory(:holiday,:user => @user,:begin_time => last_year,:end_time => last_year+1.day)
+    @holiday2= Factory(:holiday,:user => @user,:begin_time => this_year,:end_time => this_year+1.day)
+    [@holiday1,@holiday2].map {|h| h.state == 1 and h.save}
+  end
+  it "should only count holidays that were taken during the current year" do
+  end
 end

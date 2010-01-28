@@ -1,9 +1,19 @@
+MONDAY_THIS_YEAR = Date.new(2010,1,4)  #monday
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-
+describe "trivial" do
+  it "should build the assoc" do
+    user    = Factory(:user)
+    holiday = Factory(:holiday,:user => user)
+    holiday.should be_valid
+    holiday.user.should eql(user)
+    User.first.holidays.should eql([holiday])
+    #user.holidays.should eql([holiday])
+  end
+end
 describe "creating a holiday" do
   before(:each) do
     @user     = Factory( :user )
-    @dt       = MONDAY
+    @dt       = MONDAY_THIS_YEAR
   end#before
   
   describe "scrubbing the input" do
@@ -20,25 +30,24 @@ describe "creating a holiday" do
       holiday = Factory.build(  :holiday,  
                                 :leave_length => 'half',
                                 :user => @user, 
-                                :begin_time => MONDAY,
+                                :begin_time => MONDAY_THIS_YEAR,
                                 :end_time   => nil)
       holiday.save.should eql( true )      
     end
     it "should fail when days in holiday are already covered by existing holiday" do
-      holiday = Factory.build(  :holiday, 
-                                :leave_length => 'half',
-                                :user => @user, 
-                                :begin_time => @dt,
-                                :end_time   => nil)
-      holiday.save.should eql( true )      
-
-      bad_holiday = Factory.build( :holiday, 
-                                    :leave_length => 'whole',
-                                    :user => @user, 
-                                    :begin_time => @dt,
-                                    :end_time   => nil)
-      bad_holiday.should_not be_valid
-      bad_holiday.save.should eql( false )            
+      user = Factory(:user)
+      Factory(  :holiday, 
+                :user => user,
+                :leave_length => 'half',
+                :begin_time => @dt,
+                :end_time   => @dt + 2.days)
+      Factory.build(  :holiday, 
+                      :user => user,
+                      :leave_length => 'whole',
+                      :begin_time => @dt,
+                      :end_time   => @dt + 2.days)
+      require 'ruby-debug';debugger
+      1
     end
     it "should fail when half day falls into existing range of holidays" do
       holiday = Factory(  :holiday, 
@@ -105,8 +114,8 @@ describe "creating a holiday" do
         @holiday1 = Factory.build(  :holiday,  
                                     :leave_length => 'whole',
                                     :user => @user,
-                                    :begin_time => MONDAY,
-                                    :end_time   => WEDNESDAY)
+                                    :begin_time => MONDAY_THIS_YEAR,
+                                    :end_time   => MONDAY_THIS_YEAR + 3.days)
 
         @holiday1.in_range_of_existing.should eql( false )
         @holiday1.save.should eql( true )
@@ -114,8 +123,8 @@ describe "creating a holiday" do
         @holiday2 = Factory.build(  :holiday,  
                                     :leave_length => 'whole',
                                     :user => @user,
-                                    :begin_time => MONDAY,
-                                    :end_time   => THURSDAY )              
+                                    :begin_time => MONDAY_THIS_YEAR,
+                                    :end_time   => MONDAY_THIS_YEAR)              
         @holiday2.in_range_of_existing.should eql( true )
         @holiday2.save
         @holiday2.should_not be_valid
@@ -125,7 +134,7 @@ describe "creating a holiday" do
     end
     
     context "" do
-      date = MONDAY
+      date = MONDAY_THIS_YEAR
       before(:each) do
         @user = Factory( :user )
         @holiday1 = Factory(  :holiday, :user => @user, 
@@ -177,7 +186,7 @@ end
 describe "get length of holiday" do
   
   it "should return an float which represents the number of whole days" do
-    dt = MONDAY
+    dt = MONDAY_THIS_YEAR
     @holiday = Factory( 
                         :holiday, 
                         :begin_time => dt,
@@ -186,7 +195,7 @@ describe "get length of holiday" do
   end# end it 
 
   it "should correctly calculate 1 day of leave " do
-    bt  = MONDAY
+    bt  = MONDAY_THIS_YEAR
     @holiday = Factory( 
                         :holiday,
                         :begin_time =>  bt,
@@ -195,7 +204,7 @@ describe "get length of holiday" do
     
   end
   it "should correctly calculate 2 days of leave " do
-    bt  = MONDAY
+    bt  = MONDAY_THIS_YEAR
     @holiday = Factory( 
                         :holiday,
                         :leave_length => 'many',
@@ -244,7 +253,7 @@ describe "should return specific data sets" do
 
     describe "get holidays statistics for all users" do
     before(:each) do      
-      date = MONDAY
+      date = MONDAY_THIS_YEAR
       @user_one       = Factory( :user , :login =>  "jbillings")
       @user_two       = Factory( :user , :login =>  "jhoover")
 
@@ -303,7 +312,7 @@ end
 describe "getting a list of dates that the user has holidays for" do
 
   before(:each) do
-   dt = MONDAY
+   dt = MONDAY_THIS_YEAR
    @user = Factory( :user ) 
    @holiday = Factory(    :holiday, 
                           :leave_length => 'many',

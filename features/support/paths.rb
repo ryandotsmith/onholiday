@@ -10,9 +10,10 @@ module NavigationHelpers
     
     when /the home\s?page/
       '/'
-    
+    when /the user index page/
+      users_path
     when /the edit user page/
-      edit_user_path(User.first)
+      edit_user_path(@user)
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
