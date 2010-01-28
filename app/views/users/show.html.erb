@@ -50,7 +50,7 @@
 		<th> begin date</th>
 		<th> end date</th>
 		</tr>
-		<% @user.holidays.each do |holiday|%>
+		<% @user.this_years_holidays.each do |holiday|%>
 		</tr></thead>
 		<%= render 	:partial => 'holidays/show_holiday_details',
 					:locals  => { :holiday => holiday }%>
