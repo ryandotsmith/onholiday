@@ -19,6 +19,7 @@ Rails::Initializer.run do |config|
       :version => '~> 2.5.0'
   config.gem 'daemons'
   config.gem 'sanitize'
+  config.gem 'gcal4ruby'
 end
 
 require 'monkey.rb'
@@ -34,3 +35,5 @@ CASClient::Frameworks::Rails::Filter.configure(
 
 ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(:default => '%m/%d/%Y')
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(:default => '%m/%d/%Y')
+
+GCal4Ruby::Event.class_eval { attr_accessor :edit_feed }

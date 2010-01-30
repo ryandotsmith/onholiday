@@ -1,13 +1,9 @@
 class Holiday < ActiveRecord::Base
+  include Gcal
   # 0.1875 != 0.5 , nevertheless, these calculations were decided
   # to be accurate based upon our business logic. 
   HALF_DAY  = 0.1875
   WHOLE_DAY = 0.3958
-  RAILS_ENV == "production" ? calendar = "onholiday" : calendar = "rubytest"
-
-  pushes_to_gcal  :calendar         =>  calendar, 
-                  :begin_datetime   =>  :begin_time,
-                  :end_datetime     =>  :end_time
 
   belongs_to :user
 
