@@ -5,7 +5,7 @@ module Gcal
     event.start = self.begin_time
     event.end   = self.end_time
     return false unless event.save
-    self.event_id = event.edit_feed
+    self.update_attributes(:event_id => event.edit_feed)
     self.save
   end
 
