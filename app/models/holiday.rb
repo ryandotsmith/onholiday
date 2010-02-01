@@ -106,7 +106,7 @@ class Holiday < ActiveRecord::Base
   end
 
   def approve( current_user )
-    self.send_later( :push_to_calendar )
+    Delayed::Job.enqueue(GcalPusher.new(self.id))
     self.reviewed_by = current_user.login
     self.reviewed_on = DateTime.now
     self.state       = 1
