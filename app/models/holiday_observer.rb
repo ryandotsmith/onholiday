@@ -6,7 +6,9 @@ class HolidayObserver < ActiveRecord::Observer
   end
 
   def before_destroy( holiday )
-    holiday.delete_from_calendar
+    if holiday.approved?
+      holiday.delete_from_calendar
+    end
   end
 
 end
