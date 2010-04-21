@@ -2,13 +2,12 @@ class CalendarController < ApplicationController
   def index
     @array = []
     cal = Icalendar::Calendar.new
-    Holiday.all.each do |holiday|
+    Holiday.approved.each do |holiday|
       cal.event do
         dtstart      holiday.begin_time.to_datetime
         dtend        holiday.end_time.to_datetime
         summary      "#{holiday.leave_length} - #{holiday.user.name}"
         description  holiday.description
-        klass       "PRIVATE"
       end
       @array << cal
     end
