@@ -13,7 +13,9 @@ class Holiday < ActiveRecord::Base
   validates_presence_of :begin_time,  :message => "please specify beginning time"
   validates_presence_of :description, :message => "please add a descirption"
 
-  named_scope :approved, :conditions => {:state => 1}
+  named_scope :approved, :conditions => {:state => 1 }
+  named_scope :pending,  :conditions => {:state => 0 }
+  named_scope :denied,   :conditions => {:state => -1}
   # i expect search to only be called in code when the search parameter 
   # is built. I am not ready to have the search parameter be user input.
   def self.search(search, page)

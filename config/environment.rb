@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
   config.gem 'daemons'
   config.gem 'sanitize'
   config.gem 'gcal4ruby'
+  config.gem 'icalendar'
 end
 
 require 'monkey.rb'
