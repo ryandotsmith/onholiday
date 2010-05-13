@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-
+  map.calendar "/calendar/:year/:month", :controller => "calendar", :action => "index", :year => Time.now.year, :month => Time.now.month
   map.resources :users, :has_many => [:holidays]
   map.resources :holidays
   map.calendar '/calendar.ics', :controller => 'calendar', :action => 'index'

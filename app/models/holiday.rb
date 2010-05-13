@@ -1,10 +1,17 @@
 class Holiday < ActiveRecord::Base
+  alias_attribute :end_at, :end_time
+  alias_attribute :start_at, :begin_time
+  alias_attribute :name, :description
+
+
+
+  has_event_calendar
   include Gcal
   # 0.1875 != 0.5 , nevertheless, these calculations were decided
   # to be accurate based upon our business logic. 
   HALF_DAY  = 0.1875
   WHOLE_DAY = 0.3958
-
+  
   belongs_to :user
 
   validate :prohibit_time_travel
@@ -172,4 +179,4 @@ class Holiday < ActiveRecord::Base
     array
   end#included_dates
   
-end# end class
+end
