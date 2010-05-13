@@ -5,10 +5,4 @@ class HolidayObserver < ActiveRecord::Observer
     holiday.sanitize_input!
   end
 
-  def before_destroy( holiday )
-    if holiday.approved?
-      holiday.delete_from_calendar
-    end
-  end
-
 end

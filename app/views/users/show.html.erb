@@ -8,7 +8,7 @@
 						:locals  => { :user => @user }%>
 		</li><!--end pending_requests_queue-->
 		<% end %>
-		<li id="link_embedded_gcal"><%= render :partial => 'link_embedded_gcal'%></li><!--end link_embedded_gcal-->
+    <li><%= link_to 'calendar', calendar_url %>
 	<li id='tips_link'><%= link_to_function "Pro Tips", "$('#tips').slideDown();"%></li>
 	</ul>
 	<div id='tips' class="protip" style='display:none;'>
