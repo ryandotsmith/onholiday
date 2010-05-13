@@ -1,11 +1,11 @@
 class Holiday < ActiveRecord::Base
   alias_attribute :end_at, :end_time
   alias_attribute :start_at, :begin_time
-  alias_attribute :name, :description
-
-
-
+  def name
+    self.user.name
+  end
   has_event_calendar
+
   include Gcal
   # 0.1875 != 0.5 , nevertheless, these calculations were decided
   # to be accurate based upon our business logic. 
