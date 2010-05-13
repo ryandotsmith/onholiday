@@ -2,7 +2,6 @@ ActionController::Routing::Routes.draw do |map|
   map.calendar "/calendar/:year/:month", :controller => "calendar", :action => "index", :year => Time.now.year, :month => Time.now.month
   map.resources :users, :has_many => [:holidays]
   map.resources :holidays
-  map.calendar '/calendar.ics', :controller => 'calendar', :action => 'index'
   map.logout  '/logout', :controller => "application", :action => "logout"
   map.root :controller => 'users', :action => 'index'
   # The priority is based upon order of creation: first created -> highest priority.
